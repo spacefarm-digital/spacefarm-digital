@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from './ProjectCard.astro';
+
+const byOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
+const periods = (await getCollection('timeline')).sort(byOrder);
+const projects = (await getCollection('projects')).sort(byOrder);
+---
+
+<ol>
+  {periods.map((period) => (
+    <li class="relative pb-4 pl-8">
+      <span
+        class="absolute top-2 bottom-0 left-[7px] w-[2px] rounded-full bg-selection"
+        aria-hidden="true"
+      />
+      <span
+        class="absolute top-[.3rem] left-0 size-4 rounded-full border-4 border-paper bg-spacefarm shadow-btn"
+        aria-hidden="true"
+      />
+      <p class="text-f3 font-head mb-2 leading-none font-medium text-spacefarm">
+        {period.data.when}
+      </p>
+      <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
+        {period.data.title}
+      </h2>
+      <ul class="-mx-2 mb-4 flex flex-wrap">
+        {projects
+          .filter((project) => project.data.period.id === period.id)
+          .map(({ data }) => (
+            <ProjectCard project={data} />
+          ))}
+      </ul>
+    </li>
+  ))}
+</ol>

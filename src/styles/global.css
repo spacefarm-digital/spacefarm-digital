@@ -107,6 +107,7 @@
   h3,
   p,
   ul,
+  ol,
   li,
   section,
   main {
@@ -137,7 +138,8 @@
   *::after {
     box-sizing: inherit;
   }
-  ul {
+  ul,
+  ol {
     list-style: none;
   }
   a {

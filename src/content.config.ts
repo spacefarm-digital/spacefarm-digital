@@ -1,4 +1,4 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { file } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { parse } from 'yaml';
@@ -33,12 +33,21 @@ const projects = defineCollection({
   loader: orderedYaml('src/content/projects.yml'),
   schema: z.object({
     ...ordered,
-    group: z.enum(['current', 'recent']),
+    period: reference('timeline'),
     title: z.string(),
     color: z.enum(projectColors),
     link: z.url().optional(),
     nda: z.boolean().default(false),
     description: z.string().optional(),
+  }),
+});
+
+const timeline = defineCollection({
+  loader: orderedYaml('src/content/timeline.yml'),
+  schema: z.object({
+    ...ordered,
+    when: z.string(),
+    title: z.string(),
   }),
 });
 
@@ -61,4 +70,4 @@ const team = defineCollection({
   }),
 });
 
-export const collections = { projects, services, team };
+export const collections = { projects, timeline, services, team };

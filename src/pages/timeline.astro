@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import Logo from '../assets/logo.svg';
+import Timeline from '../components/Timeline.astro';
+import Contact from '../components/Contact.astro';
+import Illustration from '../components/Illustration.astro';
+import PaperShader from '../components/PaperShader.astro';
+
+const home = import.meta.env.BASE_URL;
+---
+
+<Base title="Timeline · Spacefarm">
+  <PaperShader preset="paper" class="paper" />
+  <main class="relative z-2">
+    <div class="mx-auto max-w-3xl px-4">
+      <section class="relative pt-16 pb-8">
+        <PaperShader preset="glow" class="glow" />
+        <a
+          class="text-f4 font-head mb-4 inline-flex items-center leading-none font-medium text-spacefarm sm:mb-8"
+          href={home}
+        >
+          <span class="mr-[.25em] inline-block h-[.65em] w-[.65em]">
+            <Logo />
+          </span>
+          spacefarm
+        </a>
+        <h1 class="text-f2 sm:text-f1 font-head mb-4 leading-none font-medium">Timeline</h1>
+        <p class="max-w-lg">Everything we've worked on, newest first.</p>
+      </section>
+      <Timeline />
+      <Contact />
+      <Illustration />
+    </div>
+  </main>
+</Base>
