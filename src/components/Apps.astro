@@ -45,7 +45,6 @@ const apps: App[] = [
     link: 'https://chop-chop.app',
   },
 ];
-
 ---
 
 <section class="mb-8">
@@ -77,7 +76,9 @@ const apps: App[] = [
               )}
             </div>
             <div class="copy">
-              <h3 class="font-head text-f5 sm:text-f4 mb-1 leading-[1.1] font-bold whitespace-nowrap text-black">{app.name}</h3>
+              <h3 class="font-head text-f5 sm:text-f4 mb-1 leading-[1.1] font-bold whitespace-nowrap text-black">
+                {app.name}
+              </h3>
               <p class="mb-0 text-[0.85rem] leading-snug text-ink sm:text-base">{app.pitch}</p>
             </div>
           </Row>
