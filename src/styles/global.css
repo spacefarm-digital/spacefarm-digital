@@ -19,7 +19,7 @@
    * layer below for the OLED theme: true black, brand purple pushed up a step so text in it still
    * reads (#8c7bff is 6.4:1 on black, #5538fa only 3.3:1), fills left in the real brand purple.
    */
-  --color-paper: #f7f8fa;
+  --color-paper: #fafafa;
   --color-ink: #3d3e40;
   --color-heading: #000;
   /* The brand purple as text and lines (lightened in the dark theme) */
@@ -353,7 +353,6 @@
    * Paper Shaders. Each is a <div data-paper-shader> that PaperShader.astro fills with a canvas;
    * the CSS underneath stands in when WebGL is missing.
    */
-  /* The page is paper: a static texture fixed behind everything */
   /* The mesh gradient covers the first screen, scrolls with the page and fades into the body colour */
   .paper {
     position: absolute;

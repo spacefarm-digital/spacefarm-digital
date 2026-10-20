@@ -83,7 +83,7 @@ const { preset, image, class: className } = Astro.props;
       uniforms: {
         ...colors(
           theme(
-            ['#f7f8fa', '#5538fa', '#d2defa', '#5cffa0', '#f7f8fa'],
+            ['#fafafa', '#5538fa', '#d2defa', '#5cffa0', '#fafafa'],
             ['#000000', '#5538fa', '#2a1a8f', '#5cffa0', '#000000'],
           ),
         ),
@@ -127,7 +127,7 @@ const { preset, image, class: className } = Astro.props;
         uniforms: {
           u_image: image,
           u_imageAspectRatio: 1, // set from the decoded image in mount()
-          u_colorBack: getShaderColorFromString(theme('#f7f8fa', '#000000')),
+          u_colorBack: getShaderColorFromString(theme('#fafafa', '#000000')),
           u_colorFront: getShaderColorFromString(theme('#5538fa', '#8c7bff')),
           u_size: 0.12,
           u_radius: 1.25,
