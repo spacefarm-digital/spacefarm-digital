@@ -1,0 +1,21 @@
+//OTHER
+$card-shadow: 0 0 10px 0 rgba($black, .07), 0 4px 8px 0 rgba($black, .025);
+$card-shadow-hover: 0 0 18px 0 rgba($black, .075), 0 4px 12px 0 rgba($black, .025);
+
+//TRANSITIONS
+$hover-transition: all 150ms ease-out;
+$animation-transition: all 300ms cubic-bezier(.5, .1, 0, 1);
+// $bouncy-transition: all 300ms cubic-bezier(.5, .1, 0, 1.2);
+// $bouncy-transition-with-opacity: opacity 250ms cubic-bezier(.5, .1, 0, 1),  transform 300ms cubic-bezier(.5, .1, 0, 1.2);
+
+
+.hover-transition
+{
+  transition: $hover-transition;
+}
+
+.animation-transition
+{
+    transition: $animation-transition;
+
+}

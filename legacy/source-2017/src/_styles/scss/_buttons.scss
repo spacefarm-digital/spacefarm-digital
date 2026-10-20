@@ -1,0 +1,17 @@
+.btn {
+  font-size: 1rem;
+  padding: 10px 16px;
+  cursor: pointer;
+  @extend .no-underline;
+  @extend .fw6;
+  @extend .hover-transition;
+  @extend .tc;
+  @extend .lh-copy;
+  @extend .nowrap;
+  @extend .bg-spacefarm;
+  @extend .white;
+  @extend .br1;
+  @extend .shadow;
+  @extend .real-text;
+  @extend .fw6;
+}

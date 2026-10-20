@@ -1,0 +1,76 @@
+  .h1 { height: 1rem; }
+  .h2 { height: 2rem; }
+  .h3 { height: 4rem; }
+  .h4 { height: 8rem; }
+  .h5 { height: 16rem; }
+
+  /* Height Percentages */
+
+  .h-25 {  height:  25%; }
+  .h-50 {  height:  50%; }
+  .h-75 {  height:  75%; }
+  .h-100 { height: 100%; }
+
+  /* String Properties */
+
+  .h-auto {     height: auto; }
+  .h-inherit {  height: inherit; }
+
+  /* Pixel Values */
+  .h-36px { height: 36px; }
+
+@include sm {
+  .h1-sm {  height: 1rem; }
+  .h2-sm {  height: 2rem; }
+  .h3-sm {  height: 4rem; }
+  .h4-sm {  height: 8rem; }
+  .h5-sm {  height: 16rem; }
+  .h-25-sm { height: 25%; }
+  .h-50-sm { height: 50%; }
+  .h-75-sm { height: 75%; }
+  .h-100-sm { height: 100%; }
+  .h-auto-sm { height: auto; }
+  .h-inherit-sm { height: inherit; }
+}
+
+@include md {
+  .h1-md { height: 1rem; }
+  .h2-md { height: 2rem; }
+  .h3-md { height: 4rem; }
+  .h4-md { height: 8rem; }
+  .h5-md { height: 16rem; }
+  .h-25-md { height: 25%; }
+  .h-50-md { height: 50%; }
+  .h-75-md { height: 75%; }
+  .h-100-md { height: 100%; }
+  .h-auto-md { height: auto; }
+  .h-inherit-md { height: inherit; }
+}
+
+@include lg {
+  .h1-lg { height: 1rem; }
+  .h2-lg { height: 2rem; }
+  .h3-lg { height: 4rem; }
+  .h4-lg { height: 8rem; }
+  .h5-lg { height: 16rem; }
+  .h-25-lg { height: 25%; }
+  .h-50-lg { height: 50%; }
+  .h-75-lg { height: 75%; }
+  .h-100-lg { height: 100%; }
+  .h-auto-lg { height: auto; }
+  .h-inherit-lg { height: inherit; }
+}
+
+@include xl {
+  .h1-xl { height: 1rem; }
+  .h2-xl { height: 2rem; }
+  .h3-xl { height: 4rem; }
+  .h4-xl { height: 8rem; }
+  .h5-xl { height: 16rem; }
+  .h-25-xl { height: 25%; }
+  .h-50-xl { height: 50%; }
+  .h-75-xl { height: 75%; }
+  .h-100-xl { height: 100%; }
+  .h-auto-xl { height: auto; }
+  .h-inherit-xl { height: inherit; }
+}

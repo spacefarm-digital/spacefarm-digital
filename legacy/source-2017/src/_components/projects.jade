@@ -1,0 +1,22 @@
+each thing, name in site.data.projects.work
+  section.mb4
+    h2.f5.lh-copy.fw6.mb3.bg-selection.dib.pv1.ph2 #{name}
+    ul.row.mb3
+      each stuff, chill in thing
+        if (chill == "Mindfullness" || chill =="Consentio" || chill == "Getting stronger" || chill == "Designing with code" || chill == "A React layout library" || chill == "A platform for hackathons"  )
+          li.col-12.col-sm-6.flex
+            .bg-fff.shadow.pa3.db.mb3.br1.relative.w-100
+              h3.f4.lh-title.mb1(class="#{stuff.color}") #{chill}
+              p.mb1 #{stuff.description}
+        else if (chill == "A design system" )
+          li.col-12.col-sm-6.flex.relative.mb3
+            .bg-fff.shadow.pa3.db.br1.relative.w-100
+              h3.f4.lh-title.mb1(class="#{stuff.color}") #{chill}
+              .flex.h-100.relative.items-center.justify-center.f2.lh-solid.tc.pb3.mb4
+                span.db.mr2.relative(style="top:.2rem") 😶
+                span.db NDA
+        else
+          li.col-12.col-sm-6.flex
+            a.bg-fff.shadow.pa3.db.mb3.br1.states.relative.w-100(href="#{stuff.link}", target="_blank")
+              h3.f4.lh-title.mb1(class="#{stuff.color}") #{chill}
+              p.mb1 #{stuff.description}

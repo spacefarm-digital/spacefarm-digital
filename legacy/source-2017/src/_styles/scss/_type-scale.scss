@@ -1,0 +1,81 @@
+/* For Hero Titles */
+.f-headline {
+  font-size: 6rem;
+}
+
+.f-subheadline {
+  font-size: 5rem;
+}
+
+/* Type Scale */
+.f1 { font-size: 3.998rem }
+.f2 { font-size: 2.827rem; }
+.f3 { font-size: 1.999rem; }
+.f4 { font-size: 1.414rem; }
+.f5 { font-size: 1rem; }
+.f6 { font-size: .707rem; }
+.f7 { font-size: .5rem; }
+
+@include sm {
+  .f-6-sm,
+  .f-headline-sm { font-size: 6rem; }
+  .f-5-sm,
+  .f-subheadline-sm { font-size: 5rem; }
+  .f1-sm { font-size: 3.998rem }
+  .f2-sm { font-size: 2.827rem; }
+  .f3-sm { font-size: 1.999rem; }
+  .f4-sm { font-size: 1.414rem; }
+  .f5-sm { font-size: 1rem; }
+  .f6-sm { font-size: .707rem; }
+  .f7-sm { font-size: .5rem; }
+}
+
+@include md {
+  .f-6-md,
+  .f-headline-md { font-size: 6rem; }
+  .f-5-md,
+  .f-subheadline-md { font-size: 5rem; }
+  .f1-md { font-size: 3.998rem }
+  .f2-md { font-size: 2.827rem; }
+  .f3-md { font-size: 1.999rem; }
+  .f4-md { font-size: 1.414rem; }
+  .f5-md { font-size: 1rem; }
+  .f6-md { font-size: .707rem; }
+  .f7-md { font-size: .5rem; }
+}
+
+@include lg {
+  .f-6-lg,
+  .f-headline-lg {
+    font-size: 6rem;
+  }
+  .f-5-lg,
+  .f-subheadline-lg {
+    font-size: 5rem;
+  }
+  .f1-lg { font-size: 3.998rem }
+  .f2-lg { font-size: 2.827rem; }
+  .f3-lg { font-size: 1.999rem; }
+  .f4-lg { font-size: 1.414rem; }
+  .f5-lg { font-size: 1rem; }
+  .f6-lg { font-size: .707rem; }
+  .f7-lg { font-size: .5rem; }
+}
+
+@include xl {
+  .f-6-xl,
+  .f-headline-xl {
+    font-size: 6rem;
+  }
+  .f-5-xl,
+  .f-subheadline-xl {
+    font-size: 5rem;
+  }
+  .f1-xl { font-size: 3.998rem }
+  .f2-xl { font-size: 2.827rem; }
+  .f3-xl { font-size: 1.999rem; }
+  .f4-xl { font-size: 1.414rem; }
+  .f5-xl { font-size: 1rem; }
+  .f6-xl { font-size: .707rem; }
+  .f7-xl { font-size: .5rem; }
+}

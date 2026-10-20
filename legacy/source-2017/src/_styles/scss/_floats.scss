@@ -1,0 +1,27 @@
+  .fl { float: left;  display: inline; }
+  .fr { float: right; display: inline; }
+  .fn { float: none; }
+
+@include sm {
+  .fl-sm { float: left; display: inline; }
+  .fr-sm { float: right;display: inline; }
+  .fn-sm { float: none; }
+}
+
+@include md {
+  .fl-md { float: left; display: inline; }
+  .fr-md { float: right;  display: inline; }
+  .fn-md { float: none; }
+}
+
+@include lg {
+  .fl-lg { float: left; display: inline; }
+  .fr-lg { float: right;  display: inline; }
+  .fn-lg { float: none; }
+}
+
+@include xl {
+  .fl-xl { float: left; display: inline; }
+  .fr-xl { float: right;  display: inline; }
+  .fn-xl { float: none; }
+}

@@ -1,0 +1,57 @@
+//- Custom Configuration
+block config
+  //- Setup site's base URL to match the "baseUrl" key within `package.json`
+  //- Otherwise default to relative pathing
+  - var baseUrl = config.baseUrl
+
+doctype html
+
+<!--[if lt IE 9]>
+<html class='lt-ie9 no-js' lang='en'>
+<![endif]-->
+<!--[if gte IE 9]><!-->
+<html class='no-js' lang='en'>
+<!--<![endif]-->
+
+head
+
+  //- Meta Tags
+  meta(charset='utf-8')
+  meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+  title We are Spacefarm
+  meta(name='description', content='We help awesome companies build great products, design systems and brands.')
+  meta(name='robots', content='index, follow')
+  meta(name='author', content='Spacefarm')
+  
+  //- OG Tags
+  meta(property="og:type", content="business.business")
+  meta(property='og:title', content="Spacefarm")
+  meta(property="og:url", content="www.spacefarm.digital")
+  meta(property="og:image", content = baseUrl + "http://www.spacefarm.digital/images/og-image.jpg")
+
+  
+  meta(name='viewport', content='width=device-width, initial-scale=1.0')
+  block stylesheets
+    <!--smoosh-->
+    link(rel='stylesheet', href = baseUrl + '/styles/main.css')
+    <!--endsmoosh-->
+  link(rel="apple-touch-icon", sizes="180x180", href="/apple-touch-icon.png")
+  link(rel="icon", type="image/png", href= "/favicon-32x32.png", sizes="32x32")
+  link(rel="icon", type="image/png", href = "/favicon-16x16.png", sizes="16x16")
+  link(rel="manifest", href="/manifest.json")
+  link(rel="mask-icon", href="/safari-pinned-tab.svg", color="#5538fa")
+  meta(name="theme-color", content="#5538fa")
+
+body.overflow-x-hidden
+  <!--[if lt IE 9]>
+  <p class='browsehappy'>You are using an <strong>outdated</strong> browser. Please <a href='http://browsehappy.com/'>upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+
+  block content
+  
+  <!--smoosh-->
+  script(src="scripts/fontLoader.js")
+  script(src="scripts/zepto.js")
+  script(src="scripts/illustration.js")
+  script(src="scripts/analytics.js")
+  <!--endsmoosh-->

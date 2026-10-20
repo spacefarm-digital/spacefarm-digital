@@ -1,0 +1,27 @@
+.ws-normal { white-space: normal; }
+.nowrap { white-space: nowrap; }
+.pre { white-space: pre; }
+
+@include sm {
+  .ws-normal-sm { white-space: normal; }
+  .nowrap-sm { white-space: nowrap; }
+  .pre-sm { white-space: pre; }
+}
+
+@include md {
+  .ws-normal-md { white-space: normal; }
+  .nowrap-md { white-space: nowrap; }
+  .pre-md { white-space: pre; }
+}
+
+@include lg {
+  .ws-normal-lg { white-space: normal; }
+  .nowrap-lg { white-space: nowrap; }
+  .pre-lg { white-space: pre; }
+}
+
+@include xl {
+  .ws-normal-xl { white-space: normal; }
+  .nowrap-xl { white-space: nowrap; }
+  .pre-xl { white-space: pre; }
+}

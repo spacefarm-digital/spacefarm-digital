@@ -1,0 +1,28 @@
+  .lh-solid { line-height: 1; }
+  .lh-title { line-height: 1.2; }
+  .lh-copy  { line-height: 1.5; }
+  .lh-36px { line-height: 36px; }
+
+@include sm {
+  .lh-solid-sm { line-height: 1; }
+  .lh-title-sm { line-height: 1.2; }
+  .lh-copy-sm  { line-height: 1.5; }
+}
+
+@include md {
+  .lh-solid-md { line-height: 1; }
+  .lh-title-md { line-height: 1.2; }
+  .lh-copy-md  { line-height: 1.5; }
+}
+
+@include lg {
+  .lh-solid-lg { line-height: 1; }
+  .lh-title-lg { line-height: 1.2; }
+  .lh-copy-lg  { line-height: 1.5; }
+}
+
+@include xl {
+  .lh-solid-xl { line-height: 1; }
+  .lh-title-xl { line-height: 1.2; }
+  .lh-copy-xl  { line-height: 1.5; }
+}
