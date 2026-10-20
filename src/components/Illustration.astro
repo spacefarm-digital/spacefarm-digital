@@ -1,35 +1,13 @@
 ---
-import Farm from '../assets/illustration.svg';
+import source from '../assets/illustration.svg?raw';
+import { buildFarm } from './farm';
+
+// The 2017 farm, extended sideways at build time so it spans any viewport. See farm.ts.
+const farm = buildFarm(source);
 ---
 
 <div class="relative" aria-hidden="true">
   <div class="illustration relative">
-    <Farm />
+    <Fragment set:html={farm} />
   </div>
 </div>
-
-<script>
-  // Plant the five rows outward from the centre, 14 copies a side, as the 2017 illustration.js did.
-  const farm = document.getElementById('spacefarm');
-  const rows = [
-    { href: '#row-1-plant', step: 81, drift: 0.2 },
-    { href: '#row-2-plant', step: 62, drift: 0.1 },
-    { href: '#row-3-plant', step: 46, drift: 0.0004 },
-    { href: '#row-4-plant', step: 35, drift: 0.00005 },
-    { href: '#row-5-plant', step: 26, drift: 0.0012 },
-  ];
-
-  if (farm) {
-    for (let i = 0; i < 15; i++) {
-      if (i === 3 || i === 9) continue;
-      for (const row of rows) {
-        for (const side of [1, -1]) {
-          const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
-          use.setAttribute('href', row.href);
-          use.setAttribute('transform', `translate (${side * i * (row.step - i * row.drift)}, 0)`);
-          farm.appendChild(use);
-        }
-      }
-    }
-  }
-</script>
