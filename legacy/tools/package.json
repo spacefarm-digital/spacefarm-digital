@@ -1,0 +1,13 @@
+{
+  "name": "spacefarm-legacy-tools",
+  "private": true,
+  "description": "Renders the 2017 Jade/Sass source and takes baseline screenshots. See ../README.md.",
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "pixelmatch": "^7.1.0",
+    "playwright": "^1.56.1",
+    "pngjs": "^7.0.0",
+    "pug": "^3.0.3",
+    "sass": "^1.105.2"
+  }
+}

@@ -1,0 +1,32 @@
+.static { position: static; }
+.relative  { position: relative; }
+.absolute  { position: absolute; }
+.fixed  { position: fixed; }
+
+@include sm {
+  .static-sm { position: static; }
+  .relative-sm  { position: relative; }
+  .absolute-sm  { position: absolute; }
+  .fixed-sm  { position: fixed; }
+}
+
+@include md {
+  .static-md { position: static; }
+  .relative-md  { position: relative; }
+  .absolute-md  { position: absolute; }
+  .fixed-md  { position: fixed; }
+}
+
+@include lg {
+  .static-lg { position: static; }
+  .relative-lg  { position: relative; }
+  .absolute-lg  { position: absolute; }
+  .fixed-lg  { position: fixed; }
+}
+
+@include xl {
+  .static-xl { position: static; }
+  .relative-xl  { position: relative; }
+  .absolute-xl  { position: absolute; }
+  .fixed-xl  { position: fixed; }
+}

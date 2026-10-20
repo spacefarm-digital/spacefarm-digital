@@ -1,0 +1,7 @@
+.states {
+  transition: $hover-transition;
+  &:hover {
+    transform: scale(1.007) translateY(-2px) translateZ(0) perspective(1px);
+    box-shadow: $card-shadow-hover;
+  }
+}

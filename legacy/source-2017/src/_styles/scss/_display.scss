@@ -1,0 +1,96 @@
+  .dn {              display: none!important; }
+  .di {              display: inline!important; }
+  .db {              display: block!important; }
+  .dib {             display: inline-block!important; }
+  .dit {             display: inline-table!important; }
+  .dt {              display: table!important; }
+  .dtc {             display: table-cell!important; }
+  .dt-row {          display: table-row!important; }
+  .dt-row-group {    display: table-row-group!important; }
+  .dt-column {       display: table-column!important; }
+  .dt-column-group { display: table-column-group!important; }
+
+  /*
+    This will set table to full width and then
+    all cells will be equal width
+  */
+  .dt--fixed {
+    table-layout: fixed!important;
+    width: 100%!important;
+  }
+
+@include sm {
+  .dn-sm {              display: none!important; }
+  .di-sm {              display: inline!important; }
+  .db-sm {              display: block!important; }
+  .dib-sm {             display: inline-block!important; }
+  .dit-sm {             display: inline-table!important; }
+  .dt-sm {              display: table!important; }
+  .dtc-sm {             display: table-cell!important; }
+  .dt-row-sm {          display: table-row!important; }
+  .dt-row-group-sm {    display: table-row-group!important; }
+  .dt-column-sm {       display: table-column!important; }
+  .dt-column-group-sm { display: table-column-group!important; }
+
+  .dt--fixed-sm {
+    table-layout: fixed!important;
+    width: 100%!important;
+  }
+}
+
+@include md {
+  .dn-md {              display: none!important; }
+  .di-md {              display: inline!important; }
+  .db-md {              display: block!important; }
+  .dib-md {             display: inline-block!important; }
+  .dit-md {             display: inline-table!important; }
+  .dt-md {              display: table!important; }
+  .dtc-md {             display: table-cell!important; }
+  .dt-row-md {          display: table-row!important; }
+  .dt-row-group-md {    display: table-row-group!important; }
+  .dt-column-md {       display: table-column!important; }
+  .dt-column-group-md { display: table-column-group!important; }
+
+  .dt--fixed-md {
+    table-layout: fixed!important;
+    width: 100%!important;
+  }
+}
+
+@include lg {
+  .dn-lg {              display: none!important; }
+  .di-lg {              display: inline!important; }
+  .db-lg {              display: block!important; }
+  .dib-lg {             display: inline-block!important; }
+  .dit-lg {             display: inline-table!important; }
+  .dt-lg {              display: table!important; }
+  .dtc-lg {             display: table-cell!important; }
+  .dt-row-lg {          display: table-row!important; }
+  .dt-row-group-lg {    display: table-row-group!important; }
+  .dt-column-lg {       display: table-column!important; }
+  .dt-column-group-lg { display: table-column-group!important; }
+
+  .dt--fixed-lg {
+    table-layout: fixed!important;
+    width: 100%!important;
+  }
+}
+
+@include xl {
+  .dn-xl {              display: none!important; }
+  .di-xl {              display: inline!important; }
+  .db-xl {              display: block!important; }
+  .dib-xl {             display: inline-block!important; }
+  .dit-xl {             display: inline-table!important; }
+  .dt-xl {              display: table!important; }
+  .dtc-xl {             display: table-cell!important; }
+  .dt-row-xl {          display: table-row!important; }
+  .dt-row-group-xl {    display: table-row-group!important; }
+  .dt-column-xl {       display: table-column!important; }
+  .dt-column-group-xl { display: table-column-group!important; }
+
+  .dt--fixed-xl {
+    table-layout: fixed!important;
+    width: 100%!important;
+  }
+}

@@ -1,0 +1,87 @@
+/* Max Width Percentages */
+
+.mw-100  { max-width: 100%; }
+
+/* Max Width Scale */
+
+.mw1  {  max-width: 1rem; }
+.mw2  {  max-width: 2rem; }
+.mw3  {  max-width: 4rem; }
+.mw4  {  max-width: 8rem; }
+.mw5  {  max-width: 16rem; }
+.mw6  {  max-width: 32rem; }
+.mw7  {  max-width: 48rem; }
+.mw8  {  max-width: 64rem; }
+.mw9  {  max-width: 96rem; }
+
+.mh-4 { max-height: 8rem }
+.mh-5 { max-height: 16rem }
+.mh-6 { max-height: 32rem }
+
+/* Max Width String Properties */
+
+.mw-none { max-width: none; }
+
+@include sm {
+  .mw-100-sm  { max-width: 100%; }
+
+  .mw1-sm  {  max-width: 1rem; }
+  .mw2-sm  {  max-width: 2rem; }
+  .mw3-sm  {  max-width: 4rem; }
+  .mw4-sm  {  max-width: 8rem; }
+  .mw5-sm  {  max-width: 16rem; }
+  .mw6-sm  {  max-width: 32rem; }
+  .mw7-sm  {  max-width: 48rem; }
+  .mw8-sm  {  max-width: 64rem; }
+  .mw9-sm  {  max-width: 96rem; }
+
+  .mw-none-sm { max-width: none; }
+}
+
+@include md {
+  .mw-100-md  { max-width: 100%; }
+
+  .mw1-md  {  max-width: 1rem; }
+  .mw2-md  {  max-width: 2rem; }
+  .mw3-md  {  max-width: 4rem; }
+  .mw4-md  {  max-width: 8rem; }
+  .mw5-md  {  max-width: 16rem; }
+  .mw6-md  {  max-width: 32rem; }
+  .mw7-md  {  max-width: 48rem; }
+  .mw8-md  {  max-width: 64rem; }
+  .mw9-md  {  max-width: 96rem; }
+
+  .mw-none-md { max-width: none; }
+}
+
+@include lg {
+  .mw-100-lg  { max-width: 100%; }
+
+  .mw1-lg  {  max-width: 1rem; }
+  .mw2-lg  {  max-width: 2rem; }
+  .mw3-lg  {  max-width: 4rem; }
+  .mw4-lg  {  max-width: 8rem; }
+  .mw5-lg  {  max-width: 16rem; }
+  .mw6-lg  {  max-width: 32rem; }
+  .mw7-lg  {  max-width: 48rem; }
+  .mw8-lg  {  max-width: 64rem; }
+  .mw9-lg  {  max-width: 96rem; }
+
+  .mw-none-lg { max-width: none; }
+}
+
+@include xl {
+  .mw-100-xl  { max-width: 100%; }
+
+  .mw1-xl  {  max-width: 1rem; }
+  .mw2-xl  {  max-width: 2rem; }
+  .mw3-xl  {  max-width: 4rem; }
+  .mw4-xl  {  max-width: 8rem; }
+  .mw5-xl  {  max-width: 16rem; }
+  .mw6-xl  {  max-width: 32rem; }
+  .mw7-xl  {  max-width: 48rem; }
+  .mw8-xl  {  max-width: 64rem; }
+  .mw9-xl  {  max-width: 96rem; }
+
+  .mw-none-xl { max-width: none; }
+}

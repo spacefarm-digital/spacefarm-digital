@@ -1,0 +1,26 @@
+/*! uncss:ignore */
+@font-face {
+	font-family: "Real Text";
+	src: local("Real Text Offc"), local("RealTextOffc"),
+		url("fonts/RealTextOffc-Regular.woff2") format("woff2"),
+		url("fonts/RealTextOffc-Regular.woff") format("woff");
+	font-weight: 400;
+}
+
+/*! uncss:ignore */
+@font-face {
+	font-family: Real Text;
+	src: local("Real Text Offc Demibold"), local("RealTextOffc-Demibold"),
+		url("fonts/RealTextOffc-Demibold.woff2") format("woff2"),
+		url("fonts/RealTextOffc-Demibold.woff") format("woff");
+	font-weight: 600;
+}
+
+/*! uncss:ignore */
+@font-face {
+	font-family: Real Head;
+	src: local("Real Head Offc Medium"), local("RealHeadOffc-Medium"),
+		url("fonts/RealHeadOffc-Medium.woff2") format("woff2"),
+		url("fonts/RealHeadOffc-Medium.woff") format("woff");
+	font-weight: 500;
+}

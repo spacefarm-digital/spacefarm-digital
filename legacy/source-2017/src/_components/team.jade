@@ -1,0 +1,10 @@
+each thing, name in site.data.team
+  section.mb4
+    h2.f5.lh-copy.fw6.mb3.bg-selection.dib.ph2.pv1 #{name}
+    ul.row
+      each stuff, chill in thing
+        li.col-12.col-sm-6.flex
+            db.mb4.relative
+                h3.f4.lh-title.mb1 #{chill}
+                span.db.mb2.fw6 #{stuff.title}
+                p.mb0 #{stuff.description}

@@ -1,0 +1,30 @@
+table
+{
+  @extend .br1;
+  @extend .overflow-hidden;
+}
+
+td, th {
+  @extend .pa3;
+}
+
+th:not(:first-child), td:not(:first-child) {
+  @extend .tr;
+}
+
+th {
+  @extend .grey-3;
+  @extend .fw6;
+  @extend .nowrap;
+  @include lg {
+    white-space: wrap;
+  }
+}
+
+tr th {
+  @extend .tl;
+}
+
+tbody tr:nth-child(even) {
+  background-color: lighten($grey-3, 36%);
+}

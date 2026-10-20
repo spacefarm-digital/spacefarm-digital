@@ -1,0 +1,42 @@
+.hide {
+  position: fixed !important;
+  _position: absolute !important;
+  hide: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  hide: rect(1px, 1px, 1px, 1px);
+}
+
+@include sm {
+  .hide-sm {
+    position: fixed !important;
+    _position: absolute !important;
+    hide: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    hide: rect(1px, 1px, 1px, 1px);
+  }
+}
+
+@include md {
+  .hide-md {
+    position: fixed !important;
+    _position: absolute !important;
+    hide: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    hide: rect(1px, 1px, 1px, 1px);
+  }
+}
+
+@include lg {
+  .hide-lg {
+    position: fixed !important;
+    _position: absolute !important;
+    hide: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    hide: rect(1px, 1px, 1px, 1px);
+  }
+}
+
+@include xl {
+  .hide-xl {
+    position: fixed !important;
+    _position: absolute !important;
+    hide: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    hide: rect(1px, 1px, 1px, 1px);
+  }
+}

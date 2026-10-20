@@ -1,0 +1,67 @@
+work:
+  Currently working on:
+
+    A platform for hackathons:
+      description: Hackathons are an amazing way to make ideas happen. Organizing them and finding a diverse set of people is not easy though. We're helping an early-stage startup design and build v1 of their product.
+      color: hckrs
+
+    A design system:
+      description: Hackathons are an amazing way to make ideas happen. Organizing them and finding a diverse set of people is not easy though. We're helping an early-stage startup design and build v1 of their product.
+
+      color: limbix
+
+    A color tool↗:
+      description: Our first open-source product is already in the making. Wouldn’t it be great if you could re-color a whole design system just by tweaking a few values in an easy to use in-browser responsive UI with no coding required? We hope it’s coming later this year.
+      color: spacefarm
+      link: http://www.gamut.tools/
+
+    A React layout library:
+      description: Layout in React can be tackled in so many ways, so we decided to introduce some more fatigue to the JavaScript game. 😜 We’re planning to open-source our internal constraints and sizing tool later this year.
+      color: react
+
+    Improved↗:
+      description: Nobody likes to be the whiny person on Twitter who keeps being mad at poorly-done software. Yet, we felt like we were that person far too often. This year, we are revitalizing our old project Improved with new authors and new, more diverse topics and formats.
+      link: http://www.improved.design/
+      color: improved
+
+
+  Recent work:
+    BB-Team↗:
+      description: We had the opportunity to work with the leading local health and fitness portal. We shipped a complex atomic design system with hundreds of front-end components and built a couple of new features and user flows. We also worked on a new visual design language and an illustration guideline.
+      link: https://www.bb-team.org/
+      color: bbteam
+
+    CMS template for Netlify↗:
+      description: We ❤️-ed Netlify before we had the chance to work together. A few months ago, we shipped the first template for Netlify’s open-source static site CMS. We created an imaginary coffee business, built a brand and visual language around it and designed a small CMS-integrated Hugo website with real content.
+      color: netlify
+      link: https://github.com/netlify-templates/kaldi-hugo-cms-template
+
+    Proctest design system↗:
+      description: Proctest is a large-scale language testing tool used by NATO and the US Army. We’ve worked on multiple projects with their team over the years. Last year, we finally had the chance to build a front-end design system for the product’s upcoming update.
+      link: https://dribbble.com/shots/3318406-Primary-navigation-interaction
+      color: proctest
+
+    Kutia.bg↗:
+      description: This small and dedicated team offers a subscription box filled with healthy organic snacks. We helped them develop their brand and illustration style.
+      link: https://dribbble.com/shots/2968093-Surprise-box
+      color: kutia
+
+    Time Heroes↗:
+      description: Time Heroes is a platform for volunteering and doing good. We helped by designing and developing a campaign website targetted towards students and teachers.
+      link: https://timeheroes.org/theimpossibletest/#teachers
+      color: timeheroes
+
+    Consentio:
+      description: We did some web and branding work for Consentio, the team behind Telepat. A full case study on Telepat is coming soon.
+      link: http://consent.io
+      color: consentio
+
+    Dribbble↗:
+      description: While we're building our full site, keep up with our latest work on Dribbble.
+      color: dribbble
+      link: https://dribbble.com/spacefarm
+
+    Medium↗:
+      description: We love writing and we're trying to do it more often. Check out our posts on Medium while we're working on our new blog, hosted right here.
+      color: medium
+      link: https://blog.thecrazyones.agency

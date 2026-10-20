@@ -1,0 +1,84 @@
+.overflow-visible { overflow: visible; }
+.overflow-hidden { overflow: hidden; }
+.overflow-scroll { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+.overflow-auto { overflow: auto; }
+
+.overflow-x-visible { overflow-x: visible; }
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-x-scroll { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+.overflow-x-auto { overflow-x: auto; }
+
+.overflow-y-visible { overflow-y: visible; }
+.overflow-y-hidden { overflow-y: hidden; }
+.overflow-y-scroll { overflow-y: scroll; }
+.overflow-y-auto { overflow-y: auto; }
+
+.ltr { direction: ltr; }
+.rtl { direction: rtl; }
+
+@include sm {
+  .overflow-visible-sm { overflow: visible; }
+  .overflow-hidden-sm { overflow: hidden; }
+  .overflow-scroll-sm { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-auto-sm { overflow: auto; }
+  .overflow-x-visible-sm { overflow-x: visible; }
+  .overflow-x-hidden-sm { overflow-x: hidden; }
+  .overflow-x-scroll-sm { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-x-auto-sm { overflow-x: auto; }
+
+  .overflow-y-visible-sm { overflow-y: visible; }
+  .overflow-y-hidden-sm { overflow-y: hidden; }
+  .overflow-y-scroll-sm { overflow-y: scroll; }
+  .overflow-y-auto-sm { overflow-y: auto; }
+}
+
+@include md {
+  .overflow-visible-md { overflow: visible; }
+  .overflow-hidden-md { overflow: hidden; }
+  .overflow-scroll-md { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-auto-md { overflow: auto; }
+
+  .overflow-x-visible-md { overflow-x: visible; }
+  .overflow-x-hidden-md { overflow-x: hidden; }
+  .overflow-x-scroll-md { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-x-auto-md { overflow-x: auto; }
+
+  .overflow-y-visible-md { overflow-y: visible; }
+  .overflow-y-hidden-md { overflow-y: hidden; }
+  .overflow-y-scroll-md { overflow-y: scroll; }
+  .overflow-y-auto-md { overflow-y: auto; }
+}
+
+@include lg {
+  .overflow-visible-lg { overflow: visible; }
+  .overflow-hidden-lg { overflow: hidden; }
+  .overflow-scroll-lg { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-auto-lg { overflow: auto; }
+
+  .overflow-x-visible-lg { overflow-x: visible; }
+  .overflow-x-hidden-lg { overflow-x: hidden; }
+  .overflow-x-scroll-lg { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-x-auto-lg { overflow-x: auto; }
+
+  .overflow-y-visible-lg { overflow-y: visible; }
+  .overflow-y-hidden-lg { overflow-y: hidden; }
+  .overflow-y-scroll-lg { overflow-y: scroll; }
+  .overflow-y-auto-lg { overflow-y: auto; }
+}
+
+@include xl {
+  .overflow-visible-xl { overflow: visible; }
+  .overflow-hidden-xl { overflow: hidden; }
+  .overflow-scroll-xl { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-auto-xl { overflow: auto; }
+
+  .overflow-x-visible-xl { overflow-x: visible; }
+  .overflow-x-hidden-xl { overflow-x: hidden; }
+  .overflow-x-scroll-xl { overflow-x: scroll; -webkit-overflow-scrolling: touch;  }
+  .overflow-x-auto-xl { overflow-x: auto; }
+
+  .overflow-y-visible-xl { overflow-y: visible; }
+  .overflow-y-hidden-xl { overflow-y: hidden; }
+  .overflow-y-scroll-xl { overflow-y: scroll; }
+  .overflow-y-auto-xl { overflow-y: auto; }
+}
