@@ -17,6 +17,11 @@ cd legacy/tools && npm install          # pug, js-yaml, sass, playwright (Chromi
 node render.js ../source-2017 ../rendered-2017
 node shots.js ../rendered-2017 ../baseline/source-2017
 node shots.js ../deployed-2017 ../baseline/deployed-2017
+
+# Check a build of the new site against the baseline: visible text must be identical, pixels are counted
+npm run build --prefix ../..
+node shots.js ../../dist /tmp/port-shots
+node compare.js ../rendered-2017 ../baseline/source-2017 ../../dist /tmp/port-shots /tmp/port-diff
 ```
 
 Screenshots are taken headless in Chromium at device scale factor 1, after `document.fonts.ready` plus 800 ms so FontFaceObserver has added the `real-text` / `real-head` classes.
