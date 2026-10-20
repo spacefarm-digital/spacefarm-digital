@@ -50,18 +50,19 @@ const { preset, image, class: className } = Astro.props;
   const stillness = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const presets: Record<string, (el: HTMLElement) => Preset> = {
-    // The page background: a slow, pale mesh gradient of the brand purple with a pink and a blue
+    // The page background: a slow mesh gradient of the brand purple, a magenta and a dark blue
+    // over a pale lilac, with a little grain. Settings tuned on shaders.paper.design.
     paper: () => ({
       fragment: meshGradientFragmentShader,
-      speed: stillness ? 0 : 0.15,
+      speed: stillness ? 0 : 0.22,
       pixelRatio: 1,
       uniforms: {
-        ...colors(['#f7f8fa', '#d5cbff', '#f8cde5', '#c8dafc']),
-        u_distortion: 0.8,
-        u_swirl: 0.1,
+        ...colors(['#e6e3ff', '#5538fa', '#e2369c', '#1c1680']),
+        u_distortion: 0.66,
+        u_swirl: 0.51,
         u_grainMixer: 0,
-        u_grainOverlay: 0,
-        ...sizing({ u_fit: ShaderFitOptions.cover }),
+        u_grainOverlay: 0.14,
+        ...sizing({ u_fit: ShaderFitOptions.cover, u_scale: 2.24 }),
       },
     }),
     // The light behind the wordmark: a slow mesh gradient in the brand colours.

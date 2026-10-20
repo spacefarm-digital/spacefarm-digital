@@ -297,18 +297,17 @@
   }
 
   /* Fades the top of the farm illustration into the page background */
-  .fade {
-    background: linear-gradient(-180deg, var(--color-paper) 0%, rgb(247 248 250 / 0) 10%);
-  }
   /* The paper shader sits behind the page, so the body colour has to show through the farm */
   .illustration svg {
     background: transparent;
   }
 
+  /* The far rows fade into whatever background is behind them, across the farm's full width */
   .illustration {
     width: 600%;
     left: 50%;
     transform: translateX(-50%);
+    mask-image: linear-gradient(to bottom, transparent, #000 12%);
   }
   @media (min-width: 30em) {
     .illustration {
