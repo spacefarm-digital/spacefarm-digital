@@ -1,6 +1,6 @@
 ---
-// Our apps: one row per app, a big floating icon beside a bold name and one-liner, swapping
-// sides row to row.
+// Our apps: a grid, four up on desktop and two on phones, each a big floating icon over a bold
+// name and one-liner.
 // Sunlight's one-liner is a placeholder guessed from the name; the other three paraphrase their sites.
 import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
@@ -52,7 +52,7 @@ const apps: App[] = [
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="relative left-1/2 mb-4 flex w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-10 sm:gap-16">
+  <ul class="relative left-1/2 mb-4 grid w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 sm:gap-x-8">
     {apps.map((app) => {
       const icon = icons[app.id];
       const Row = app.link ? 'a' : 'div';
@@ -77,8 +77,8 @@ const apps: App[] = [
               )}
             </div>
             <div class="copy">
-              <h3 class="font-head mb-2 text-f2 leading-[1.05] font-bold text-black">{app.name}</h3>
-              <p class="text-f4 mb-0 leading-snug text-ink">{app.pitch}</p>
+              <h3 class="font-head mb-1 text-f4 sm:text-f3 leading-[1.05] font-bold text-black">{app.name}</h3>
+              <p class="mb-0 leading-snug text-ink">{app.pitch}</p>
             </div>
           </Row>
         </li>
@@ -88,42 +88,27 @@ const apps: App[] = [
 </section>
 
 <style>
-  /* A row: the icon floats on its own, the copy sits beside it, and even rows swap sides */
+  /* A grid cell: the icon floats on its own with the copy beneath it */
   .app {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
+    height: 100%;
     border-radius: var(--radius-card);
   }
   .app:focus-visible {
     outline: 3px solid var(--color-spacefarm);
     outline-offset: 6px;
   }
-  @media (min-width: 48em) {
-    .app {
-      flex-direction: row;
-      align-items: center;
-      gap: 3rem;
-    }
-    li:nth-child(even) .app {
-      flex-direction: row-reverse;
-      text-align: right;
-    }
-  }
   .icon {
     flex: none;
-    width: 9rem;
-    height: 9rem;
+    width: 100%;
+    max-width: 10rem;
+    aspect-ratio: 1;
     animation: float 6s ease-in-out infinite;
   }
   li:nth-child(even) .icon {
     animation-delay: -3s;
-  }
-  @media (min-width: 48em) {
-    .icon {
-      width: 12rem;
-      height: 12rem;
-    }
   }
   .icon-img,
   .tile {
