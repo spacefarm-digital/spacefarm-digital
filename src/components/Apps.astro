@@ -9,7 +9,6 @@ type App = {
   id: 'wtheic' | 'agents' | 'sunlight' | 'chopchop';
   name: string;
   pitch: string;
-  color: string;
   link?: string;
 };
 
@@ -35,27 +34,23 @@ const apps: App[] = [
     id: 'wtheic',
     name: 'wtHEIC',
     pitch: 'Drag or paste a HEIC into any app and a JPG lands there instead.',
-    color: 'text-proctest',
     link: 'https://wtheic.com',
   },
   {
     id: 'agents',
     name: 'Agents',
     pitch: 'A native home for your coding agents on Mac, iPhone and Apple Watch.',
-    color: 'text-ink',
     link: 'https://agentsapp.net',
   },
   {
     id: 'sunlight',
     name: 'Sunlight',
     pitch: 'Know when the sun reaches your window, your desk or your garden.',
-    color: 'text-timeheroes',
   },
   {
     id: 'chopchop',
     name: 'Chop-Chop',
     pitch: 'Tell it what is in your kitchen and it cooks up the recipe, nutrition and all.',
-    color: 'text-kutia',
     link: 'https://chop-chop.app',
   },
 ];
@@ -101,10 +96,10 @@ const apps: App[] = [
               <span class="cut" />
             </div>
             <div class="body">
-              <h3 class={`text-f4 font-head mb-1 leading-[1.2] font-medium ${app.color}`}>
+              <h3 class="text-f4 font-head mb-1 leading-[1.2] font-medium">
                 {app.name}
               </h3>
-              <p class="mb-0">{app.pitch}</p>
+              <p class="mb-0 max-w-md opacity-90">{app.pitch}</p>
             </div>
           </Card>
         </li>
@@ -130,29 +125,43 @@ const apps: App[] = [
   }
   .art {
     position: relative;
-    aspect-ratio: 16 / 9;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
   }
+  /* The copy sits over the art's bottom edge on an eased scrim, so it fades in without a hard band */
   .body {
-    padding: 0.8rem 1rem 1rem;
+    position: absolute;
+    inset: auto 0 0;
+    z-index: 1;
+    padding: 4rem 1rem 1rem;
+    color: #fff;
+    background: linear-gradient(
+      to bottom,
+      rgb(0 0 0 / 0) 0%,
+      rgb(0 0 0 / 0.01) 8.1%,
+      rgb(0 0 0 / 0.037) 15.5%,
+      rgb(0 0 0 / 0.078) 22.5%,
+      rgb(0 0 0 / 0.131) 29%,
+      rgb(0 0 0 / 0.194) 35.3%,
+      rgb(0 0 0 / 0.264) 41.2%,
+      rgb(0 0 0 / 0.338) 47.1%,
+      rgb(0 0 0 / 0.413) 52.9%,
+      rgb(0 0 0 / 0.486) 58.8%,
+      rgb(0 0 0 / 0.556) 64.7%,
+      rgb(0 0 0 / 0.619) 71%,
+      rgb(0 0 0 / 0.672) 77.5%,
+      rgb(0 0 0 / 0.713) 84.5%,
+      rgb(0 0 0 / 0.74) 91.9%,
+      rgb(0 0 0 / 0.75) 100%
+    );
+    pointer-events: none;
   }
-  /* Full-width bento: art and copy side by side, swapping sides card to card */
   @media (min-width: 48em) {
-    .app {
-      display: grid;
-      grid-template-columns: 2fr 1fr;
-    }
-    li:nth-child(even) .app {
-      grid-template-columns: 1fr 2fr;
-    }
-    li:nth-child(even) .art {
-      order: 1;
+    .art {
+      aspect-ratio: 2 / 1;
     }
     .body {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.5rem;
+      padding: 6rem 1.5rem 1.5rem;
     }
   }
   .clip {
