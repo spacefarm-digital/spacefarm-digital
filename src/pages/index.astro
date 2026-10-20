@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
+import Apps from '../components/Apps.astro';
 import Projects from '../components/Projects.astro';
 import Services from '../components/Services.astro';
 import Team from '../components/Team.astro';
@@ -17,6 +18,7 @@ const showServices = false;
   <main class="relative z-2">
     <div class="mx-auto max-w-3xl px-4">
       <Hero />
+      <Apps />
       <Projects />
       {showServices && <Services />}
       <Team />
