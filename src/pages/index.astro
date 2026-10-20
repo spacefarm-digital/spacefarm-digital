@@ -11,6 +11,9 @@ import PaperShader from '../components/PaperShader.astro';
 
 // "What we do" is hidden for now; flip to true to show it again.
 const showServices = false;
+// The old work card is hidden too. Its page lives at pages/_timeline.astro, which the leading
+// underscore keeps out of the build; rename it back to timeline.astro and flip this to show both.
+const showOldWork = false;
 ---
 
 <Base>
@@ -19,7 +22,7 @@ const showServices = false;
     <div class="mx-auto max-w-3xl px-4">
       <Hero />
       <Apps />
-      <WorkTeaser />
+      {showOldWork && <WorkTeaser />}
       {showServices && <Services />}
       <Team />
       <Contact />
