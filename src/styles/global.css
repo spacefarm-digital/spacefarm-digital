@@ -274,6 +274,36 @@
       height: 32rem;
     }
   }
+  /* Microplanet: centred on the viewport's right edge, so half of it hangs off-screen */
+  .microplanet {
+    position: absolute;
+    z-index: -1;
+    bottom: -5.5rem;
+    right: calc(50% - 50vw - 5rem);
+    width: 10rem;
+    max-width: none;
+    height: auto;
+    pointer-events: none;
+    animation: microplanet-spin 240s linear infinite;
+  }
+  @media (min-width: 48em) {
+    .microplanet {
+      top: 1rem;
+      bottom: auto;
+      right: calc(50% - 50vw - 13rem);
+      width: 26rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .microplanet {
+      animation: none;
+    }
+  }
+  @keyframes microplanet-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
   /* Frosted glass over whatever the NDA hides */
   .veil {
     position: absolute;

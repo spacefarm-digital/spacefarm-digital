@@ -1,10 +1,23 @@
 ---
+import { Picture } from 'astro:assets';
 import Logo from '../assets/logo.svg';
+import microplanet from '../assets/microplanet.png';
 import PaperShader from './PaperShader.astro';
 ---
 
 <section class="relative pt-16 pb-8">
   <PaperShader preset="glow" class="glow" />
+  <Picture
+    src={microplanet}
+    alt=""
+    formats={['avif', 'webp']}
+    fallbackFormat="webp"
+    widths={[320, 640, 960, 1254]}
+    sizes="(min-width: 48em) 26rem, 10rem"
+    loading="eager"
+    class="microplanet"
+    aria-hidden="true"
+  />
   <h1 class="text-f3 sm:text-f1 font-head mb-4 max-w-lg leading-none font-medium text-spacefarm sm:mb-8">
     <span class="mr-[.25em] inline-block h-[.65em] w-[.65em] align-[-2.5%]">
       <Logo />
