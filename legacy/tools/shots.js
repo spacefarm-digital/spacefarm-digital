@@ -40,7 +40,7 @@ const server = http.createServer((req, res) => {
     if (width === 1280) {
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
       await page.waitForTimeout(1200); // scroll handler debounce (150 ms) + a bit of fan rotation
-      await page.screenshot({ path: path.join(outDir, `${width}-illustration-animating.png`) });
+      await page.screenshot({ path: path.join(outDir, `${width}-illustration-in-view.png`) });
       const cls = await page.evaluate(() => [document.documentElement.className, document.querySelector('.illustration')?.className,
         window.scrollY, document.querySelector('.illustration')?.getBoundingClientRect().top, innerHeight, typeof window.$]);
       console.log('html class / illustration class / scrollY / illustration top / innerHeight / $:', cls);
