@@ -1,5 +1,5 @@
 ---
-// Our apps: a grid, four up on desktop and two on phones, each a big floating icon over a bold
+// Our apps: a grid in the page column, four up from tablets and two on phones, each a big floating icon over a bold
 // name and one-liner.
 // The one-liners paraphrase each app's site, or for Sunlight its README.
 import { Image } from 'astro:assets';
@@ -52,7 +52,7 @@ const apps: App[] = [
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="relative left-1/2 mb-4 grid w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 grid-cols-2 gap-x-6 gap-y-10 sm:grid-cols-4 sm:gap-x-8">
+  <ul class="mb-4 grid grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10 md:grid-cols-4">
     {apps.map((app) => {
       const icon = icons[app.id];
       const Row = app.link ? 'a' : 'div';
@@ -68,7 +68,7 @@ const apps: App[] = [
           >
             <div class="icon" aria-hidden="true">
               {icon ? (
-                <Image src={icon} alt="" width={96} densities={[1, 2, 3]} class="icon-img" />
+                <Image src={icon} alt="" width={132} densities={[1, 2, 3]} class="icon-img" />
               ) : (
                 <div class="tile">
                   <PaperShader preset={app.id} class="scene" />
@@ -77,8 +77,8 @@ const apps: App[] = [
               )}
             </div>
             <div class="copy">
-              <h3 class="font-head mb-1 text-f4 leading-[1.1] font-bold text-black">{app.name}</h3>
-              <p class="mb-0 leading-snug text-ink">{app.pitch}</p>
+              <h3 class="font-head text-f5 sm:text-f4 mb-1 leading-[1.1] font-bold whitespace-nowrap text-black">{app.name}</h3>
+              <p class="mb-0 text-[0.85rem] leading-snug text-ink sm:text-base">{app.pitch}</p>
             </div>
           </Row>
         </li>
@@ -103,12 +103,17 @@ const apps: App[] = [
   .icon {
     flex: none;
     width: 100%;
-    max-width: 6rem;
+    max-width: 4.5rem;
     aspect-ratio: 1;
     animation: float 6s ease-in-out infinite;
   }
   li:nth-child(even) .icon {
     animation-delay: -3s;
+  }
+  @media (min-width: 34rem) {
+    .icon {
+      max-width: 6rem;
+    }
   }
   .icon-img,
   .tile {
