@@ -31,13 +31,15 @@ import PaperShader from './PaperShader.astro';
       linear-gradient(to bottom, transparent, #000 var(--fade-y), #000 calc(100% - var(--fade-y)), transparent);
     mask-composite: intersect;
   }
+  .wordmark.is-hot :global(svg) {
+    visibility: hidden;
+  }
 </style>
 
 <script>
   // Paper's heatmap (https://shaders.paper.design/heatmap) needs the shape as an image, so the
-  // logo and name are drawn to a canvas exactly where they sit in the page, then the shader is
-  // laid over them. The purple wordmark stays underneath, so the name reads even between
-  // heatwaves, and on its own when there's no WebGL.
+  // logo is drawn to a canvas exactly where it sits in the page, then the shader is laid over it
+  // and the real logo hidden. No WebGL: the real logo stays as it is.
   import {
     ShaderMount,
     ShaderFitOptions,
@@ -47,7 +49,6 @@ import PaperShader from './PaperShader.astro';
     toProcessedHeatmap,
   } from '@paper-design/shaders';
 
-  const NAME = 'spacefarm';
   // toProcessedHeatmap draws the long edge at 1000px and pads each side by 375px; the shader then
   // samples only the middle 1000/1750 of that
   const SIZE = 1000;
@@ -65,23 +66,16 @@ import PaperShader from './PaperShader.astro';
 
   async function heat(h1: HTMLElement, target: HTMLElement) {
     const logo = h1.querySelector('svg')!;
-    const text = [...h1.childNodes].find((n) => n.nodeType === 3 && n.textContent?.includes(NAME))!;
-    const start = text.textContent!.indexOf(NAME);
-    const range = document.createRange();
-    range.setStart(text, start);
-    range.setEnd(text, start + NAME.length);
-
-    const style = getComputedStyle(h1);
     const own = h1.getBoundingClientRect();
     const lr = logo.getBoundingClientRect();
-    const tr = range.getBoundingClientRect();
-    const pad = parseFloat(style.fontSize) * 0.5;
-    const left = Math.min(lr.left, tr.left) - pad;
-    const top = Math.min(lr.top, tr.top) - pad;
-    const w = Math.max(lr.right, tr.right) + pad - left;
-    const h = Math.max(lr.bottom, tr.bottom) + pad - top;
+    // Room around the logo for the outer glow to spread into
+    const pad = lr.width * 0.6;
+    const left = lr.left - pad;
+    const top = lr.top - pad;
+    const w = lr.width + 2 * pad;
+    const h = lr.height + 2 * pad;
 
-    // The shape, black on white, at twice its size on screen
+    // The logo, black on white, at twice its size on screen
     const canvas = document.createElement('canvas');
     canvas.width = w * 2;
     canvas.height = h * 2;
@@ -94,27 +88,25 @@ import PaperShader from './PaperShader.astro';
       .replace(/height="[^"]*"/, `height="${lr.height}"`)
       .replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg" fill="#000"');
     const logoImg = await loadImage(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`);
-    ctx.drawImage(logoImg, lr.left - left, lr.top - top, lr.width, lr.height);
-    ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
-    if (style.letterSpacing !== 'normal') ctx.letterSpacing = style.letterSpacing;
-    ctx.fillStyle = '#000';
-    const ascent = ctx.measureText(NAME).fontBoundingBoxAscent;
-    ctx.fillText(NAME, tr.left - left, tr.top - top + ascent);
+    ctx.drawImage(logoImg, pad, pad, lr.width, lr.height);
 
     const { blob } = await toProcessedHeatmap(canvas.toDataURL());
     const image = await loadImage(URL.createObjectURL(blob));
 
-    // Size the canvas so the shape lands on the real wordmark, with room above and below for the glow
-    const processedH = Math.floor((SIZE * h) / w) + 2 * PAD;
-    const height = (w / SIZE) * processedH * CROP;
+    // Size the canvas so the shape lands exactly on the real logo
+    const pw = w >= h ? SIZE : Math.floor((SIZE * w) / h);
+    const ph = w >= h ? Math.floor((SIZE * h) / w) : SIZE;
+    const px = w / pw;
+    const width = px * (pw + 2 * PAD) * CROP;
+    const height = px * (ph + 2 * PAD) * CROP;
     Object.assign(target.style, {
-      left: `${left - own.left}px`,
+      left: `${left - own.left + w / 2 - width / 2}px`,
       top: `${top - own.top + h / 2 - height / 2}px`,
-      width: `${w}px`,
+      width: `${width}px`,
       height: `${height}px`,
     });
-    // Fade over the padding only, so the shape itself is never masked
-    target.style.setProperty('--fade-x', `${pad * 0.9}px`);
+    // Fade over the padding only, so the logo itself is never masked
+    target.style.setProperty('--fade-x', `${(width - w) / 2 + pad * 0.9}px`);
     target.style.setProperty('--fade-y', `${(height - h) / 2 + pad * 0.9}px`);
 
     mount?.dispose();
@@ -125,13 +117,13 @@ import PaperShader from './PaperShader.astro';
         u_image: image,
         u_imageAspectRatio: image.naturalWidth / image.naturalHeight,
         u_colorBack: getShaderColorFromString('rgba(0,0,0,0)'),
-        u_colors: ['#5538fa', '#7080d4', '#d2defa', '#5cffa0'].map(getShaderColorFromString),
-        u_colorsCount: 4,
-        u_contour: 0.5,
+        u_colors: [getShaderColorFromString('#5538fa')],
+        u_colorsCount: 1,
+        u_contour: 0.03,
         u_angle: 0,
-        u_noise: 0,
-        u_innerGlow: 0.5,
-        u_outerGlow: 0.35,
+        u_noise: 0.27,
+        u_innerGlow: 0.44,
+        u_outerGlow: 0.4,
         u_fit: ShaderFitOptions.contain,
         u_scale: 1,
         u_rotation: 0,
@@ -143,8 +135,9 @@ import PaperShader from './PaperShader.astro';
         u_worldHeight: defaultObjectSizing.worldHeight,
       },
       undefined,
-      stillness ? 0 : 1,
+      stillness ? 0 : 0.28,
     );
+    h1.classList.add('is-hot');
   }
 
   const h1 = document.querySelector<HTMLElement>('[data-wordmark]');
