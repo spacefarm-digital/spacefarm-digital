@@ -278,18 +278,20 @@
   .microplanet {
     position: absolute;
     z-index: -1;
-    top: 0;
-    right: calc(50% - 50vw - 30vh);
-    width: 60vh;
+    top: 30vh;
+    right: calc(50% - 50vw - 33vh);
+    width: 66vh;
     max-width: none;
     height: auto;
     pointer-events: none;
     animation: microplanet-spin 240s linear infinite;
   }
+  /* 90vh tall and centred in the first screen */
   @media (min-width: 48em) {
     .microplanet {
-      right: calc(50% - 50vw - 40vh);
-      width: 80vh;
+      top: 5vh;
+      right: calc(50% - 50vw - 45vh);
+      width: 90vh;
     }
   }
   @media (prefers-reduced-motion: reduce) {
