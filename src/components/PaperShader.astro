@@ -21,6 +21,7 @@ const { preset, image, class: className } = Astro.props;
     HalftoneDotsTypes,
     halftoneDotsFragmentShader,
     emptyPixel,
+    isPaperShaderElement,
     ShaderFitOptions,
     defaultObjectSizing,
     getShaderColorFromString,
@@ -48,16 +49,26 @@ const { preset, image, class: className } = Astro.props;
   });
 
   const stillness = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const darkQuery = matchMedia('(prefers-color-scheme: dark)');
+  // Each preset picks its palette by theme; the scenes remount when the system theme changes.
+  const theme = <T,>(light: T, dark: T) => (darkQuery.matches ? dark : light);
 
   const presets: Record<string, (el: HTMLElement) => Preset> = {
     // The page background: a slow mesh gradient led by the brand purple (it takes two of the five
     // points), with white and lighter magenta and blue. Settings tuned on shaders.paper.design.
+    // After dark it is a nebula: black takes two of the five points so most of the screen stays
+    // switched off, and the brand purple drifts through it with a little deep blue and magenta.
     paper: () => ({
       fragment: meshGradientFragmentShader,
       speed: stillness ? 0 : 0.22,
       pixelRatio: 1,
       uniforms: {
-        ...colors(['#ffffff', '#9384f2', '#f5b8da', '#9384f2', '#aab3ef']),
+        ...colors(
+          theme(
+            ['#ffffff', '#9384f2', '#f5b8da', '#9384f2', '#aab3ef'],
+            ['#000000', '#000000', '#5538fa', '#000000', '#000000', '#1a0f6e'],
+          ),
+        ),
         u_distortion: 0.66,
         u_swirl: 0.51,
         u_grainMixer: 0,
@@ -70,7 +81,12 @@ const { preset, image, class: className } = Astro.props;
       fragment: meshGradientFragmentShader,
       speed: stillness ? 0 : 0.35,
       uniforms: {
-        ...colors(['#f7f8fa', '#5538fa', '#d2defa', '#5cffa0', '#f7f8fa']),
+        ...colors(
+          theme(
+            ['#f7f8fa', '#5538fa', '#d2defa', '#5cffa0', '#f7f8fa'],
+            ['#000000', '#5538fa', '#2a1a8f', '#5cffa0', '#000000'],
+          ),
+        ),
         u_distortion: 0.9,
         u_swirl: 0.25,
         u_grainMixer: 0,
@@ -83,7 +99,12 @@ const { preset, image, class: className } = Astro.props;
       fragment: staticMeshGradientFragmentShader,
       speed: 0,
       uniforms: {
-        ...colors(['#7080d4', '#d2defa', '#5538fa', '#ffffff']),
+        ...colors(
+          theme(
+            ['#7080d4', '#d2defa', '#5538fa', '#ffffff'],
+            ['#1c1a4a', '#5538fa', '#8c7bff', '#000000'],
+          ),
+        ),
         u_positions: 12,
         u_waveX: 0.8,
         u_waveXShift: 0.3,
@@ -95,7 +116,8 @@ const { preset, image, class: className } = Astro.props;
         ...sizing({ u_fit: ShaderFitOptions.cover, u_rotation: 300 }),
       },
     }),
-    // The team photo as a print: brand-purple halftone dots on paper. Static.
+    // The team photo as a print: brand-purple halftone dots on paper, or after dark a lighter
+    // purple on black, which reads like a screen print on black card. Static.
     halftone: (el) => {
       const image = new Image();
       image.src = el.dataset.image ?? emptyPixel;
@@ -105,13 +127,14 @@ const { preset, image, class: className } = Astro.props;
         uniforms: {
           u_image: image,
           u_imageAspectRatio: 1, // set from the decoded image in mount()
-          u_colorBack: getShaderColorFromString('#f7f8fa'),
-          u_colorFront: getShaderColorFromString('#5538fa'),
+          u_colorBack: getShaderColorFromString(theme('#f7f8fa', '#000000')),
+          u_colorFront: getShaderColorFromString(theme('#5538fa', '#8c7bff')),
           u_size: 0.12,
           u_radius: 1.25,
           u_contrast: 0.3,
           u_originalColors: false,
-          u_inverted: false,
+          // On black the dots go where the light is, so the print reads as a positive
+          u_inverted: theme(false, true),
           u_grainMixer: 0,
           u_grainOverlay: 0,
           u_grainSize: 0.5,
@@ -145,5 +168,14 @@ const { preset, image, class: className } = Astro.props;
     }
   }
 
-  document.querySelectorAll<HTMLElement>('[data-paper-shader]').forEach(mount);
+  const scenes = document.querySelectorAll<HTMLElement>('[data-paper-shader]');
+  scenes.forEach(mount);
+
+  // The system theme changed under us: tear each scene down and mount it in the new palette.
+  darkQuery.addEventListener('change', () => {
+    for (const el of scenes) {
+      if (isPaperShaderElement(el)) el.paperShaderMount?.dispose();
+      mount(el);
+    }
+  });
 </script>
