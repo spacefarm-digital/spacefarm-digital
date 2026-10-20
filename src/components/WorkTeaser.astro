@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+
+const count = (await getCollection('projects')).length;
+const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/timeline/`;
+---
+
+<section class="mb-8">
+  <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
+    Our work
+  </h2>
+  <a class="lift relative mb-4 block w-full rounded-card bg-white p-4 shadow-card" href={href}>
+    <h3 class="text-f4 font-head mb-1 leading-[1.2] font-medium text-spacefarm">
+      Projects timeline→
+    </h3>
+    <p class="mb-1">All {count} projects we've worked on, newest first.</p>
+  </a>
+</section>
