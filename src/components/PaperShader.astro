@@ -4,7 +4,7 @@
 // the HTML carries only a name (and, for image effects, the image's URL).
 // Static presets render once and cost nothing afterwards.
 interface Props {
-  preset: 'paper' | 'glow' | 'veil' | 'halftone';
+  preset: 'paper' | 'glow' | 'veil' | 'halftone' | 'wtheic' | 'agents' | 'sunlight' | 'chopchop';
   image?: string;
   class?: string;
 }
@@ -30,6 +30,7 @@ const { preset, image, class: className } = Astro.props;
     staticMeshGradientFragmentShader,
     type ShaderMountUniforms,
   } from '@paper-design/shaders';
+  import { appPresets, type Preset } from './app-shaders';
 
   const sizing = (overrides: Partial<Record<string, number>> = {}): ShaderMountUniforms => ({
     u_fit: ShaderFitOptions[defaultObjectSizing.fit],
@@ -53,13 +54,6 @@ const { preset, image, class: className } = Astro.props;
     const img = new Image();
     img.src = emptyPixel;
     return img;
-  };
-
-  type Preset = {
-    fragment: string;
-    uniforms: ShaderMountUniforms;
-    speed: number;
-    pixelRatio?: number;
   };
 
   const presets: Record<string, (el: HTMLElement) => Preset> = {
@@ -156,6 +150,8 @@ const { preset, image, class: className } = Astro.props;
         },
       };
     },
+    // The four "Our apps" scenes live in app-shaders.ts next to their hover states
+    ...appPresets,
   };
 
   async function mount(el: HTMLElement) {

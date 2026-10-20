@@ -1,0 +1,411 @@
+---
+// Our apps: four cards. A card with a recording in src/assets/apps (<id>.webm or .mp4, plus a
+// <id>.jpg poster, made by tools/record-apps.cjs) shows the poster and plays the recording on
+// hover; without one it falls back to its Paper Shader scene, which still reacts to hover.
+// Sunlight's one-liner is a placeholder guessed from the name; the other three paraphrase their sites.
+import PaperShader from './PaperShader.astro';
+
+type App = {
+  id: 'wtheic' | 'agents' | 'sunlight' | 'chopchop';
+  name: string;
+  pitch: string;
+  tag: string;
+  color: string;
+  link?: string;
+};
+
+// Whatever recordings exist, by file name: { 'wtheic.webm': '/_astro/wtheic.abc123.webm', … }
+const files = Object.fromEntries(
+  Object.entries(
+    import.meta.glob<string>('../assets/apps/*.{webm,mp4,jpg}', {
+      eager: true,
+      query: '?url',
+      import: 'default',
+    }),
+  ).map(([path, url]) => [path.split('/').pop()!, url]),
+);
+const media = (id: App['id']) => {
+  const sources = (['webm', 'mp4'] as const)
+    .filter((ext) => files[`${id}.${ext}`])
+    .map((ext) => ({ src: files[`${id}.${ext}`], type: `video/${ext}` }));
+  return sources.length ? { sources, poster: files[`${id}.jpg`] } : null;
+};
+
+const apps: App[] = [
+  {
+    id: 'wtheic',
+    name: 'wtHEIC',
+    pitch: 'Drag or paste a HEIC into any app and a JPG lands there instead.',
+    tag: 'Mac · $5.99',
+    color: 'text-proctest',
+    link: 'https://wtheic.com',
+  },
+  {
+    id: 'agents',
+    name: 'Agents',
+    pitch: 'A native home for your coding agents on Mac, iPhone and Apple Watch.',
+    tag: 'Coming soon',
+    color: 'text-ink',
+    link: 'https://agentsapp.net',
+  },
+  {
+    id: 'sunlight',
+    name: 'Sunlight',
+    pitch: 'Know when the sun reaches your window, your desk or your garden.',
+    tag: 'Daylight',
+    color: 'text-timeheroes',
+  },
+  {
+    id: 'chopchop',
+    name: 'Chop-Chop',
+    pitch: 'Tell it what is in your kitchen and it cooks up the recipe, nutrition and all.',
+    tag: 'AI recipes',
+    color: 'text-kutia',
+    link: 'https://chop-chop.app',
+  },
+];
+
+const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2';
+---
+
+<section class="mb-8">
+  <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
+    Our apps
+  </h2>
+  <ul class="-mx-2 mb-4 flex flex-wrap">
+    {apps.map((app) => {
+      const video = media(app.id);
+      const Card = app.link ? 'a' : 'div';
+      return (
+        <li class={col}>
+          <Card
+            class={`app app-${app.id} lift mb-4`}
+            data-app={app.id}
+            href={app.link}
+            target={app.link ? '_blank' : undefined}
+            rel={app.link ? 'noopener' : undefined}
+            tabindex={app.link ? undefined : 0}
+          >
+            <div class="art" aria-hidden="true">
+              {video ? (
+                <video
+                  class="clip"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster={video.poster}
+                  data-app-video
+                >
+                  {video.sources.map((source) => (
+                    <source src={source.src} type={source.type} />
+                  ))}
+                </video>
+              ) : (
+                <PaperShader preset={app.id} class="scene" />
+              )}
+              <span class="cut" />
+              <span class="tag">{app.tag}</span>
+              <span class="icon">
+                {app.id === 'wtheic' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="4" width="18" height="16" rx="3.5" />
+                    <circle cx="9" cy="10" r="2" fill="currentColor" stroke="none" />
+                    <path d="M3.5 17.5 9 13l3.5 3 3.5-4 4.5 5" stroke-linejoin="round" />
+                  </svg>
+                )}
+                {app.id === 'agents' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3" stroke-linecap="round" />
+                    <path
+                      d="M12 7l1.6 3.4L17 12l-3.4 1.6L12 17l-1.6-3.4L7 12l3.4-1.6z"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                )}
+                {app.id === 'sunlight' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none" />
+                    <path
+                      d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                )}
+                {app.id === 'chopchop' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M3.5 4h11l6 6v3.5h-17z" fill="currentColor" stroke="none" />
+                    <path d="M6.5 13.5v6" stroke-width="3" stroke-linecap="round" />
+                    <circle cx="16.5" cy="9.5" r="1" fill="#fff" stroke="none" />
+                  </svg>
+                )}
+              </span>
+            </div>
+            <div class="body">
+              <h3 class={`text-f4 font-head mb-1 leading-[1.2] font-medium ${app.color}`}>
+                {app.name}
+              </h3>
+              <p class="mb-0">{app.pitch}</p>
+            </div>
+          </Card>
+        </li>
+      );
+    })}
+  </ul>
+</section>
+
+<style>
+  /* The card: the project card, with the shader scene bleeding to its top edge */
+  .app {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    border-radius: var(--radius-card);
+    background: #fff;
+    box-shadow: var(--shadow-card);
+  }
+  .app:focus-visible {
+    outline: 3px solid var(--color-spacefarm);
+    outline-offset: 3px;
+  }
+  .art {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+  }
+  .body {
+    padding: 0.8rem 1rem 1rem;
+  }
+  .clip {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    background: var(--color-paper);
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .app:hover .clip,
+  .app:focus-visible .clip {
+    transform: scale(1.03);
+  }
+  .art :global(.scene) {
+    position: absolute;
+    inset: 0;
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .icon {
+    position: absolute;
+    bottom: 0.65rem;
+    left: 0.8rem;
+    display: grid;
+    width: 2rem;
+    height: 2rem;
+    place-items: center;
+    border-radius: 12px;
+    background: rgb(255 255 255 / 0.85);
+    box-shadow:
+      0 0 0 1px rgb(61 62 64 / 0.05),
+      0 2px 6px rgb(61 62 64 / 0.1);
+    backdrop-filter: blur(10px);
+    color: var(--color-spacefarm);
+    transition: transform 300ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .icon svg {
+    width: 1.15rem;
+    height: 1.15rem;
+    fill: none;
+  }
+  .tag {
+    position: absolute;
+    top: 0.65rem;
+    right: 0.8rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: rgb(255 255 255 / 0.85);
+    box-shadow: 0 0 0 1px rgb(61 62 64 / 0.05);
+    backdrop-filter: blur(10px);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--color-ink);
+  }
+  .cut {
+    display: none;
+  }
+  .app:hover .icon,
+  .app:focus-visible .icon {
+    transform: translateY(-2px) scale(1.06);
+  }
+
+  /* wtHEIC: a dithered photo that snaps into focus. The CSS gradient is the no-WebGL stand-in. */
+  .app-wtheic :global(.scene) {
+    background: radial-gradient(circle at 60% 40%, var(--color-selection), #fff 70%);
+  }
+  .app-wtheic:hover :global(.scene),
+  .app-wtheic:focus-visible :global(.scene) {
+    transform: scale(1.04);
+  }
+  .app-wtheic .icon {
+    color: var(--color-proctest);
+  }
+
+  /* Agents: gooey blobs in the brand purple that multiply on hover */
+  .app-agents :global(.scene) {
+    background:
+      radial-gradient(circle at 30% 50%, #7080d4 0, transparent 35%),
+      radial-gradient(circle at 70% 45%, var(--color-spacefarm) 0, transparent 38%), #f7f8fa;
+  }
+  .app-agents .icon {
+    color: var(--color-ink);
+  }
+
+  /* Sunlight: rays from the top right that brighten on hover, and the card warms with them */
+  .app-sunlight :global(.scene) {
+    background: radial-gradient(circle at 85% 0%, var(--color-kirtan), #fff6d6 40%, #fff 75%);
+  }
+  .app-sunlight .icon {
+    color: var(--color-timeheroes);
+  }
+  .app-sunlight:hover,
+  .app-sunlight:focus-visible {
+    box-shadow:
+      var(--shadow-card-hover),
+      0 24px 60px -24px rgb(254 213 79 / 0.55);
+  }
+
+  /* Chop-Chop: sharp panels, and a neon cut that sweeps across on hover */
+  .app-chopchop :global(.scene) {
+    background: linear-gradient(
+      100deg,
+      #fff 30%,
+      var(--color-medium) 30% 50%,
+      var(--color-spacefarm) 50% 70%,
+      #fff 70%
+    );
+  }
+  .app-chopchop .icon {
+    color: var(--color-kutia);
+  }
+  .app-chopchop .cut {
+    display: block;
+    position: absolute;
+    top: -20%;
+    left: -10%;
+    width: 3px;
+    height: 140%;
+    background: var(--color-medium);
+    box-shadow:
+      0 0 8px var(--color-medium),
+      0 0 24px rgb(92 255 160 / 0.8);
+    transform: rotate(18deg) translateX(-20px);
+    opacity: 0;
+  }
+  .app-chopchop:hover .cut,
+  .app-chopchop:focus-visible .cut {
+    animation: chop 550ms cubic-bezier(0.6, 0, 0.2, 1) forwards;
+  }
+  .app-chopchop:hover :global(.scene),
+  .app-chopchop:focus-visible :global(.scene) {
+    transform: skewX(-2deg) scale(1.03);
+  }
+  @keyframes chop {
+    0% {
+      opacity: 0;
+      transform: rotate(18deg) translateX(-20px);
+    }
+    15% {
+      opacity: 1;
+    }
+    85% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(18deg) translateX(calc(100% + 24rem));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .clip,
+    :global(.scene),
+    .icon {
+      transition: none;
+    }
+    .app-chopchop:hover .cut,
+    .app-chopchop:focus-visible .cut {
+      animation: none;
+      opacity: 0.9;
+      transform: rotate(18deg) translateX(10rem);
+    }
+  }
+</style>
+
+<script>
+  // Hover and focus retune each card's shader. PaperShader.astro mounts them; this only tweens the
+  // uniforms it registered under `app` presets, and does nothing when the shader did not mount.
+  import { ShaderMount, isPaperShaderElement } from '@paper-design/shaders';
+  import { appHover } from './app-shaders';
+
+  const stillness = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const ease = (t: number) => 1 - Math.pow(1 - t, 3);
+
+  type Tween = { frame: number };
+
+  for (const card of document.querySelectorAll<HTMLElement>('[data-app]')) {
+    // A recording plays while the pointer is over the card and rewinds when it leaves
+    const clip = card.querySelector<HTMLVideoElement>('[data-app-video]');
+    if (clip) {
+      const play = () => clip.play().catch(() => {});
+      const stop = () => {
+        clip.pause();
+        clip.currentTime = 0;
+      };
+      card.addEventListener('pointerenter', play);
+      card.addEventListener('pointerleave', stop);
+      card.addEventListener('focus', play);
+      card.addEventListener('blur', stop);
+      continue;
+    }
+
+    const scene = card.querySelector<HTMLElement>('[data-paper-shader]');
+    const hover = appHover[card.dataset.app ?? ''];
+    if (!scene || !hover) continue;
+    let tween: Tween | null = null;
+    const current = { ...hover.off };
+
+    const settle = (active: boolean) => {
+      if (!isPaperShaderElement(scene) || !scene.paperShaderMount) return;
+      const mount: ShaderMount = scene.paperShaderMount;
+      const to = active ? hover.on : hover.off;
+      const from = { ...current };
+      const speed = active ? hover.speedOn : hover.speedOff;
+      mount.setSpeed(stillness ? 0 : speed);
+      if (tween) cancelAnimationFrame(tween.frame);
+      if (stillness) {
+        Object.assign(current, to);
+        mount.setUniforms(to);
+        return;
+      }
+      const start = performance.now();
+      const duration = 500;
+      const step = (now: number) => {
+        const t = ease(Math.min(1, (now - start) / duration));
+        const next: Record<string, number> = {};
+        for (const key of Object.keys(to)) next[key] = from[key] + (to[key] - from[key]) * t;
+        Object.assign(current, next);
+        mount.setUniforms(next);
+        if (t < 1) tween = { frame: requestAnimationFrame(step) };
+      };
+      tween = { frame: requestAnimationFrame(step) };
+    };
+
+    card.addEventListener('pointerenter', () => settle(true));
+    card.addEventListener('pointerleave', () => settle(false));
+    card.addEventListener('focus', () => settle(true));
+    card.addEventListener('blur', () => settle(false));
+  }
+</script>
