@@ -1,0 +1,259 @@
+/*
+ * Tailwind without Preflight: the base layer below is the 2017 reset, so the
+ * page renders exactly as it did. Preflight would change svg sizing and more.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@theme {
+  /* The 2017 Sass breakpoints (34/48/62/75em). Media queries ignore the root font size, so rem == em here. */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 34rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 62rem;
+  --breakpoint-xl: 75rem;
+
+  --color-paper: #f7f8fa;
+  --color-ink: #3d3e40;
+  --color-spacefarm: #5538fa;
+  --color-selection: #d2defa;
+  /* One accent per client card */
+  --color-proctest: #087bff;
+  --color-consentio: #528bff;
+  --color-dribbble: #ea4c89;
+  --color-medium: #5cffa0;
+  --color-kutia: #ff4149;
+  --color-timeheroes: #f56322;
+  --color-kirtan: #fed54f;
+  --color-bbteam: #089447;
+  --color-react: #00d8ff;
+  --color-netlify: #00c7b7;
+  --color-improved: #7e868c;
+  --color-hckrs: #ff8c76;
+  --color-limbix: #7080d4;
+
+  --font-text:
+    'Real Text', -apple-system, BlinkMacSystemFont, roboto, 'avenir next', avenir, helvetica,
+    'helvetica neue', ubuntu, noto, 'segoe ui', arial, sans-serif;
+  --font-head:
+    'Real Head', -apple-system, BlinkMacSystemFont, roboto, 'avenir next', avenir, helvetica,
+    'helvetica neue', ubuntu, noto, 'segoe ui', arial, sans-serif;
+
+  /* The 1.414 (augmented fourth) type scale */
+  --text-f1: 3.998rem;
+  --text-f2: 2.827rem;
+  --text-f3: 1.999rem;
+  --text-f4: 1.414rem;
+  --text-f5: 1rem;
+
+  --shadow-card: 0 0 10px 0 rgb(61 62 64 / 0.07), 0 4px 8px 0 rgb(61 62 64 / 0.025);
+  --shadow-card-hover: 0 0 18px 0 rgb(61 62 64 / 0.075), 0 4px 12px 0 rgb(61 62 64 / 0.025);
+  --radius-card: 8px;
+}
+
+@layer base {
+  @font-face {
+    font-family: 'Real Text';
+    src:
+      local('Real Text Offc'),
+      local('RealTextOffc'),
+      url('../assets/fonts/RealTextOffc-Regular.woff2') format('woff2'),
+      url('../assets/fonts/RealTextOffc-Regular.woff') format('woff');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Real Text';
+    src:
+      local('Real Text Offc Demibold'),
+      local('RealTextOffc-Demibold'),
+      url('../assets/fonts/RealTextOffc-Demibold.woff2') format('woff2'),
+      url('../assets/fonts/RealTextOffc-Demibold.woff') format('woff');
+    font-weight: 600;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Real Head';
+    src:
+      local('Real Head Offc Medium'),
+      local('RealHeadOffc-Medium'),
+      url('../assets/fonts/RealHeadOffc-Medium.woff2') format('woff2'),
+      url('../assets/fonts/RealHeadOffc-Medium.woff') format('woff');
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  /* The parts of the 2017 reset that touch elements on this page */
+  html,
+  body,
+  div,
+  span,
+  h1,
+  h2,
+  h3,
+  p,
+  ul,
+  li,
+  section,
+  main {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+  }
+  section,
+  main {
+    display: block;
+  }
+  html {
+    box-sizing: border-box;
+    overflow-y: scroll;
+    font-size: 20px;
+  }
+  @media (min-width: 62em) {
+    html {
+      font-size: 22px;
+    }
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+  }
+  ul {
+    list-style: none;
+  }
+  a {
+    margin: 0;
+    padding: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+    text-decoration: none;
+    color: inherit;
+  }
+  img {
+    max-width: 100%;
+  }
+
+  body {
+    font-family: var(--font-text);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.45;
+    height: 100%;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    color: var(--color-ink);
+    background-color: var(--color-paper);
+  }
+  ::selection {
+    background: var(--color-selection);
+  }
+  p {
+    margin-bottom: 1rem;
+  }
+  p a {
+    color: var(--color-spacefarm);
+    text-decoration: underline;
+  }
+  p a:hover {
+    text-decoration: none;
+  }
+
+  svg {
+    display: block;
+    fill: currentColor;
+    fill-rule: evenodd;
+    clip-rule: evenodd;
+    max-width: 100%;
+    max-height: 100%;
+    backface-visibility: hidden;
+  }
+  svg path,
+  svg use,
+  svg rect {
+    transform-origin: 50% 50%;
+  }
+}
+
+@layer components {
+  .btn {
+    font-family: var(--font-text);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.5;
+    padding: 10px 16px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--color-paper);
+    background-color: var(--color-spacefarm);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    transition: all 150ms ease-out;
+  }
+
+  /* Card hover: a hair of scale and a lift */
+  .lift {
+    transition: all 150ms ease-out;
+  }
+  .lift:hover {
+    transform: scale(1.007) translateY(-2px) translateZ(0) perspective(1px);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  /* Fades the top of the farm illustration into the page background */
+  .fade {
+    background: linear-gradient(-180deg, var(--color-paper) 0%, rgb(247 248 250 / 0) 10%);
+  }
+
+  .illustration {
+    width: 600%;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  @media (min-width: 30em) {
+    .illustration {
+      width: 250%;
+    }
+  }
+  @media (min-width: 52em) {
+    .illustration {
+      width: 2560px;
+    }
+  }
+
+  /* Fans and lights only move with an .animate class on .illustration; the 2017 site stopped adding it in 2021. */
+  @keyframes fan {
+    from {
+      transform-origin: 50% 50%;
+      transform: rotate(0deg) translate3d(0, 0, 0);
+    }
+    to {
+      transform-origin: 50% 50%;
+      transform: rotate(360deg) translate3d(0, 0, 0);
+    }
+  }
+  @keyframes lights-red {
+    from {
+      opacity: 1;
+      fill: #e686a6;
+    }
+    to {
+      opacity: 0;
+      fill: #e686a6;
+    }
+  }
+  .animate svg g.fan {
+    animation: fan 10s infinite linear;
+  }
+  .animate svg path#red-lights {
+    animation: lights-red 0.3s infinite alternate linear forwards;
+  }
+}
