@@ -9,7 +9,7 @@ const { chromium } = require('../legacy/tools/node_modules/playwright');
 
 const sites = {
   wtheic: 'https://wtheic.com',
-  agents: 'https://agentsapp.com',
+  agents: 'https://agentsapp.net',
   chopchop: 'https://chop-chop.app',
 };
 const ids = process.argv.slice(2).length ? process.argv.slice(2) : Object.keys(sites);
