@@ -15,6 +15,16 @@ const shaderPhoto = await getImage({ src: photo, width: 1024, format: 'jpg' });
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Team
   </h2>
+  <figure class="team-photo relative m-0 mb-6 aspect-[3/2] overflow-hidden">
+    <Image
+      src={photo}
+      alt="Darin and Kalina"
+      widths={[736, 1024]}
+      sizes="(min-width: 48rem) 736px, 100vw"
+      class="block h-full w-full object-cover"
+    />
+    <PaperShader preset="halftone" image={shaderPhoto.src} class="halftone" />
+  </figure>
   <ul class="-mx-2 flex flex-wrap">
     {team.map(({ data }) => (
       <li class="flex max-w-full flex-none basis-full px-2 sm:max-w-1/2 sm:basis-1/2">
@@ -26,14 +36,4 @@ const shaderPhoto = await getImage({ src: photo, width: 1024, format: 'jpg' });
       </li>
     ))}
   </ul>
-  <figure class="team-photo relative m-0 aspect-[3/2] overflow-hidden">
-    <Image
-      src={photo}
-      alt="Darin and Kalina"
-      widths={[736, 1024]}
-      sizes="(min-width: 48rem) 736px, 100vw"
-      class="block h-full w-full object-cover"
-    />
-    <PaperShader preset="halftone" image={shaderPhoto.src} class="halftone" />
-  </figure>
 </section>
