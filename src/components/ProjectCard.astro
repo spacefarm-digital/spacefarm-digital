@@ -1,0 +1,60 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import type { ProjectColor } from '../content.config';
+import PaperShader from './PaperShader.astro';
+
+interface Props {
+  project: CollectionEntry<'projects'>['data'];
+}
+
+const { project: data } = Astro.props;
+
+// Spelled out so Tailwind sees every class it has to emit.
+const colorClass: Record<ProjectColor, string> = {
+  spacefarm: 'text-spacefarm',
+  proctest: 'text-proctest',
+  consentio: 'text-consentio',
+  dribbble: 'text-dribbble',
+  medium: 'text-medium',
+  kutia: 'text-kutia',
+  timeheroes: 'text-timeheroes',
+  bbteam: 'text-bbteam',
+  react: 'text-react',
+  netlify: 'text-netlify',
+  improved: 'text-improved',
+  hckrs: 'text-hckrs',
+  limbix: 'text-limbix',
+};
+
+// The 2017 grid: one column, two from the sm breakpoint, half-rem gutters.
+const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2';
+const card = 'relative block w-full rounded-card bg-white p-4 shadow-card';
+const cardTitle = 'text-f4 font-head mb-1 leading-[1.2] font-medium';
+---
+
+{data.nda ? (
+  <li class={`${col} relative mb-4`}>
+    <div class={`${card} overflow-hidden`}>
+      <PaperShader preset="veil" class="veil" />
+      <h3 class={`${cardTitle} ${colorClass[data.color]} relative`}>{data.title}</h3>
+      <div class="text-f2 font-head relative mb-8 flex h-full items-center justify-center pb-4 text-center leading-none font-medium">
+        <span class="relative top-[.2rem] mr-2 block">😶</span>
+        <span class="block">NDA</span>
+      </div>
+    </div>
+  </li>
+) : data.link ? (
+  <li class={col}>
+    <a class={`${card} lift mb-4`} href={data.link} target="_blank">
+      <h3 class={`${cardTitle} ${colorClass[data.color]}`}>{data.title}</h3>
+      <p class="mb-1">{data.description}</p>
+    </a>
+  </li>
+) : (
+  <li class={col}>
+    <div class={`${card} mb-4`}>
+      <h3 class={`${cardTitle} ${colorClass[data.color]}`}>{data.title}</h3>
+      <p class="mb-1">{data.description}</p>
+    </div>
+  </li>
+)}

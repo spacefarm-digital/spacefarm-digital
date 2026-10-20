@@ -5,7 +5,11 @@ import realTextRegular from '../assets/fonts/RealTextOffc-Regular.woff2';
 import realTextDemibold from '../assets/fonts/RealTextOffc-Demibold.woff2';
 import realHeadMedium from '../assets/fonts/RealHeadOffc-Medium.woff2';
 
-const title = 'We are Spacefarm';
+interface Props {
+  title?: string;
+}
+
+const { title = 'We are Spacefarm' } = Astro.props;
 const description = 'We help awesome companies build great products, design systems and brands.';
 
 // Public files need the base path while the site is previewed under /spacefarm-digital.
