@@ -2,7 +2,7 @@
 // Our apps: four cards. A card with a recording in src/assets/apps (<id>.webm or .mp4, plus a
 // <id>.jpg poster, made by tools/record-apps.cjs) shows the poster and plays the recording on
 // hover; without one it falls back to its Paper Shader scene, which still reacts to hover.
-// The one-liners are placeholders guessed from the names; swap them for the real pitches.
+// Sunlight's one-liner is a placeholder guessed from the name; the other three paraphrase their sites.
 import PaperShader from './PaperShader.astro';
 
 type App = {
@@ -35,18 +35,19 @@ const apps: App[] = [
   {
     id: 'wtheic',
     name: 'wtHEIC',
-    pitch: 'Opens and converts the HEIC photos your phone keeps sending you.',
-    tag: 'HEIC → JPG',
-    color: 'text-spacefarm',
+    pitch:
+      'A tiny Mac app that slips a JPG to every app and website that has no idea what a HEIC is.',
+    tag: 'Mac · $5.99',
+    color: 'text-proctest',
     link: 'https://wtheic.com',
   },
   {
     id: 'agents',
     name: 'Agents',
-    pitch: 'A small crew of AI agents that take the repetitive work off your plate.',
-    tag: 'AI',
-    color: 'text-limbix',
-    link: 'https://agentsapp.com',
+    pitch: 'A native home for your coding agents on Mac, iPhone and Apple Watch.',
+    tag: 'Coming soon',
+    color: 'text-ink',
+    link: 'https://agentsapp.net',
   },
   {
     id: 'sunlight',
@@ -58,9 +59,9 @@ const apps: App[] = [
   {
     id: 'chopchop',
     name: 'Chop-Chop',
-    pitch: 'Chops big tasks into quick bites and keeps you moving through them.',
-    tag: 'Focus',
-    color: 'text-bbteam',
+    pitch: 'Tell it what is in your kitchen and it cooks up the recipe, nutrition and all.',
+    tag: 'AI recipes',
+    color: 'text-kutia',
     link: 'https://chop-chop.app',
   },
 ];
@@ -250,7 +251,7 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
     transform: scale(1.04);
   }
   .app-wtheic .icon {
-    color: var(--color-spacefarm);
+    color: var(--color-proctest);
   }
 
   /* Agents: gooey blobs in the brand purple that multiply on hover */
@@ -260,7 +261,7 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
       radial-gradient(circle at 70% 45%, var(--color-spacefarm) 0, transparent 38%), #f7f8fa;
   }
   .app-agents .icon {
-    color: var(--color-limbix);
+    color: var(--color-ink);
   }
 
   /* Sunlight: rays from the top right that brighten on hover, and the card warms with them */
@@ -288,7 +289,7 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
     );
   }
   .app-chopchop .icon {
-    color: var(--color-bbteam);
+    color: var(--color-kutia);
   }
   .app-chopchop .cut {
     display: block;
