@@ -76,14 +76,60 @@ const FRONT_LAYERS = [
   'green-lights',
 ];
 
-const FRONT_FILL = '#f1f2f9';
+/**
+ * The art's paint, by the hex it was drawn in, as the CSS custom property that carries it now.
+ * global.css sets the light values and swaps them for the dark theme; the hex stays as fallback.
+ * Two colours are shared in the art (vent blades and tank frames, tier tops and displays), so each
+ * is listed with the first element that uses it and gets split by id below.
+ */
+const PAINT: Record<string, string> = {
+  '#fff': 'top',
+  '#f0eff3': 'line',
+  '#f1f2f9': 'front',
+  '#dad8e2': 'vent',
+  '#c9c6d4': 'vent-rim',
+  '#b5b1c5': 'vent-hub',
+  '#e5f5ff': 'water-deep',
+  '#c8eeff': 'water',
+  '#bbaffd': 'display-text',
+  '#e686a6': 'light-red',
+  '#f6e391': 'light-yellow',
+  '#9eee91': 'light-green',
+  '#b78f98': 'pot',
+  '#e7e5f0': 'pot-rim',
+  '#2dbc4f': 'leaf-1',
+  '#388e58': 'leaf-2',
+  '#338b7b': 'leaf-3',
+  '#4c8367': 'leaf-4',
+};
+/** Elements that share a hex with another layer but get their own paint. */
+const PAINT_BY_ID: Record<string, string> = {
+  'tank-frames': 'frame',
+  displays1: 'display',
+};
+
+const paint = (name: string, hex: string) => `var(--farm-${name}, ${hex})`;
+
+/** Rewrites every inline `fill:#hex` in the art as its theme variable. */
+function repaint(svg: string): string {
+  return svg.replace(
+    /<([a-z]+)([^>]*?)style="fill:(#[0-9a-f]{3,6});/g,
+    (whole, tag: string, attrs: string, hex: string) => {
+      const id = attrs.match(/ id="([^"]*)"/)?.[1] ?? '';
+      const name = PAINT_BY_ID[id] ?? PAINT[hex];
+      return name ? `<${tag}${attrs}style="fill:${paint(name, hex)};` : whole;
+    },
+  );
+}
+
+const FRONT_FILL = paint('front', '#f1f2f9');
 
 const fmt = (n: number) => String(Math.round(n * 100) / 100);
 
 export function buildFarm(source: string): string {
   // Keep the <svg> element and its attributes, drop the XML prolog and the unused placeholder rect.
   const open = source.indexOf('<svg');
-  let svg = source.slice(open);
+  let svg = repaint(source.slice(open));
   svg = svg.replace(/<rect id="more-fans"[^>]*\/>/, '');
   svg = svg.replace(
     'viewBox="0 0 2560 332"',
@@ -181,7 +227,7 @@ export function buildFarm(source: string): string {
     // Tier top, full width, and its separator lines (one per unit boundary) converging on the
     // vanishing point.
     tops.push(
-      `<rect x="${xMin}" y="${yBack}" width="${WIDTH}" height="${yFront - yBack}" style="fill:#fff;"/>`,
+      `<rect x="${xMin}" y="${yBack}" width="${WIDTH}" height="${yFront - yBack}" style="fill:${paint('top', '#fff')};"/>`,
     );
     const t = (yBack - yFront) / (VANISHING_POINT.y - yFront);
     const d: string[] = [];
@@ -193,7 +239,7 @@ export function buildFarm(source: string): string {
       d.push(`M${fmt(xf)},${yFront}L${fmt(xb)},${yBack}`);
     }
     lines.push(
-      `<path d="${d.join('')}" style="fill:none;stroke:#f0eff3;stroke-width:${tier.stroke};"/>`,
+      `<path d="${d.join('')}" style="fill:none;stroke:${paint('line', '#f0eff3')};stroke-width:${tier.stroke};"/>`,
     );
 
     // Plants: six per unit with the one on each separator line left out. A row stands at the

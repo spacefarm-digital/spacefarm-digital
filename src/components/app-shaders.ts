@@ -47,6 +47,9 @@ const colors = (list: string[]) => ({
   u_colorsCount: list.length,
 });
 const stillness = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+// The scenes keep their neon on both themes; only the paper behind them goes black.
+const theme = <T>(light: T, dark: T) =>
+  matchMedia('(prefers-color-scheme: dark)').matches ? dark : light;
 
 export const appHover: Record<string, Hover> = {
   // A coarse Bayer dither that resolves into a smooth image: the HEIC opens.
@@ -85,8 +88,8 @@ export const appPresets: Record<string, () => Preset> = {
     speed: stillness() ? 0 : appHover.wtheic.speedOff,
     pixelRatio: 1,
     uniforms: {
-      u_colorBack: getShaderColorFromString('#ffffff'),
-      u_colorFront: getShaderColorFromString('#5538fa'),
+      u_colorBack: getShaderColorFromString(theme('#ffffff', '#000000')),
+      u_colorFront: getShaderColorFromString(theme('#5538fa', '#8c7bff')),
       u_shape: DitheringShapes.sphere,
       u_type: DitheringTypes['8x8'],
       ...appHover.wtheic.off,
@@ -97,7 +100,7 @@ export const appPresets: Record<string, () => Preset> = {
     fragment: metaballsFragmentShader,
     speed: stillness() ? 0 : appHover.agents.speedOff,
     uniforms: {
-      u_colorBack: getShaderColorFromString('#f7f8fa'),
+      u_colorBack: getShaderColorFromString(theme('#f7f8fa', '#000000')),
       ...colors(['#5538fa', '#7080d4', '#5cffa0', '#d2defa']),
       ...appHover.agents.off,
       u_noiseTexture: getShaderNoiseTexture(),
@@ -108,7 +111,7 @@ export const appPresets: Record<string, () => Preset> = {
     fragment: godRaysFragmentShader,
     speed: stillness() ? 0 : appHover.sunlight.speedOff,
     uniforms: {
-      u_colorBack: getShaderColorFromString('#ffffff'),
+      u_colorBack: getShaderColorFromString(theme('#ffffff', '#000000')),
       u_colorBloom: getShaderColorFromString('#fed54f'),
       ...colors(['#fed54f', '#ff8c76', '#5cffa0', '#5538fa']),
       u_density: 0.35,
@@ -123,7 +126,7 @@ export const appPresets: Record<string, () => Preset> = {
     fragment: colorPanelsFragmentShader,
     speed: stillness() ? 0 : appHover.chopchop.speedOff,
     uniforms: {
-      u_colorBack: getShaderColorFromString('#ffffff'),
+      u_colorBack: getShaderColorFromString(theme('#ffffff', '#000000')),
       ...colors(['#5cffa0', '#5538fa', '#ff4149', '#d2defa']),
       u_length: 1.1,
       u_edges: true,
