@@ -1,7 +1,7 @@
 ---
 // Our apps: a grid, four up on desktop and two on phones, each a big floating icon over a bold
 // name and one-liner.
-// Sunlight's one-liner is a placeholder guessed from the name; the other three paraphrase their sites.
+// The one-liners paraphrase each app's site, or for Sunlight its README.
 import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
 
@@ -12,7 +12,7 @@ type App = {
   link?: string;
 };
 
-// App icons, by app: src/assets/apps/<id>-icon.png. An app without one shows its Paper Shader
+// App icons, by app: src/assets/apps/<id>-icon.png, cropped to the icon's edge. An app without one shows its Paper Shader
 // scene in an icon-shaped tile instead, which still reacts to hover.
 const icons = Object.fromEntries(
   Object.entries(
@@ -36,7 +36,7 @@ const apps: App[] = [
   {
     id: 'sunlight',
     name: 'Sunlight',
-    pitch: 'Know when the sun reaches your window, your desk or your garden.',
+    pitch: 'An infinite, zoomable canvas of your real Mac windows and widgets.',
   },
   {
     id: 'chopchop',
@@ -68,7 +68,7 @@ const apps: App[] = [
           >
             <div class="icon" aria-hidden="true">
               {icon ? (
-                <Image src={icon} alt="" width={240} densities={[1, 2]} class="icon-img" />
+                <Image src={icon} alt="" width={96} densities={[1, 2, 3]} class="icon-img" />
               ) : (
                 <div class="tile">
                   <PaperShader preset={app.id} class="scene" />
@@ -103,7 +103,7 @@ const apps: App[] = [
   .icon {
     flex: none;
     width: 100%;
-    max-width: 10rem;
+    max-width: 6rem;
     aspect-ratio: 1;
     animation: float 6s ease-in-out infinite;
   }
