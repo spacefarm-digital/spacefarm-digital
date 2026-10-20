@@ -2,7 +2,7 @@
 
 The Spacefarm website: an [Astro](https://astro.build) site styled with Tailwind, deployed to GitHub Pages by the workflow in `.github/workflows/deploy.yml`.
 
-Right now it is a faithful port of the 2017 site (same copy, same look, 0 differing pixels against `legacy/baseline/source-2017`). The 2017 originals live under `legacy/` for reference and go away once the redesign lands.
+It is the 2017 site, ported faithfully (`legacy/baseline/source-2017` holds the reference screenshots) and then restyled: rounder corners, softer shadows, and three [Paper Shaders](https://github.com/paper-design/shaders) (a paper texture behind the page, a slow mesh-gradient glow behind the wordmark, a frosted gradient behind the NDA card). The 2017 originals live under `legacy/` for reference.
 
 ## Working on it
 
@@ -22,7 +22,7 @@ Node 22.22 or newer (`.nvmrc`).
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/pages/index.astro`  | The one page, assembled from the components below                                                                                                         |
 | `src/layouts/Base.astro` | `<head>`: meta, favicons, font preloads, Google Analytics                                                                                                 |
-| `src/components/`        | Hero, Projects, Services, Team, Contact, Illustration                                                                                                     |
+| `src/components/`        | Hero, Projects, Services, Team, Contact, Illustration, and PaperShader (the three Paper Shaders presets)                                                  |
 | `src/content/*.yml`      | All copy for the card sections, in display order; schemas in `src/content.config.ts`                                                                      |
 | `src/styles/global.css`  | Tailwind theme tokens (colours, type scale, breakpoints, shadows), the base styles, and the few component classes (`btn`, `lift`, `fade`, `illustration`) |
 | `src/assets/`            | Fonts, logo, the farm illustration, OG image                                                                                                              |
