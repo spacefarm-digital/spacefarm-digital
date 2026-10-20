@@ -215,6 +215,12 @@
     box-shadow: var(--shadow-btn-hover);
   }
 
+  /* Team portraits: a card-rounded square */
+  .team-photo {
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+  }
+
   /* Section labels */
   .label {
     border-radius: var(--radius-label);
