@@ -1,8 +1,8 @@
 ---
-// Our apps: four cards. A card with a recording in src/assets/apps (<id>.webm or .mp4, plus a
-// <id>.jpg poster, made by tools/record-apps.cjs) shows the poster and plays the recording on
-// hover; without one it falls back to its Paper Shader scene, which still reacts to hover.
+// Our apps: one row per app, a big floating icon beside a bold name and one-liner, swapping
+// sides row to row.
 // Sunlight's one-liner is a placeholder guessed from the name; the other three paraphrase their sites.
+import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
 
 type App = {
@@ -12,22 +12,13 @@ type App = {
   link?: string;
 };
 
-// Whatever recordings exist, by file name: { 'wtheic.webm': '/_astro/wtheic.abc123.webm', … }
-const files = Object.fromEntries(
+// App icons, by app: src/assets/apps/<id>-icon.png. An app without one shows its Paper Shader
+// scene in an icon-shaped tile instead, which still reacts to hover.
+const icons = Object.fromEntries(
   Object.entries(
-    import.meta.glob<string>('../assets/apps/*.{webm,mp4,jpg}', {
-      eager: true,
-      query: '?url',
-      import: 'default',
-    }),
-  ).map(([path, url]) => [path.split('/').pop()!, url]),
+    import.meta.glob<{ default: ImageMetadata }>('../assets/apps/*-icon.png', { eager: true }),
+  ).map(([path, mod]) => [path.split('/').pop()!.replace('-icon.png', ''), mod.default]),
 );
-const media = (id: App['id']) => {
-  const sources = (['webm', 'mp4'] as const)
-    .filter((ext) => files[`${id}.${ext}`])
-    .map((ext) => ({ src: files[`${id}.${ext}`], type: `video/${ext}` }));
-  return sources.length ? { sources, poster: files[`${id}.jpg`] } : null;
-};
 
 const apps: App[] = [
   {
@@ -61,47 +52,35 @@ const apps: App[] = [
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="relative left-1/2 mb-4 flex w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-4">
+  <ul class="relative left-1/2 mb-4 flex w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-10 sm:gap-16">
     {apps.map((app) => {
-      const video = media(app.id);
-      const Card = app.link ? 'a' : 'div';
+      const icon = icons[app.id];
+      const Row = app.link ? 'a' : 'div';
       return (
-        <li class="flex">
-          <Card
-            class={`app app-${app.id} lift`}
+        <li>
+          <Row
+            class={`app app-${app.id}`}
             data-app={app.id}
             href={app.link}
             target={app.link ? '_blank' : undefined}
             rel={app.link ? 'noopener' : undefined}
             tabindex={app.link ? undefined : 0}
           >
-            <div class="art" aria-hidden="true">
-              {video ? (
-                <video
-                  class="clip"
-                  muted
-                  loop
-                  playsinline
-                  preload="metadata"
-                  poster={video.poster}
-                  data-app-video
-                >
-                  {video.sources.map((source) => (
-                    <source src={source.src} type={source.type} />
-                  ))}
-                </video>
+            <div class="icon" aria-hidden="true">
+              {icon ? (
+                <Image src={icon} alt="" width={240} densities={[1, 2]} class="icon-img" />
               ) : (
-                <PaperShader preset={app.id} class="scene" />
+                <div class="tile">
+                  <PaperShader preset={app.id} class="scene" />
+                  <span class="cut" />
+                </div>
               )}
-              <span class="cut" />
             </div>
-            <div class="body">
-              <h3 class="text-f4 font-head mb-1 leading-[1.2] font-medium">
-                {app.name}
-              </h3>
-              <p class="mb-0 max-w-md opacity-90">{app.pitch}</p>
+            <div class="copy">
+              <h3 class="font-head mb-2 text-f2 leading-[1.05] font-bold text-black">{app.name}</h3>
+              <p class="text-f4 mb-0 leading-snug text-ink">{app.pitch}</p>
             </div>
-          </Card>
+          </Row>
         </li>
       );
     })}
@@ -109,82 +88,81 @@ const apps: App[] = [
 </section>
 
 <style>
-  /* The card: the project card, with the shader scene bleeding to its top edge */
+  /* A row: the icon floats on its own, the copy sits beside it, and even rows swap sides */
   .app {
-    position: relative;
-    display: block;
-    width: 100%;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
     border-radius: var(--radius-card);
-    background: #fff;
-    box-shadow: var(--shadow-card);
   }
   .app:focus-visible {
     outline: 3px solid var(--color-spacefarm);
-    outline-offset: 3px;
-  }
-  .art {
-    position: relative;
-    aspect-ratio: 4 / 5;
-    overflow: hidden;
-  }
-  /* The copy sits over the art's bottom edge on an eased scrim, so it fades in without a hard band */
-  .body {
-    position: absolute;
-    inset: auto 0 0;
-    z-index: 1;
-    padding: 4rem 1rem 1rem;
-    color: #fff;
-    background: linear-gradient(
-      to bottom,
-      rgb(0 0 0 / 0) 0%,
-      rgb(0 0 0 / 0.01) 8.1%,
-      rgb(0 0 0 / 0.037) 15.5%,
-      rgb(0 0 0 / 0.078) 22.5%,
-      rgb(0 0 0 / 0.131) 29%,
-      rgb(0 0 0 / 0.194) 35.3%,
-      rgb(0 0 0 / 0.264) 41.2%,
-      rgb(0 0 0 / 0.338) 47.1%,
-      rgb(0 0 0 / 0.413) 52.9%,
-      rgb(0 0 0 / 0.486) 58.8%,
-      rgb(0 0 0 / 0.556) 64.7%,
-      rgb(0 0 0 / 0.619) 71%,
-      rgb(0 0 0 / 0.672) 77.5%,
-      rgb(0 0 0 / 0.713) 84.5%,
-      rgb(0 0 0 / 0.74) 91.9%,
-      rgb(0 0 0 / 0.75) 100%
-    );
-    pointer-events: none;
+    outline-offset: 6px;
   }
   @media (min-width: 48em) {
-    .art {
-      aspect-ratio: 2 / 1;
+    .app {
+      flex-direction: row;
+      align-items: center;
+      gap: 3rem;
     }
-    .body {
-      padding: 6rem 1.5rem 1.5rem;
+    li:nth-child(even) .app {
+      flex-direction: row-reverse;
+      text-align: right;
     }
   }
-  .clip {
-    position: absolute;
-    inset: 0;
+  .icon {
+    flex: none;
+    width: 9rem;
+    height: 9rem;
+    animation: float 6s ease-in-out infinite;
+  }
+  li:nth-child(even) .icon {
+    animation-delay: -3s;
+  }
+  @media (min-width: 48em) {
+    .icon {
+      width: 12rem;
+      height: 12rem;
+    }
+  }
+  .icon-img,
+  .tile {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top;
-    background: var(--color-paper);
-    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    border-radius: 22.5%;
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 24px 48px -16px rgb(61 62 64 / 0.35);
+    transition:
+      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .app:hover .clip,
-  .app:focus-visible .clip {
-    transform: scale(1.03);
+  .tile {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
   }
-  .art :global(.scene) {
+  .app:hover .icon-img,
+  .app:focus-visible .icon-img,
+  .app:hover .tile,
+  .app:focus-visible .tile {
+    transform: translateY(-6px) scale(1.04) rotate(-2deg);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 36px 60px -16px rgb(61 62 64 / 0.4);
+  }
+  .tile :global(.scene) {
     position: absolute;
     inset: 0;
     transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
   .cut {
     display: none;
+  }
+  @keyframes float {
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
   /* wtHEIC: a dithered photo that snaps into focus. The CSS gradient is the no-WebGL stand-in. */
@@ -207,8 +185,8 @@ const apps: App[] = [
   .app-sunlight :global(.scene) {
     background: radial-gradient(circle at 85% 0%, var(--color-kirtan), #fff6d6 40%, #fff 75%);
   }
-  .app-sunlight:hover,
-  .app-sunlight:focus-visible {
+  .app-sunlight:hover .tile,
+  .app-sunlight:focus-visible .tile {
     box-shadow:
       var(--shadow-card-hover),
       0 24px 60px -24px rgb(254 213 79 / 0.55);
@@ -264,7 +242,11 @@ const apps: App[] = [
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .clip,
+    .icon {
+      animation: none;
+    }
+    .icon-img,
+    .tile,
     :global(.scene) {
       transition: none;
     }
@@ -289,21 +271,6 @@ const apps: App[] = [
   type Tween = { frame: number };
 
   for (const card of document.querySelectorAll<HTMLElement>('[data-app]')) {
-    // A recording plays while the pointer is over the card and rewinds when it leaves
-    const clip = card.querySelector<HTMLVideoElement>('[data-app-video]');
-    if (clip) {
-      const play = () => clip.play().catch(() => {});
-      const stop = () => {
-        clip.pause();
-        clip.currentTime = 0;
-      };
-      card.addEventListener('pointerenter', play);
-      card.addEventListener('pointerleave', stop);
-      card.addEventListener('focus', play);
-      card.addEventListener('blur', stop);
-      continue;
-    }
-
     const scene = card.querySelector<HTMLElement>('[data-paper-shader]');
     const hover = appHover[card.dataset.app ?? ''];
     if (!scene || !hover) continue;
