@@ -215,10 +215,18 @@
     box-shadow: var(--shadow-btn-hover);
   }
 
-  /* Team portraits: a card-rounded square */
+  /* The team photo: printed in halftone by a shader; hovering shows the real photo */
   .team-photo {
     border-radius: var(--radius-card);
     box-shadow: var(--shadow-card);
+  }
+  .team-photo .halftone {
+    position: absolute;
+    inset: 0;
+    transition: opacity 400ms ease-out;
+  }
+  .team-photo:hover .halftone {
+    opacity: 0;
   }
 
   /* Section labels */
