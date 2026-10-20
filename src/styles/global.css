@@ -321,15 +321,10 @@
     }
   }
 
-  /* Fans and lights only move with an .animate class on .illustration; the 2017 site stopped adding it in 2021. */
+  /* The vents spin, each around its own centre (fill-box), unless the visitor asks for less motion */
   @keyframes fan {
-    from {
-      transform-origin: 50% 50%;
-      transform: rotate(0deg) translate3d(0, 0, 0);
-    }
     to {
-      transform-origin: 50% 50%;
-      transform: rotate(360deg) translate3d(0, 0, 0);
+      transform: rotate(360deg);
     }
   }
   @keyframes lights-red {
@@ -342,9 +337,14 @@
       fill: #e686a6;
     }
   }
-  .animate svg g.fan {
-    animation: fan 10s infinite linear;
+  @media (prefers-reduced-motion: no-preference) {
+    .illustration svg g.fan {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: fan 10s infinite linear;
+    }
   }
+  /* The 2017 blinking red lights, still off: they need an .animate class on .illustration */
   .animate svg path#red-lights {
     animation: lights-red 0.3s infinite alternate linear forwards;
   }
