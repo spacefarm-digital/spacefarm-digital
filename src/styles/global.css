@@ -14,10 +14,22 @@
   --breakpoint-lg: 62rem;
   --breakpoint-xl: 75rem;
 
+  /*
+   * Theme tokens. The light values live here; `prefers-color-scheme: dark` swaps them in the base
+   * layer below for the OLED theme: true black, brand purple pushed up a step so text in it still
+   * reads (#8c7bff is 6.4:1 on black, #5538fa only 3.3:1), fills left in the real brand purple.
+   */
   --color-paper: #f7f8fa;
   --color-ink: #3d3e40;
+  --color-heading: #000;
+  /* The brand purple as text and lines (lightened in the dark theme) */
   --color-spacefarm: #5538fa;
+  /* The brand purple as a fill, in both themes, and what sits on it */
+  --color-brand: #5538fa;
+  --color-on-brand: #fff;
   --color-selection: #d2defa;
+  --color-card: #fff;
+  --color-hairline: rgb(61 62 64 / 0.035);
   /* One accent per client card */
   --color-proctest: #087bff;
   --color-consentio: #528bff;
@@ -60,12 +72,98 @@
   --shadow-btn-hover:
     0 2px 4px rgb(85 56 250 / 0.2), 0 12px 28px -6px rgb(85 56 250 / 0.55),
     inset 0 1px 0 rgb(255 255 255 / 0.18);
+  --shadow-icon: 0 2px 4px rgb(0 0 0 / 0.06), 0 24px 48px -16px rgb(61 62 64 / 0.35);
+  --shadow-icon-hover: 0 2px 4px rgb(0 0 0 / 0.06), 0 36px 60px -16px rgb(61 62 64 / 0.4);
   --radius-card: 20px;
   --radius-label: 10px;
   --radius-btn: 14px;
 }
 
 @layer base {
+  :root {
+    color-scheme: light;
+    /* The footer farm's paint, read by the inline SVG that farm.ts builds */
+    --farm-top: #fff;
+    --farm-line: #f0eff3;
+    --farm-front: #f1f2f9;
+    --farm-frame: #dad8e2;
+    --farm-vent: #dad8e2;
+    --farm-vent-rim: #c9c6d4;
+    --farm-vent-hub: #b5b1c5;
+    --farm-water-deep: #e5f5ff;
+    --farm-water: #c8eeff;
+    --farm-display: #fff;
+    --farm-display-text: #bbaffd;
+    --farm-light-red: #e686a6;
+    --farm-light-yellow: #f6e391;
+    --farm-light-green: #9eee91;
+    --farm-pot: #b78f98;
+    --farm-pot-rim: #e7e5f0;
+    --farm-leaf-1: #2dbc4f;
+    --farm-leaf-2: #388e58;
+    --farm-leaf-3: #338b7b;
+    --farm-leaf-4: #4c8367;
+  }
+
+  /*
+   * The OLED theme. True black paper so the pixels switch off, soft cool-white ink (not pure white,
+   * which halates on OLED), the brand purple a step lighter wherever it is text, and the paper
+   * shadows swapped for hairlines and purple light, since a shadow has nothing to fall on.
+   */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --color-paper: #000;
+      --color-ink: #d2d2dc;
+      --color-heading: #f5f5fa;
+      --color-spacefarm: #8c7bff;
+      --color-selection: rgb(85 56 250 / 0.28);
+      --color-card: #0e0e13;
+      --color-hairline: rgb(255 255 255 / 0.08);
+      --color-proctest: #3d95ff;
+      --color-bbteam: #1fb562;
+      --color-improved: #9aa2a8;
+
+      --shadow-card: 0 0 0 1px var(--color-hairline), 0 24px 56px -24px rgb(85 56 250 / 0.35);
+      --shadow-card-hover:
+        0 0 0 1px rgb(255 255 255 / 0.14), 0 32px 72px -24px rgb(85 56 250 / 0.6);
+      --shadow-btn:
+        0 1px 2px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(140 123 255 / 0.35),
+        0 8px 28px -4px rgb(85 56 250 / 0.75), inset 0 1px 0 rgb(255 255 255 / 0.22);
+      --shadow-btn-hover:
+        0 2px 4px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(140 123 255 / 0.6),
+        0 14px 40px -4px rgb(85 56 250 / 0.95), inset 0 1px 0 rgb(255 255 255 / 0.22);
+      --shadow-icon:
+        0 0 0 1px rgb(255 255 255 / 0.1), 0 2px 4px rgb(0 0 0 / 0.6),
+        0 24px 48px -12px rgb(85 56 250 / 0.5);
+      --shadow-icon-hover:
+        0 0 0 1px rgb(255 255 255 / 0.16), 0 2px 4px rgb(0 0 0 / 0.6),
+        0 36px 64px -12px rgb(85 56 250 / 0.8);
+
+      /* The farm after dark: graphite tanks, the water and the lights doing the glowing */
+      --farm-top: #15151c;
+      --farm-line: #24242e;
+      --farm-front: #0b0b0f;
+      --farm-frame: #2b2b38;
+      --farm-vent: #30303f;
+      --farm-vent-rim: #22222d;
+      --farm-vent-hub: #45455a;
+      --farm-water-deep: #071a2e;
+      --farm-water: #1f9cf0;
+      --farm-display: #08080c;
+      --farm-display-text: #8c7bff;
+      --farm-light-red: #ff3b6b;
+      --farm-light-yellow: #ffd84a;
+      --farm-light-green: #5cffa0;
+      --farm-pot: #7d5a68;
+      --farm-pot-rim: #a07f8c;
+      --farm-leaf-1: #3fe06a;
+      --farm-leaf-2: #46b572;
+      --farm-leaf-3: #3fb59f;
+      --farm-leaf-4: #5aa97f;
+    }
+  }
+
   @font-face {
     font-family: 'Real Text';
     src:
@@ -169,6 +267,12 @@
   ::selection {
     background: var(--color-selection);
   }
+  @media (prefers-color-scheme: dark) {
+    ::selection {
+      background: rgb(85 56 250 / 0.55);
+      color: #fff;
+    }
+  }
   p {
     margin-bottom: 1rem;
   }
@@ -207,8 +311,8 @@
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
-    color: var(--color-paper);
-    background-color: var(--color-spacefarm);
+    color: var(--color-on-brand);
+    background-color: var(--color-brand);
     border-radius: var(--radius-btn);
     box-shadow: var(--shadow-btn);
     transition: all 150ms ease-out;
@@ -250,11 +354,22 @@
    * the CSS underneath stands in when WebGL is missing.
    */
   /* The page is paper: a static texture fixed behind everything */
+  /* The mesh gradient covers the first screen, scrolls with the page and fades into the body colour */
   .paper {
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110vh;
     z-index: 0;
     pointer-events: none;
+    mask-image: linear-gradient(to bottom, #000 45%, transparent);
+  }
+  @media (prefers-color-scheme: dark) {
+    /* The nebula sits a little further back so the black stays black */
+    .paper {
+      opacity: 0.85;
+    }
   }
   /* A soft light behind the wordmark, masked so it has no edges */
   .glow {
@@ -295,6 +410,14 @@
     background: rgb(255 255 255 / 0.68);
     backdrop-filter: blur(14px);
   }
+  @media (prefers-color-scheme: dark) {
+    .veil {
+      background: #1c1a4a;
+    }
+    .veil::after {
+      background: rgb(14 14 19 / 0.72);
+    }
+  }
 
   /* The farm spans the viewport: the SVG is wider than any screen and crops its sides (see farm.ts) */
   .illustration {
@@ -320,6 +443,17 @@
   @media (min-width: 52em) {
     .illustration {
       height: 332px;
+    }
+  }
+
+  /* After dark the red lights are the only thing lit on the tanks, so they glow */
+  @media (prefers-color-scheme: dark) {
+    .illustration svg use.red-light {
+      filter: drop-shadow(0 0 3px rgb(255 59 107 / 0.9));
+    }
+    .illustration svg use.green-light,
+    .illustration svg #green-lights {
+      filter: drop-shadow(0 0 2px rgb(92 255 160 / 0.7));
     }
   }
 
