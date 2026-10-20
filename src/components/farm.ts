@@ -196,13 +196,21 @@ export function buildFarm(source: string): string {
       `<path d="${d.join('')}" style="fill:none;stroke:#f0eff3;stroke-width:${tier.stroke};"/>`,
     );
 
-    // Plants, evenly spaced from the centre outward (one-point perspective keeps a row's spacing
-    // even), six per unit with the one on each separator line left out.
-    const step = tier.pitch / PLANTS_PER_UNIT;
+    // Plants: six per unit with the one on each separator line left out. A row stands at the
+    // depth of its pots, where the converging separators are closer together than at the tier's
+    // front edge, so the spacing is the unit pitch at that depth (this is what the 2017 steps were).
+    const pot = plantTemplates.match(
+      new RegExp(`<g id="${tier.plant}"><ellipse cx="([\\d.]+)" cy="([\\d.]+)"`),
+    );
+    if (!pot) throw new Error(`farm.ts: ${tier.plant} no longer starts with its pot ellipse`);
+    const potX = parseFloat(pot[1]);
+    const potY = parseFloat(pot[2]);
+    const depth = (potY - VANISHING_POINT.y) / (yFront - VANISHING_POINT.y);
+    const step = (tier.pitch / PLANTS_PER_UNIT) * depth;
     const count = Math.ceil((SIDE + CENTRE) / step);
     for (let i = -count; i <= count; i++) {
       if (Math.abs(i) % PLANTS_PER_UNIT === PLANTS_PER_UNIT / 2) continue;
-      planted.push(`<use href="#${tier.plant}" x="${fmt(i * step)}"/>`);
+      planted.push(`<use href="#${tier.plant}" x="${fmt(CENTRE + i * step - potX)}"/>`);
     }
   });
 
