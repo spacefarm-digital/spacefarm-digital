@@ -5,14 +5,162 @@ import PaperShader from './PaperShader.astro';
 
 <section class="relative pt-16 pb-8">
   <PaperShader preset="glow" class="glow" />
-  <h1 class="text-f3 sm:text-f1 font-head mb-4 max-w-lg leading-none font-medium text-spacefarm sm:mb-8">
+  <h1
+    class="wordmark text-f3 sm:text-f1 font-head relative mb-4 max-w-lg leading-none font-medium text-spacefarm sm:mb-8"
+    data-wordmark
+  >
     <span class="mr-[.25em] inline-block h-[.65em] w-[.65em] align-[-2.5%]">
       <Logo />
     </span>
     spacefarm
+    <span class="heat" data-heat aria-hidden="true"></span>
   </h1>
   <p class="max-w-lg">
     Spacefarm is a small product design and development shop. We build our own apps and help great
     startups with theirs.
   </p>
 </section>
+
+<style>
+  /* The shader clips its glow at the edges of its box, so fade the box out instead */
+  .heat {
+    position: absolute;
+    pointer-events: none;
+    mask-image:
+      linear-gradient(to right, transparent, #000 var(--fade-x), #000 calc(100% - var(--fade-x)), transparent),
+      linear-gradient(to bottom, transparent, #000 var(--fade-y), #000 calc(100% - var(--fade-y)), transparent);
+    mask-composite: intersect;
+  }
+</style>
+
+<script>
+  // Paper's heatmap (https://shaders.paper.design/heatmap) needs the shape as an image, so the
+  // logo and name are drawn to a canvas exactly where they sit in the page, then the shader is
+  // laid over them. The purple wordmark stays underneath, so the name reads even between
+  // heatwaves, and on its own when there's no WebGL.
+  import {
+    ShaderMount,
+    ShaderFitOptions,
+    defaultObjectSizing,
+    getShaderColorFromString,
+    heatmapFragmentShader,
+    toProcessedHeatmap,
+  } from '@paper-design/shaders';
+
+  const NAME = 'spacefarm';
+  // toProcessedHeatmap draws the long edge at 1000px and pads each side by 375px; the shader then
+  // samples only the middle 1000/1750 of that
+  const SIZE = 1000;
+  const PAD = 375;
+  const CROP = SIZE / (SIZE + 2 * PAD);
+
+  const stillness = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let mount: ShaderMount | undefined;
+
+  const loadImage = (src: string) => {
+    const img = new Image();
+    img.src = src;
+    return img.decode().then(() => img);
+  };
+
+  async function heat(h1: HTMLElement, target: HTMLElement) {
+    const logo = h1.querySelector('svg')!;
+    const text = [...h1.childNodes].find((n) => n.nodeType === 3 && n.textContent?.includes(NAME))!;
+    const start = text.textContent!.indexOf(NAME);
+    const range = document.createRange();
+    range.setStart(text, start);
+    range.setEnd(text, start + NAME.length);
+
+    const style = getComputedStyle(h1);
+    const own = h1.getBoundingClientRect();
+    const lr = logo.getBoundingClientRect();
+    const tr = range.getBoundingClientRect();
+    const pad = parseFloat(style.fontSize) * 0.5;
+    const left = Math.min(lr.left, tr.left) - pad;
+    const top = Math.min(lr.top, tr.top) - pad;
+    const w = Math.max(lr.right, tr.right) + pad - left;
+    const h = Math.max(lr.bottom, tr.bottom) + pad - top;
+
+    // The shape, black on white, at twice its size on screen
+    const canvas = document.createElement('canvas');
+    canvas.width = w * 2;
+    canvas.height = h * 2;
+    const ctx = canvas.getContext('2d')!;
+    ctx.scale(2, 2);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, w, h);
+    const svg = logo.outerHTML
+      .replace(/width="[^"]*"/, `width="${lr.width}"`)
+      .replace(/height="[^"]*"/, `height="${lr.height}"`)
+      .replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg" fill="#000"');
+    const logoImg = await loadImage(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`);
+    ctx.drawImage(logoImg, lr.left - left, lr.top - top, lr.width, lr.height);
+    ctx.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
+    if (style.letterSpacing !== 'normal') ctx.letterSpacing = style.letterSpacing;
+    ctx.fillStyle = '#000';
+    const ascent = ctx.measureText(NAME).fontBoundingBoxAscent;
+    ctx.fillText(NAME, tr.left - left, tr.top - top + ascent);
+
+    const { blob } = await toProcessedHeatmap(canvas.toDataURL());
+    const image = await loadImage(URL.createObjectURL(blob));
+
+    // Size the canvas so the shape lands on the real wordmark, with room above and below for the glow
+    const processedH = Math.floor((SIZE * h) / w) + 2 * PAD;
+    const height = (w / SIZE) * processedH * CROP;
+    Object.assign(target.style, {
+      left: `${left - own.left}px`,
+      top: `${top - own.top + h / 2 - height / 2}px`,
+      width: `${w}px`,
+      height: `${height}px`,
+    });
+    // Fade over the padding only, so the shape itself is never masked
+    target.style.setProperty('--fade-x', `${pad * 0.9}px`);
+    target.style.setProperty('--fade-y', `${(height - h) / 2 + pad * 0.9}px`);
+
+    mount?.dispose();
+    mount = new ShaderMount(
+      target,
+      heatmapFragmentShader,
+      {
+        u_image: image,
+        u_imageAspectRatio: image.naturalWidth / image.naturalHeight,
+        u_colorBack: getShaderColorFromString('rgba(0,0,0,0)'),
+        u_colors: ['#5538fa', '#7080d4', '#d2defa', '#5cffa0'].map(getShaderColorFromString),
+        u_colorsCount: 4,
+        u_contour: 0.5,
+        u_angle: 0,
+        u_noise: 0,
+        u_innerGlow: 0.5,
+        u_outerGlow: 0.35,
+        u_fit: ShaderFitOptions.contain,
+        u_scale: 1,
+        u_rotation: 0,
+        u_offsetX: 0,
+        u_offsetY: 0,
+        u_originX: defaultObjectSizing.originX,
+        u_originY: defaultObjectSizing.originY,
+        u_worldWidth: defaultObjectSizing.worldWidth,
+        u_worldHeight: defaultObjectSizing.worldHeight,
+      },
+      undefined,
+      stillness ? 0 : 1,
+    );
+  }
+
+  const h1 = document.querySelector<HTMLElement>('[data-wordmark]');
+  const target = h1?.querySelector<HTMLElement>('[data-heat]');
+  if (h1 && target) {
+    const run = () =>
+      heat(h1, target).catch((error) => console.warn('Heatmap skipped', error));
+    document.fonts.ready.then(run);
+    // The wordmark changes size at the breakpoint, so redraw the shape when it does
+    let width = innerWidth;
+    let timer: number | undefined;
+    addEventListener('resize', () => {
+      if (innerWidth === width) return;
+      width = innerWidth;
+      clearTimeout(timer);
+      timer = window.setTimeout(run, 200);
+    });
+  }
+</script>
