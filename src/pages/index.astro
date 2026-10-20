@@ -7,6 +7,9 @@ import Team from '../components/Team.astro';
 import Contact from '../components/Contact.astro';
 import Illustration from '../components/Illustration.astro';
 import PaperShader from '../components/PaperShader.astro';
+
+// "What we do" is hidden for now; flip to true to show it again.
+const showServices = false;
 ---
 
 <Base>
@@ -15,7 +18,7 @@ import PaperShader from '../components/PaperShader.astro';
     <div class="mx-auto max-w-3xl px-4">
       <Hero />
       <Projects />
-      <Services />
+      {showServices && <Services />}
       <Team />
       <Contact />
       <Illustration />
