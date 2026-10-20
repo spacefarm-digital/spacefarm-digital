@@ -1,0 +1,7 @@
+# Timeline periods, newest first. Projects join a period through their `period` field.
+- id: currently
+  when: '2017'
+  title: Currently working on
+- id: recently
+  when: '2016–2017'
+  title: Recent work

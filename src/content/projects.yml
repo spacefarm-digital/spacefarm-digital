@@ -1,74 +1,74 @@
-# Project cards, in display order. `group` picks the section; `nda` swaps the body for the NDA card.
+# Project cards, newest first. `period` places each one on the timeline (see timeline.yml); `nda` swaps the body for the NDA card.
 - id: hackathon-platform
-  group: current
+  period: currently
   title: A platform for hackathons
   color: hckrs
   description: Hackathons are an amazing way to make ideas happen. Organizing them and finding a diverse set of people is not easy though. We're helping an early-stage startup design and build v1 of their product.
 - id: design-system
-  group: current
+  period: currently
   title: A design system
   color: limbix
   nda: true
 - id: color-tool
-  group: current
+  period: currently
   title: A color tool↗
   color: spacefarm
   link: http://www.gamut.tools/
   description: Our first open-source product is already in the making. Wouldn’t it be great if you could re-color a whole design system just by tweaking a few values in an easy to use in-browser responsive UI with no coding required? We hope it’s coming later this year.
 - id: react-layout-library
-  group: current
+  period: currently
   title: A React layout library
   color: react
   description: Layout in React can be tackled in so many ways, so we decided to introduce some more fatigue to the JavaScript game. 😜 We’re planning to open-source our internal constraints and sizing tool later this year.
 - id: improved
-  group: current
+  period: currently
   title: Improved↗
   color: improved
   link: http://www.improved.design/
   description: Nobody likes to be the whiny person on Twitter who keeps being mad at poorly-done software. Yet, we felt like we were that person far too often. This year, we are revitalizing our old project Improved with new authors and new, more diverse topics and formats.
 - id: bb-team
-  group: recent
+  period: recently
   title: BB-Team↗
   color: bbteam
   link: https://www.bb-team.org/
   description: We had the opportunity to work with the leading local health and fitness portal. We shipped a complex atomic design system with hundreds of front-end components and built a couple of new features and user flows. We also worked on a new visual design language and an illustration guideline.
 - id: netlify-cms-template
-  group: recent
+  period: recently
   title: CMS template for Netlify↗
   color: netlify
   link: https://github.com/netlify-templates/kaldi-hugo-cms-template
   description: We ❤️-ed Netlify before we had the chance to work together. A few months ago, we shipped the first template for Netlify’s open-source static site CMS. We created an imaginary coffee business, built a brand and visual language around it and designed a small CMS-integrated Hugo website with real content.
 - id: proctest-design-system
-  group: recent
+  period: recently
   title: Proctest design system↗
   color: proctest
   link: https://dribbble.com/shots/3318406-Primary-navigation-interaction
   description: Proctest is a large-scale language testing tool used by NATO and the US Army. We’ve worked on multiple projects with their team over the years. Last year, we finally had the chance to build a front-end design system for the product’s upcoming update.
 - id: kutia
-  group: recent
+  period: recently
   title: Kutia.bg↗
   color: kutia
   link: https://dribbble.com/shots/2968093-Surprise-box
   description: This small and dedicated team offers a subscription box filled with healthy organic snacks. We helped them develop their brand and illustration style.
 - id: time-heroes
-  group: recent
+  period: recently
   title: Time Heroes↗
   color: timeheroes
   link: https://timeheroes.org/theimpossibletest/#teachers
   description: Time Heroes is a platform for volunteering and doing good. We helped by designing and developing a campaign website targetted towards students and teachers.
 - id: consentio
-  group: recent
+  period: recently
   title: Consentio
   color: consentio
   description: We did some web and branding work for Consentio, the team behind Telepat. A full case study on Telepat is coming soon.
 - id: dribbble
-  group: recent
+  period: recently
   title: Dribbble↗
   color: dribbble
   link: https://dribbble.com/spacefarm
   description: While we're building our full site, keep up with our latest work on Dribbble.
 - id: medium
-  group: recent
+  period: recently
   title: Medium↗
   color: medium
   link: https://blog.thecrazyones.agency
