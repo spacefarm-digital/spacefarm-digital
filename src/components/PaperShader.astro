@@ -1,0 +1,147 @@
+---
+// A Paper Shaders (https://github.com/paper-design/shaders) canvas that fills its parent.
+// `preset` picks one of the three uses on this site; the params live in the script below so
+// the HTML carries only a name. Static presets render once and cost nothing afterwards.
+interface Props {
+  preset: 'paper' | 'glow' | 'veil';
+  class?: string;
+}
+
+const { preset, class: className } = Astro.props;
+---
+
+<div class={className} data-paper-shader={preset} aria-hidden="true"></div>
+
+<script>
+  import {
+    ShaderMount,
+    emptyPixel,
+    ShaderFitOptions,
+    defaultObjectSizing,
+    getShaderColorFromString,
+    getShaderNoiseTexture,
+    meshGradientFragmentShader,
+    paperTextureFragmentShader,
+    staticMeshGradientFragmentShader,
+    type ShaderMountUniforms,
+  } from '@paper-design/shaders';
+
+  const sizing = (overrides: Partial<Record<string, number>> = {}): ShaderMountUniforms => ({
+    u_fit: ShaderFitOptions[defaultObjectSizing.fit],
+    u_scale: defaultObjectSizing.scale,
+    u_rotation: defaultObjectSizing.rotation,
+    u_offsetX: defaultObjectSizing.offsetX,
+    u_offsetY: defaultObjectSizing.offsetY,
+    u_originX: defaultObjectSizing.originX,
+    u_originY: defaultObjectSizing.originY,
+    u_worldWidth: defaultObjectSizing.worldWidth,
+    u_worldHeight: defaultObjectSizing.worldHeight,
+    ...overrides,
+  });
+  const colors = (list: string[]) => ({
+    u_colors: list.map(getShaderColorFromString),
+    u_colorsCount: list.length,
+  });
+
+  const stillness = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const pixel = () => {
+    const img = new Image();
+    img.src = emptyPixel;
+    return img;
+  };
+
+  type Preset = {
+    fragment: string;
+    uniforms: ShaderMountUniforms;
+    speed: number;
+    pixelRatio?: number;
+  };
+
+  const presets: Record<string, () => Preset> = {
+    // The page background: the site's "paper" colour, as actual paper. Static.
+    paper: () => ({
+      fragment: paperTextureFragmentShader,
+      speed: 0,
+      pixelRatio: 1,
+      uniforms: {
+        // No image, but the sizing maths needs one, so a transparent pixel stands in
+        u_image: pixel(),
+        u_isImage: false,
+        u_imageAspectRatio: 1,
+        u_colorBack: getShaderColorFromString('#f7f8fa'),
+        u_colorPaper: getShaderColorFromString('#f7f8fa'),
+        u_colorShadow: getShaderColorFromString('#8e90a0'),
+        u_blending: 1,
+        u_distortion: 0,
+        u_clip: false,
+        u_angle: 300,
+        u_seed: 7,
+        u_roughness: 0.2,
+        u_roughnessSize: 0.3,
+        u_roughnessRows: 0,
+        u_fiber: 0.1,
+        u_fiberSize: 0.6,
+        u_folds: 0,
+        u_foldSizeX: 1,
+        u_foldSizeY: 1,
+        u_foldOffsetX: 0,
+        u_foldOffsetY: 0,
+        u_wrinkles: 0,
+        u_wrinkleSize: 0.65,
+        u_crumples: 0,
+        u_crumpleCount: 6,
+        u_drops: 0.05,
+        u_noiseTexture: getShaderNoiseTexture(),
+        ...sizing({ u_fit: ShaderFitOptions.cover, u_scale: 1 }),
+      },
+    }),
+    // The light behind the wordmark: a slow mesh gradient in the brand colours.
+    glow: () => ({
+      fragment: meshGradientFragmentShader,
+      speed: stillness ? 0 : 0.35,
+      uniforms: {
+        ...colors(['#f7f8fa', '#5538fa', '#d2defa', '#5cffa0', '#f7f8fa']),
+        u_distortion: 0.9,
+        u_swirl: 0.25,
+        u_grainMixer: 0,
+        u_grainOverlay: 0,
+        ...sizing({ u_fit: ShaderFitOptions.cover }),
+      },
+    }),
+    // What hides behind the NDA card: a still gradient seen through frosted glass.
+    veil: () => ({
+      fragment: staticMeshGradientFragmentShader,
+      speed: 0,
+      uniforms: {
+        ...colors(['#7080d4', '#d2defa', '#5538fa', '#ffffff']),
+        u_positions: 12,
+        u_waveX: 0.8,
+        u_waveXShift: 0.3,
+        u_waveY: 0.9,
+        u_waveYShift: 0.5,
+        u_mixing: 0.8,
+        u_grainMixer: 0.15,
+        u_grainOverlay: 0.1,
+        ...sizing({ u_fit: ShaderFitOptions.cover, u_rotation: 300 }),
+      },
+    }),
+  };
+
+  async function mount(el: HTMLElement) {
+    const make = presets[el.dataset.paperShader ?? ''];
+    if (!make) return;
+    const { fragment, uniforms, speed, pixelRatio } = make();
+    try {
+      // Texture uniforms have to be decoded before the mount reads them
+      for (const value of Object.values(uniforms)) {
+        if (value instanceof HTMLImageElement) await value.decode();
+      }
+      new ShaderMount(el, fragment, uniforms, undefined, speed, 0, pixelRatio);
+    } catch (error) {
+      // No WebGL: the CSS colours underneath do the job on their own.
+      console.warn('Paper shader skipped', error);
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-paper-shader]').forEach(mount);
+</script>
