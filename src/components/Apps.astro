@@ -60,21 +60,20 @@ const apps: App[] = [
   },
 ];
 
-const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2';
 ---
 
 <section class="mb-8">
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="-mx-2 mb-4 flex flex-wrap">
+  <ul class="mb-4 flex flex-col gap-4">
     {apps.map((app) => {
       const video = media(app.id);
       const Card = app.link ? 'a' : 'div';
       return (
-        <li class={col}>
+        <li class="flex">
           <Card
-            class={`app app-${app.id} lift mb-4`}
+            class={`app app-${app.id} lift`}
             data-app={app.id}
             href={app.link}
             target={app.link ? '_blank' : undefined}
@@ -136,6 +135,25 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   }
   .body {
     padding: 0.8rem 1rem 1rem;
+  }
+  /* Full-width bento: art and copy side by side, swapping sides card to card */
+  @media (min-width: 48em) {
+    .app {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+    }
+    li:nth-child(even) .app {
+      grid-template-columns: 1fr 2fr;
+    }
+    li:nth-child(even) .art {
+      order: 1;
+    }
+    .body {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.5rem;
+    }
   }
   .clip {
     position: absolute;
