@@ -1,0 +1,17 @@
+# Team, in display order.
+- id: kalina
+  name: Kalina Ivanova
+  title: Product design & illustration
+  description: Kalina started out as a brand designer, but her passion for logic and organization quickly shifted her focus towards product. She loves systemizing everything from color palettes to illustration styles and has experience doing that for tiny startups teams and established corporations alike. Kalina gets excited about product illustration and loves exploring the ways users connect with it.
+- id: darin
+  name: Darin Dimitroff
+  title: Product design & front-end
+  description: Darin is a technical product designer focused on atomic design systems, UX engineering and processes at the intersection of design and engineering. Before moving his focus toward product, he used to work in branding. When he’s not designing and coding, he’s probably writing about it as a contributing author at Sitepoint or mountain biking.
+- id: gergana
+  name: Gergana Georgieva
+  title: UX research & strategy
+  description: Gergana has background in marketing and solid experience in product and brand development. She has been working in various industries, building successful product and marketing strategies for brands like Renault, Nissan, Dacia, Nescafe, Maggi, OMV and many local ones. Gergana is in love with all things tech, but is also keen on exploring people’s drives and needs.
+- id: angel
+  name: Angel Shoilev
+  title: UX copywriting & information architecture
+  description: Angel has been writing copy for some time now. He has worked both for big, global companies such as Coca-Cola and for much smaller, local ones. He literally tries to make the world a better place as part of the Global Shapers community. In his spare time he explores the connection between culture, technology and design.
