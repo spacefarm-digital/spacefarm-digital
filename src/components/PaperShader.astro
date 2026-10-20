@@ -70,7 +70,7 @@ const { preset, image, class: className } = Astro.props;
       fragment: meshGradientFragmentShader,
       speed: stillness ? 0 : 0.35,
       uniforms: {
-        ...colors(['#f7f8fa', '#5538fa', '#d2defa', '#5cffa0', '#f7f8fa']),
+        ...colors(['#fafafa', '#5538fa', '#d2defa', '#5cffa0', '#fafafa']),
         u_distortion: 0.9,
         u_swirl: 0.25,
         u_grainMixer: 0,
@@ -105,7 +105,7 @@ const { preset, image, class: className } = Astro.props;
         uniforms: {
           u_image: image,
           u_imageAspectRatio: 1, // set from the decoded image in mount()
-          u_colorBack: getShaderColorFromString('#f7f8fa'),
+          u_colorBack: getShaderColorFromString('#fafafa'),
           u_colorFront: getShaderColorFromString('#5538fa'),
           u_size: 0.12,
           u_radius: 1.25,

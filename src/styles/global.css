@@ -14,7 +14,7 @@
   --breakpoint-lg: 62rem;
   --breakpoint-xl: 75rem;
 
-  --color-paper: #f7f8fa;
+  --color-paper: #fafafa;
   --color-ink: #3d3e40;
   --color-spacefarm: #5538fa;
   --color-selection: #d2defa;
@@ -250,11 +250,16 @@
    * the CSS underneath stands in when WebGL is missing.
    */
   /* The page is paper: a static texture fixed behind everything */
+  /* The mesh gradient covers the first screen, scrolls with the page and fades into the body colour */
   .paper {
-    position: fixed;
-    inset: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 110vh;
     z-index: 0;
     pointer-events: none;
+    mask-image: linear-gradient(to bottom, #000 45%, transparent);
   }
   /* A soft light behind the wordmark, masked so it has no edges */
   .glow {
