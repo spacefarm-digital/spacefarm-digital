@@ -1,5 +1,7 @@
 ---
-// Our apps: four cards, each with its own Paper Shader scene that reacts to hover and focus.
+// Our apps: four cards. A card with a recording in src/assets/apps (<id>.webm or .mp4, plus a
+// <id>.jpg poster, made by tools/record-apps.cjs) shows the poster and plays the recording on
+// hover; without one it falls back to its Paper Shader scene, which still reacts to hover.
 // The one-liners are placeholders guessed from the names; swap them for the real pitches.
 import PaperShader from './PaperShader.astro';
 
@@ -9,6 +11,24 @@ type App = {
   pitch: string;
   tag: string;
   color: string;
+  link?: string;
+};
+
+// Whatever recordings exist, by file name: { 'wtheic.webm': '/_astro/wtheic.abc123.webm', … }
+const files = Object.fromEntries(
+  Object.entries(
+    import.meta.glob<string>('../assets/apps/*.{webm,mp4,jpg}', {
+      eager: true,
+      query: '?url',
+      import: 'default',
+    }),
+  ).map(([path, url]) => [path.split('/').pop()!, url]),
+);
+const media = (id: App['id']) => {
+  const sources = (['webm', 'mp4'] as const)
+    .filter((ext) => files[`${id}.${ext}`])
+    .map((ext) => ({ src: files[`${id}.${ext}`], type: `video/${ext}` }));
+  return sources.length ? { sources, poster: files[`${id}.jpg`] } : null;
 };
 
 const apps: App[] = [
@@ -18,6 +38,7 @@ const apps: App[] = [
     pitch: 'Opens and converts the HEIC photos your phone keeps sending you.',
     tag: 'HEIC → JPG',
     color: 'text-spacefarm',
+    link: 'https://wtheic.com',
   },
   {
     id: 'agents',
@@ -25,6 +46,7 @@ const apps: App[] = [
     pitch: 'A small crew of AI agents that take the repetitive work off your plate.',
     tag: 'AI',
     color: 'text-limbix',
+    link: 'https://agentsapp.com',
   },
   {
     id: 'sunlight',
@@ -39,6 +61,7 @@ const apps: App[] = [
     pitch: 'Chops big tasks into quick bites and keeps you moving through them.',
     tag: 'Focus',
     color: 'text-bbteam',
+    link: 'https://chop-chop.app',
   },
 ];
 
@@ -50,58 +73,85 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
     Our apps
   </h2>
   <ul class="-mx-2 mb-4 flex flex-wrap">
-    {apps.map((app) => (
-      <li class={col}>
-        <div class={`app app-${app.id} lift mb-4`} data-app={app.id} tabindex="0">
-          <div class="art" aria-hidden="true">
-            <PaperShader preset={app.id} class="scene" />
-            <span class="cut" />
-            <span class="tag">{app.tag}</span>
-            <span class="icon">
-              {app.id === 'wtheic' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <rect x="3" y="4" width="18" height="16" rx="3.5" />
-                  <circle cx="9" cy="10" r="2" fill="currentColor" stroke="none" />
-                  <path d="M3.5 17.5 9 13l3.5 3 3.5-4 4.5 5" stroke-linejoin="round" />
-                </svg>
+    {apps.map((app) => {
+      const video = media(app.id);
+      const Card = app.link ? 'a' : 'div';
+      return (
+        <li class={col}>
+          <Card
+            class={`app app-${app.id} lift mb-4`}
+            data-app={app.id}
+            href={app.link}
+            target={app.link ? '_blank' : undefined}
+            rel={app.link ? 'noopener' : undefined}
+            tabindex={app.link ? undefined : 0}
+          >
+            <div class="art" aria-hidden="true">
+              {video ? (
+                <video
+                  class="clip"
+                  muted
+                  loop
+                  playsinline
+                  preload="metadata"
+                  poster={video.poster}
+                  data-app-video
+                >
+                  {video.sources.map((source) => (
+                    <source src={source.src} type={source.type} />
+                  ))}
+                </video>
+              ) : (
+                <PaperShader preset={app.id} class="scene" />
               )}
-              {app.id === 'agents' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                  <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3" stroke-linecap="round" />
-                  <path
-                    d="M12 7l1.6 3.4L17 12l-3.4 1.6L12 17l-1.6-3.4L7 12l3.4-1.6z"
-                    fill="currentColor"
-                    stroke="none"
-                  />
-                </svg>
-              )}
-              {app.id === 'sunlight' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none" />
-                  <path
-                    d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"
-                    stroke-linecap="round"
-                  />
-                </svg>
-              )}
-              {app.id === 'chopchop' && (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                  <path d="M3.5 4h11l6 6v3.5h-17z" fill="currentColor" stroke="none" />
-                  <path d="M6.5 13.5v6" stroke-width="3" stroke-linecap="round" />
-                  <circle cx="16.5" cy="9.5" r="1" fill="#fff" stroke="none" />
-                </svg>
-              )}
-            </span>
-          </div>
-          <div class="body">
-            <h3 class={`text-f4 font-head mb-1 leading-[1.2] font-medium ${app.color}`}>
-              {app.name}
-            </h3>
-            <p class="mb-0">{app.pitch}</p>
-          </div>
-        </div>
-      </li>
-    ))}
+              <span class="cut" />
+              <span class="tag">{app.tag}</span>
+              <span class="icon">
+                {app.id === 'wtheic' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <rect x="3" y="4" width="18" height="16" rx="3.5" />
+                    <circle cx="9" cy="10" r="2" fill="currentColor" stroke="none" />
+                    <path d="M3.5 17.5 9 13l3.5 3 3.5-4 4.5 5" stroke-linejoin="round" />
+                  </svg>
+                )}
+                {app.id === 'agents' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3" stroke-linecap="round" />
+                    <path
+                      d="M12 7l1.6 3.4L17 12l-3.4 1.6L12 17l-1.6-3.4L7 12l3.4-1.6z"
+                      fill="currentColor"
+                      stroke="none"
+                    />
+                  </svg>
+                )}
+                {app.id === 'sunlight' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <circle cx="12" cy="12" r="4" fill="currentColor" stroke="none" />
+                    <path
+                      d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M18.7 5.3l-1.8 1.8M7.1 16.9l-1.8 1.8"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                )}
+                {app.id === 'chopchop' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M3.5 4h11l6 6v3.5h-17z" fill="currentColor" stroke="none" />
+                    <path d="M6.5 13.5v6" stroke-width="3" stroke-linecap="round" />
+                    <circle cx="16.5" cy="9.5" r="1" fill="#fff" stroke="none" />
+                  </svg>
+                )}
+              </span>
+            </div>
+            <div class="body">
+              <h3 class={`text-f4 font-head mb-1 leading-[1.2] font-medium ${app.color}`}>
+                {app.name}
+              </h3>
+              <p class="mb-0">{app.pitch}</p>
+            </div>
+          </Card>
+        </li>
+      );
+    })}
   </ul>
 </section>
 
@@ -127,6 +177,20 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   }
   .body {
     padding: 0.8rem 1rem 1rem;
+  }
+  .clip {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    background: var(--color-paper);
+    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .app:hover .clip,
+  .app:focus-visible .clip {
+    transform: scale(1.03);
   }
   .art :global(.scene) {
     position: absolute;
@@ -266,6 +330,7 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   }
 
   @media (prefers-reduced-motion: reduce) {
+    .clip,
     :global(.scene),
     .icon {
       transition: none;
@@ -291,6 +356,21 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   type Tween = { frame: number };
 
   for (const card of document.querySelectorAll<HTMLElement>('[data-app]')) {
+    // A recording plays while the pointer is over the card and rewinds when it leaves
+    const clip = card.querySelector<HTMLVideoElement>('[data-app-video]');
+    if (clip) {
+      const play = () => clip.play().catch(() => {});
+      const stop = () => {
+        clip.pause();
+        clip.currentTime = 0;
+      };
+      card.addEventListener('pointerenter', play);
+      card.addEventListener('pointerleave', stop);
+      card.addEventListener('focus', play);
+      card.addEventListener('blur', stop);
+      continue;
+    }
+
     const scene = card.querySelector<HTMLElement>('[data-paper-shader]');
     const hover = appHover[card.dataset.app ?? ''];
     if (!scene || !hover) continue;
