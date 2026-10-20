@@ -24,9 +24,7 @@ const { preset, image, class: className } = Astro.props;
     ShaderFitOptions,
     defaultObjectSizing,
     getShaderColorFromString,
-    getShaderNoiseTexture,
     meshGradientFragmentShader,
-    paperTextureFragmentShader,
     staticMeshGradientFragmentShader,
     type ShaderMountUniforms,
   } from '@paper-design/shaders';
@@ -50,48 +48,21 @@ const { preset, image, class: className } = Astro.props;
   });
 
   const stillness = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const pixel = () => {
-    const img = new Image();
-    img.src = emptyPixel;
-    return img;
-  };
 
   const presets: Record<string, (el: HTMLElement) => Preset> = {
-    // The page background: the site's "paper" colour, as actual paper. Static.
+    // The page background: a slow mesh gradient led by the brand purple (it takes two of the five
+    // points), with white and lighter magenta and blue. Settings tuned on shaders.paper.design.
     paper: () => ({
-      fragment: paperTextureFragmentShader,
-      speed: 0,
+      fragment: meshGradientFragmentShader,
+      speed: stillness ? 0 : 0.22,
       pixelRatio: 1,
       uniforms: {
-        // No image, but the sizing maths needs one, so a transparent pixel stands in
-        u_image: pixel(),
-        u_isImage: false,
-        u_imageAspectRatio: 1,
-        u_colorBack: getShaderColorFromString('#f7f8fa'),
-        u_colorPaper: getShaderColorFromString('#f7f8fa'),
-        u_colorShadow: getShaderColorFromString('#8e90a0'),
-        u_blending: 1,
-        u_distortion: 0,
-        u_clip: false,
-        u_angle: 300,
-        u_seed: 7,
-        u_roughness: 0.2,
-        u_roughnessSize: 0.3,
-        u_roughnessRows: 0,
-        u_fiber: 0.1,
-        u_fiberSize: 0.6,
-        u_folds: 0,
-        u_foldSizeX: 1,
-        u_foldSizeY: 1,
-        u_foldOffsetX: 0,
-        u_foldOffsetY: 0,
-        u_wrinkles: 0,
-        u_wrinkleSize: 0.65,
-        u_crumples: 0,
-        u_crumpleCount: 6,
-        u_drops: 0.05,
-        u_noiseTexture: getShaderNoiseTexture(),
-        ...sizing({ u_fit: ShaderFitOptions.cover, u_scale: 1 }),
+        ...colors(['#ffffff', '#9384f2', '#f5b8da', '#9384f2', '#aab3ef']),
+        u_distortion: 0.66,
+        u_swirl: 0.51,
+        u_grainMixer: 0,
+        u_grainOverlay: 0,
+        ...sizing({ u_fit: ShaderFitOptions.cover, u_scale: 2.24 }),
       },
     }),
     // The light behind the wordmark: a slow mesh gradient in the brand colours.

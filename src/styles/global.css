@@ -276,36 +276,6 @@
       height: 32rem;
     }
   }
-  /* Microplanet: centred on the viewport's right edge, so half of it hangs off-screen */
-  .microplanet {
-    position: absolute;
-    z-index: -1;
-    top: 30vh;
-    right: calc(50% - 50vw - 33vh);
-    width: 66vh;
-    max-width: none;
-    height: auto;
-    pointer-events: none;
-    animation: microplanet-spin 240s linear infinite;
-  }
-  /* 90vh tall and centred in the first screen */
-  @media (min-width: 48em) {
-    .microplanet {
-      top: 5vh;
-      right: calc(50% - 50vw - 45vh);
-      width: 90vh;
-    }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .microplanet {
-      animation: none;
-    }
-  }
-  @keyframes microplanet-spin {
-    to {
-      transform: rotate(1turn);
-    }
-  }
   /* Frosted glass over whatever the NDA hides */
   .veil {
     position: absolute;
@@ -327,18 +297,17 @@
   }
 
   /* Fades the top of the farm illustration into the page background */
-  .fade {
-    background: linear-gradient(-180deg, var(--color-paper) 0%, rgb(247 248 250 / 0) 10%);
-  }
   /* The paper shader sits behind the page, so the body colour has to show through the farm */
   .illustration svg {
     background: transparent;
   }
 
+  /* The far rows fade into whatever background is behind them, across the farm's full width */
   .illustration {
     width: 600%;
     left: 50%;
     transform: translateX(-50%);
+    mask-image: linear-gradient(to bottom, transparent, #000 12%);
   }
   @media (min-width: 30em) {
     .illustration {
@@ -351,15 +320,10 @@
     }
   }
 
-  /* Fans and lights only move with an .animate class on .illustration; the 2017 site stopped adding it in 2021. */
+  /* The vents spin, each around its own centre (fill-box), unless the visitor asks for less motion */
   @keyframes fan {
-    from {
-      transform-origin: 50% 50%;
-      transform: rotate(0deg) translate3d(0, 0, 0);
-    }
     to {
-      transform-origin: 50% 50%;
-      transform: rotate(360deg) translate3d(0, 0, 0);
+      transform: rotate(360deg);
     }
   }
   @keyframes lights-red {
@@ -372,9 +336,14 @@
       fill: #e686a6;
     }
   }
-  .animate svg g.fan {
-    animation: fan 10s infinite linear;
+  @media (prefers-reduced-motion: no-preference) {
+    .illustration svg g.fan {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: fan 10s infinite linear;
+    }
   }
+  /* The 2017 blinking red lights, still off: they need an .animate class on .illustration */
   .animate svg path#red-lights {
     animation: lights-red 0.3s infinite alternate linear forwards;
   }

@@ -1,119 +1,87 @@
 ---
-// Our apps: four cards. A card with a recording in src/assets/apps (<id>.webm or .mp4, plus a
-// <id>.jpg poster, made by tools/record-apps.cjs) shows the poster and plays the recording on
-// hover; without one it falls back to its Paper Shader scene, which still reacts to hover.
-// Sunlight's one-liner is a placeholder guessed from the name; the other three paraphrase their sites.
+// Our apps: a grid in the page column, four up from tablets and two on phones, each a big floating icon over a bold
+// name and one-liner.
+// The one-liners paraphrase each app's site, or for Sunlight its README.
+import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
 
 type App = {
   id: 'wtheic' | 'agents' | 'sunlight' | 'chopchop';
   name: string;
   pitch: string;
-  tag: string;
-  color: string;
   link?: string;
 };
 
-// Whatever recordings exist, by file name: { 'wtheic.webm': '/_astro/wtheic.abc123.webm', … }
-const files = Object.fromEntries(
+// App icons, by app: src/assets/apps/<id>-icon.png, cropped to the icon's edge. An app without one shows its Paper Shader
+// scene in an icon-shaped tile instead, which still reacts to hover.
+const icons = Object.fromEntries(
   Object.entries(
-    import.meta.glob<string>('../assets/apps/*.{webm,mp4,jpg}', {
-      eager: true,
-      query: '?url',
-      import: 'default',
-    }),
-  ).map(([path, url]) => [path.split('/').pop()!, url]),
+    import.meta.glob<{ default: ImageMetadata }>('../assets/apps/*-icon.png', { eager: true }),
+  ).map(([path, mod]) => [path.split('/').pop()!.replace('-icon.png', ''), mod.default]),
 );
-const media = (id: App['id']) => {
-  const sources = (['webm', 'mp4'] as const)
-    .filter((ext) => files[`${id}.${ext}`])
-    .map((ext) => ({ src: files[`${id}.${ext}`], type: `video/${ext}` }));
-  return sources.length ? { sources, poster: files[`${id}.jpg`] } : null;
-};
 
 const apps: App[] = [
   {
     id: 'wtheic',
     name: 'wtHEIC',
     pitch: 'Drag or paste a HEIC into any app and a JPG lands there instead.',
-    tag: 'Mac · $5.99',
-    color: 'text-proctest',
     link: 'https://wtheic.com',
   },
   {
     id: 'agents',
     name: 'Agents',
     pitch: 'A native home for your coding agents on Mac, iPhone and Apple Watch.',
-    tag: 'Coming soon',
-    color: 'text-ink',
     link: 'https://agentsapp.net',
   },
   {
     id: 'sunlight',
     name: 'Sunlight',
-    pitch: 'Know when the sun reaches your window, your desk or your garden.',
-    tag: 'Daylight',
-    color: 'text-timeheroes',
+    pitch: 'An infinite, zoomable canvas of your real Mac windows and widgets.',
   },
   {
     id: 'chopchop',
     name: 'Chop-Chop',
     pitch: 'Tell it what is in your kitchen and it cooks up the recipe, nutrition and all.',
-    tag: 'AI recipes',
-    color: 'text-kutia',
     link: 'https://chop-chop.app',
   },
 ];
-
-const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2';
 ---
 
 <section class="mb-8">
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="-mx-2 mb-4 flex flex-wrap">
+  <ul class="mb-4 grid grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10 md:grid-cols-4">
     {apps.map((app) => {
-      const video = media(app.id);
-      const Card = app.link ? 'a' : 'div';
+      const icon = icons[app.id];
+      const Row = app.link ? 'a' : 'div';
       return (
-        <li class={col}>
-          <Card
-            class={`app app-${app.id} lift mb-4`}
+        <li>
+          <Row
+            class={`app app-${app.id}`}
             data-app={app.id}
             href={app.link}
             target={app.link ? '_blank' : undefined}
             rel={app.link ? 'noopener' : undefined}
             tabindex={app.link ? undefined : 0}
           >
-            <div class="art" aria-hidden="true">
-              {video ? (
-                <video
-                  class="clip"
-                  muted
-                  loop
-                  playsinline
-                  preload="metadata"
-                  poster={video.poster}
-                  data-app-video
-                >
-                  {video.sources.map((source) => (
-                    <source src={source.src} type={source.type} />
-                  ))}
-                </video>
+            <div class="icon" aria-hidden="true">
+              {icon ? (
+                <Image src={icon} alt="" width={132} densities={[1, 2, 3]} class="icon-img" />
               ) : (
-                <PaperShader preset={app.id} class="scene" />
+                <div class="tile">
+                  <PaperShader preset={app.id} class="scene" />
+                  <span class="cut" />
+                </div>
               )}
-              <span class="cut" />
-              <span class="tag">{app.tag}</span>
             </div>
-            <div class="body">
-              <h3 class={`text-f4 font-head mb-1 leading-[1.2] font-medium ${app.color}`}>
+            <div class="copy">
+              <h3 class="font-head text-f5 sm:text-f4 mb-1 leading-[1.1] font-bold whitespace-nowrap text-black">
                 {app.name}
               </h3>
-              <p class="mb-0">{app.pitch}</p>
+              <p class="mb-0 text-[0.85rem] leading-snug text-ink sm:text-base">{app.pitch}</p>
             </div>
-          </Card>
+          </Row>
         </li>
       );
     })}
@@ -121,63 +89,71 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
 </section>
 
 <style>
-  /* The card: the project card, with the shader scene bleeding to its top edge */
+  /* A grid cell: the icon floats on its own with the copy beneath it */
   .app {
-    position: relative;
-    display: block;
-    width: 100%;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    height: 100%;
     border-radius: var(--radius-card);
-    background: #fff;
-    box-shadow: var(--shadow-card);
   }
   .app:focus-visible {
     outline: 3px solid var(--color-spacefarm);
-    outline-offset: 3px;
+    outline-offset: 6px;
   }
-  .art {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    overflow: hidden;
+  .icon {
+    flex: none;
+    width: 100%;
+    max-width: 4.5rem;
+    aspect-ratio: 1;
+    animation: float 6s ease-in-out infinite;
   }
-  .body {
-    padding: 0.8rem 1rem 1rem;
+  li:nth-child(even) .icon {
+    animation-delay: -3s;
   }
-  .clip {
-    position: absolute;
-    inset: 0;
+  @media (min-width: 34rem) {
+    .icon {
+      max-width: 6rem;
+    }
+  }
+  .icon-img,
+  .tile {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top;
-    background: var(--color-paper);
-    transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    border-radius: 22.5%;
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 24px 48px -16px rgb(61 62 64 / 0.35);
+    transition:
+      transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1),
+      box-shadow 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
   }
-  .app:hover .clip,
-  .app:focus-visible .clip {
-    transform: scale(1.03);
+  .tile {
+    position: relative;
+    overflow: hidden;
+    background: #fff;
   }
-  .art :global(.scene) {
+  .app:hover .icon-img,
+  .app:focus-visible .icon-img,
+  .app:hover .tile,
+  .app:focus-visible .tile {
+    transform: translateY(-6px) scale(1.04) rotate(-2deg);
+    box-shadow:
+      0 2px 4px rgb(0 0 0 / 0.06),
+      0 36px 60px -16px rgb(61 62 64 / 0.4);
+  }
+  .tile :global(.scene) {
     position: absolute;
     inset: 0;
     transition: transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
-  }
-  .tag {
-    position: absolute;
-    top: 0.65rem;
-    right: 0.8rem;
-    padding: 0.1rem 0.5rem;
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.85);
-    box-shadow: 0 0 0 1px rgb(61 62 64 / 0.05);
-    backdrop-filter: blur(10px);
-    font-size: 0.65rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    color: var(--color-ink);
   }
   .cut {
     display: none;
+  }
+  @keyframes float {
+    50% {
+      transform: translateY(-10px);
+    }
   }
 
   /* wtHEIC: a dithered photo that snaps into focus. The CSS gradient is the no-WebGL stand-in. */
@@ -200,8 +176,8 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   .app-sunlight :global(.scene) {
     background: radial-gradient(circle at 85% 0%, var(--color-kirtan), #fff6d6 40%, #fff 75%);
   }
-  .app-sunlight:hover,
-  .app-sunlight:focus-visible {
+  .app-sunlight:hover .tile,
+  .app-sunlight:focus-visible .tile {
     box-shadow:
       var(--shadow-card-hover),
       0 24px 60px -24px rgb(254 213 79 / 0.55);
@@ -257,7 +233,11 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .clip,
+    .icon {
+      animation: none;
+    }
+    .icon-img,
+    .tile,
     :global(.scene) {
       transition: none;
     }
@@ -282,21 +262,6 @@ const col = 'flex flex-none basis-full max-w-full px-2 sm:basis-1/2 sm:max-w-1/2
   type Tween = { frame: number };
 
   for (const card of document.querySelectorAll<HTMLElement>('[data-app]')) {
-    // A recording plays while the pointer is over the card and rewinds when it leaves
-    const clip = card.querySelector<HTMLVideoElement>('[data-app-video]');
-    if (clip) {
-      const play = () => clip.play().catch(() => {});
-      const stop = () => {
-        clip.pause();
-        clip.currentTime = 0;
-      };
-      card.addEventListener('pointerenter', play);
-      card.addEventListener('pointerleave', stop);
-      card.addEventListener('focus', play);
-      card.addEventListener('blur', stop);
-      continue;
-    }
-
     const scene = card.querySelector<HTMLElement>('[data-paper-shader]');
     const hover = appHover[card.dataset.app ?? ''];
     if (!scene || !hover) continue;
