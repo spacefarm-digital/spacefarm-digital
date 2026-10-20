@@ -1,20 +1,25 @@
 ---
 // A Paper Shaders (https://github.com/paper-design/shaders) canvas that fills its parent.
-// `preset` picks one of the three uses on this site; the params live in the script below so
-// the HTML carries only a name. Static presets render once and cost nothing afterwards.
+// `preset` picks one of the uses on this site; the params live in the script below so
+// the HTML carries only a name (and, for image effects, the image's URL).
+// Static presets render once and cost nothing afterwards.
 interface Props {
-  preset: 'paper' | 'glow' | 'veil';
+  preset: 'paper' | 'glow' | 'veil' | 'halftone';
+  image?: string;
   class?: string;
 }
 
-const { preset, class: className } = Astro.props;
+const { preset, image, class: className } = Astro.props;
 ---
 
-<div class={className} data-paper-shader={preset} aria-hidden="true"></div>
+<div class={className} data-paper-shader={preset} data-image={image} aria-hidden="true"></div>
 
 <script>
   import {
     ShaderMount,
+    HalftoneDotsGrids,
+    HalftoneDotsTypes,
+    halftoneDotsFragmentShader,
     emptyPixel,
     ShaderFitOptions,
     defaultObjectSizing,
@@ -57,7 +62,7 @@ const { preset, class: className } = Astro.props;
     pixelRatio?: number;
   };
 
-  const presets: Record<string, () => Preset> = {
+  const presets: Record<string, (el: HTMLElement) => Preset> = {
     // The page background: the site's "paper" colour, as actual paper. Static.
     paper: () => ({
       fragment: paperTextureFragmentShader,
@@ -125,16 +130,46 @@ const { preset, class: className } = Astro.props;
         ...sizing({ u_fit: ShaderFitOptions.cover, u_rotation: 300 }),
       },
     }),
+    // The team photo as a print: brand-purple halftone dots on paper. Static.
+    halftone: (el) => {
+      const image = new Image();
+      image.src = el.dataset.image ?? emptyPixel;
+      return {
+        fragment: halftoneDotsFragmentShader,
+        speed: 0,
+        uniforms: {
+          u_image: image,
+          u_imageAspectRatio: 1, // set from the decoded image in mount()
+          u_colorBack: getShaderColorFromString('#f7f8fa'),
+          u_colorFront: getShaderColorFromString('#5538fa'),
+          u_size: 0.22,
+          u_radius: 1.25,
+          u_contrast: 0.3,
+          u_originalColors: false,
+          u_inverted: false,
+          u_grainMixer: 0.05,
+          u_grainOverlay: 0.05,
+          u_grainSize: 0.5,
+          u_grid: HalftoneDotsGrids.hex,
+          u_type: HalftoneDotsTypes.gooey,
+          ...sizing({ u_fit: ShaderFitOptions.cover }),
+        },
+      };
+    },
   };
 
   async function mount(el: HTMLElement) {
     const make = presets[el.dataset.paperShader ?? ''];
     if (!make) return;
-    const { fragment, uniforms, speed, pixelRatio } = make();
+    const { fragment, uniforms, speed, pixelRatio } = make(el);
     try {
       // Texture uniforms have to be decoded before the mount reads them
       for (const value of Object.values(uniforms)) {
         if (value instanceof HTMLImageElement) await value.decode();
+      }
+      if (uniforms.u_image instanceof HTMLImageElement && el.dataset.image) {
+        const { naturalWidth, naturalHeight } = uniforms.u_image;
+        uniforms.u_imageAspectRatio = naturalWidth / naturalHeight;
       }
       new ShaderMount(el, fragment, uniforms, undefined, speed, 0, pixelRatio);
     } catch (error) {
