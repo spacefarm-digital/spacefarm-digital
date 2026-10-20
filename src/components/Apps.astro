@@ -66,7 +66,7 @@ const apps: App[] = [
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="mb-4 flex flex-col gap-4">
+  <ul class="relative left-1/2 mb-4 flex w-[min(56rem,calc(100vw-2rem))] -translate-x-1/2 flex-col gap-4">
     {apps.map((app) => {
       const video = media(app.id);
       const Card = app.link ? 'a' : 'div';
