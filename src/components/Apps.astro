@@ -1,6 +1,7 @@
 ---
 // Our apps: a grid in the page column, four up from tablets and two on phones, each a big floating icon over a bold
-// name and one-liner.
+// name and one-liner. The icons float in zero-g (weightless.ts): grab one and fling it, it tumbles, bumps the others
+// and the edges of the section, and drifts back to its slot; a phone's tilt pulls them sideways for a moment.
 // The one-liners paraphrase each app's site, or for Sunlight its README.
 import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
@@ -57,7 +58,7 @@ const apps: App[] = [
   <h2 class="label text-f5 mb-4 inline-block bg-selection px-2 py-1 leading-normal font-semibold">
     Our apps
   </h2>
-  <ul class="mb-4 grid grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10 md:grid-cols-4">
+  <ul class="apps mb-4 grid grid-cols-2 gap-x-5 gap-y-8 sm:gap-x-8 sm:gap-y-10 md:grid-cols-4">
     {apps.map((app) => {
       const icon = icons[app.id];
       const darkIcon = darkIcons[app.id];
@@ -132,6 +133,24 @@ const apps: App[] = [
     aspect-ratio: 1;
     animation: float 6s ease-in-out infinite;
   }
+  /* Zero-g (weightless.ts): the drift and the tumble come from the physics, not the keyframes. A
+     flying icon paints over the copy and over the icons it bumps into. */
+  .is-live .icon {
+    position: relative;
+    z-index: 1;
+    animation: none;
+    cursor: grab;
+    touch-action: none;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .app.is-dragging .icon {
+    z-index: 2;
+    cursor: grabbing;
+  }
   li:nth-child(even) .icon {
     animation-delay: -3s;
   }
@@ -146,6 +165,8 @@ const apps: App[] = [
     height: 100%;
     border-radius: 22.5%;
     box-shadow: var(--shadow-icon);
+    -webkit-user-drag: none;
+    user-select: none;
     transition:
       transform 600ms cubic-bezier(0.2, 0.7, 0.2, 1),
       box-shadow 600ms cubic-bezier(0.2, 0.7, 0.2, 1);
@@ -168,8 +189,10 @@ const apps: App[] = [
   }
   .app:hover .icon-img,
   .app:focus-visible .icon-img,
+  .app.is-dragging .icon-img,
   .app:hover .tile,
-  .app:focus-visible .tile {
+  .app:focus-visible .tile,
+  .app.is-dragging .tile {
     transform: translateY(-6px) scale(1.04) rotate(-2deg);
     box-shadow: var(--shadow-icon-hover);
   }
@@ -334,5 +357,19 @@ const apps: App[] = [
     card.addEventListener('pointerleave', () => settle(false));
     card.addEventListener('focus', () => settle(true));
     card.addEventListener('blur', () => settle(false));
+  }
+</script>
+
+<script>
+  // Zero-g for the icons; see weightless.ts. Under prefers-reduced-motion they keep still.
+  import { weightless } from './weightless';
+
+  const list = document.querySelector<HTMLElement>('.apps');
+  if (list) {
+    try {
+      weightless(list);
+    } catch (error) {
+      console.warn('Weightless skipped', error);
+    }
   }
 </script>
