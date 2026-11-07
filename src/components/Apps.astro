@@ -15,7 +15,7 @@ type App = {
 
 // App icons, by app: src/assets/apps/<id>-icon.png, cropped to the icon's edge. An app without one shows its Paper Shader
 // scene in an icon-shaped tile instead, which still reacts to hover. A <id>-icon-dark.png beside an icon replaces it in
-// the dark theme (the Sunlight placeholder is a light wireframe, so it has one).
+// the dark theme.
 const byId = (suffix: string) =>
   Object.fromEntries(
     Object.entries(
@@ -44,6 +44,7 @@ const apps: App[] = [
     id: 'sunlight',
     name: 'Sunlight',
     pitch: 'An infinite, zoomable canvas of your real Mac windows and widgets.',
+    link: 'https://sunlight.software',
   },
   {
     id: 'chopchop',
