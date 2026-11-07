@@ -66,12 +66,9 @@
   --shadow-card-hover:
     0 0 0 1px rgb(61 62 64 / 0.035), 0 2px 4px rgb(61 62 64 / 0.04),
     0 10px 20px rgb(61 62 64 / 0.05), 0 28px 56px -20px rgb(61 62 64 / 0.18);
-  --shadow-btn:
-    0 1px 2px rgb(85 56 250 / 0.2), 0 6px 16px -4px rgb(85 56 250 / 0.45),
-    inset 0 1px 0 rgb(255 255 255 / 0.18);
-  --shadow-btn-hover:
-    0 2px 4px rgb(85 56 250 / 0.2), 0 12px 28px -6px rgb(85 56 250 / 0.55),
-    inset 0 1px 0 rgb(255 255 255 / 0.18);
+  /* Borderless: no ring and no inset highlight, the shadow alone gives the button its edge */
+  --shadow-btn: 0 1px 2px rgb(85 56 250 / 0.2), 0 6px 16px -4px rgb(85 56 250 / 0.45);
+  --shadow-btn-hover: 0 2px 4px rgb(85 56 250 / 0.2), 0 12px 28px -6px rgb(85 56 250 / 0.55);
   --shadow-icon: 0 2px 4px rgb(0 0 0 / 0.06), 0 24px 48px -16px rgb(61 62 64 / 0.35);
   --shadow-icon-hover: 0 2px 4px rgb(0 0 0 / 0.06), 0 36px 60px -16px rgb(61 62 64 / 0.4);
   --radius-card: 20px;
@@ -127,12 +124,8 @@
       --shadow-card: 0 0 0 1px var(--color-hairline), 0 24px 56px -24px rgb(85 56 250 / 0.35);
       --shadow-card-hover:
         0 0 0 1px rgb(255 255 255 / 0.14), 0 32px 72px -24px rgb(85 56 250 / 0.6);
-      --shadow-btn:
-        0 1px 2px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(140 123 255 / 0.35),
-        0 8px 28px -4px rgb(85 56 250 / 0.75), inset 0 1px 0 rgb(255 255 255 / 0.22);
-      --shadow-btn-hover:
-        0 2px 4px rgb(0 0 0 / 0.6), 0 0 0 1px rgb(140 123 255 / 0.6),
-        0 14px 40px -4px rgb(85 56 250 / 0.95), inset 0 1px 0 rgb(255 255 255 / 0.22);
+      --shadow-btn: 0 1px 2px rgb(0 0 0 / 0.6), 0 8px 28px -4px rgb(85 56 250 / 0.75);
+      --shadow-btn-hover: 0 2px 4px rgb(0 0 0 / 0.6), 0 14px 40px -4px rgb(85 56 250 / 0.95);
       --shadow-icon:
         0 0 0 1px rgb(255 255 255 / 0.1), 0 2px 4px rgb(0 0 0 / 0.6),
         0 24px 48px -12px rgb(85 56 250 / 0.5);
