@@ -35,6 +35,8 @@ type Body = {
   samples: Sample[];
   /** Set once a drag moved far enough that the click after it should not open the link */
   moved: boolean;
+  /** Let go beyond the edges of the section: the spring carries it back, and the edges only count again once it is in */
+  outside: boolean;
   startX: number;
   startY: number;
   last: string;
@@ -87,6 +89,7 @@ export function weightless(list: HTMLElement) {
     gy: 0,
     samples: [],
     moved: false,
+    outside: false,
     startX: 0,
     startY: 0,
     last: '',
@@ -115,6 +118,10 @@ export function weightless(list: HTMLElement) {
     }
     render();
   };
+
+  // Whether the icon is within the edges the free-flying icons bounce off
+  const inside = (b: Body) =>
+    b.x >= b.r && b.x <= width - b.r && b.y >= top + b.r && b.y <= height - b.r;
 
   const render = () => {
     for (const b of bodies) {
@@ -183,6 +190,8 @@ export function weightless(list: HTMLElement) {
         const lever = (b.gx * b.vy - b.gy * b.vx) / (b.r * b.r);
         b.va = clamp(b.va + lever * 0.9, -9, 9);
       }
+      // A drag can leave the section; let go out there, the icon must not snap to the nearest edge
+      b.outside = !inside(b);
       if (b.moved) {
         // Ask for the phone's tilt now, on a gesture, once the first drag is over
         enableTilt();
@@ -335,9 +344,14 @@ export function weightless(list: HTMLElement) {
       }
     }
 
-    // And into the edges of the section
+    // And into the edges of the section. An icon let go beyond them has no edge to snap to: the
+    // spring brings it back, and the edges hold it again once it is in.
     for (const b of bodies) {
       if (b.dragging) continue;
+      if (b.outside) {
+        if (inside(b)) b.outside = false;
+        continue;
+      }
       if (b.x < b.r) {
         b.x = b.r;
         if (b.vx < 0) {
