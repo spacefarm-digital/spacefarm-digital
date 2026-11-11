@@ -2,7 +2,7 @@
 // Our apps: a grid in the page column, four up from tablets and two on phones, each a big floating icon over a bold
 // name and one-liner. The icons float in zero-g (weightless.ts): grab one and fling it, it tumbles, bumps the others
 // and the edges of the section, and drifts back to its slot; a phone's tilt pulls them sideways for a moment.
-// The one-liners paraphrase each app's site, or for Sunlight and Play their READMEs. Play has no icon yet, so it
+// The one-liners paraphrase each app's site, or for Sunlight its README. Play has no icon yet, so it
 // wears a placeholder: the blank app-icon template grid in the brand purple.
 import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
@@ -56,7 +56,7 @@ const apps: App[] = [
   {
     id: 'play',
     name: 'Play',
-    pitch: 'Apple Music in your menu bar. Press a shortcut, type, hit Return.',
+    pitch: 'A little music player for Apple Music and Spotify.',
   },
 ];
 ---
