@@ -2,12 +2,13 @@
 // Our apps: a grid in the page column, four up from tablets and two on phones, each a big floating icon over a bold
 // name and one-liner. The icons float in zero-g (weightless.ts): grab one and fling it, it tumbles, bumps the others
 // and the edges of the section, and drifts back to its slot; a phone's tilt pulls them sideways for a moment.
-// The one-liners paraphrase each app's site, or for Sunlight its README.
+// The one-liners paraphrase each app's site, or for Sunlight its README. Play has no icon yet, so it
+// wears a placeholder: the blank app-icon template grid in the brand purple.
 import { Image } from 'astro:assets';
 import PaperShader from './PaperShader.astro';
 
 type App = {
-  id: 'wtheic' | 'agents' | 'sunlight' | 'chopchop';
+  id: 'wtheic' | 'agents' | 'sunlight' | 'chopchop' | 'play';
   name: string;
   pitch: string;
   link?: string;
@@ -51,6 +52,11 @@ const apps: App[] = [
     name: 'Chop-Chop',
     pitch: 'Tell it what is in your kitchen and it cooks up the recipe, nutrition and all.',
     link: 'https://chop-chop.app',
+  },
+  {
+    id: 'play',
+    name: 'Play',
+    pitch: 'A little music player for Apple Music and Spotify.',
   },
 ];
 ---
