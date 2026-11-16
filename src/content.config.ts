@@ -70,26 +70,4 @@ const team = defineCollection({
   }),
 });
 
-// Spacefarm Labs (pages/labs.astro): the table of current goals and the log of technical notes.
-const labsGoals = defineCollection({
-  loader: orderedYaml('src/content/labs-goals.yml'),
-  schema: z.object({
-    ...ordered,
-    goal: z.string(),
-    asks: z.string(),
-    status: z.string(),
-  }),
-});
-
-const labsNotes = defineCollection({
-  loader: orderedYaml('src/content/labs-notes.yml'),
-  schema: z.object({
-    ...ordered,
-    date: z.string(),
-    title: z.string(),
-    state: z.string(),
-    link: z.url().optional(),
-  }),
-});
-
-export const collections = { projects, timeline, services, team, labsGoals, labsNotes };
+export const collections = { projects, timeline, services, team };

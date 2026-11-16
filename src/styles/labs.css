@@ -1,13 +1,13 @@
 /*
- * Spacefarm Labs: the pieces shared by the report cover on the home page (components/Labs.astro)
- * and the report itself (pages/labs.astro). The look is a 1960s technical report: black ink on
- * International Orange, a grotesque for the titles and a typewriter face for the document's
- * apparatus (report numbers, section numbers, captions, table heads).
+ * Spacefarm Labs (components/Labs.astro and its figures in components/labs/). The look is a 1960s
+ * technical report: black ink on International Orange, a grotesque for the title and a typewriter
+ * face for the report's apparatus (report number, captions, the lettering in the figures).
  *
  * Contrast: black on the orange is 6.4:1 and white only 3.3:1, so nothing on orange is ever set in
- * white. Orange on black (the dark theme's headings) is the same 6.4:1.
+ * white.
  *
- * Unlayered on purpose, so these win over the base layer in global.css wherever they are loaded.
+ * Global and unlayered on purpose: the figures are their own components, which the cover's scoped
+ * styles can't reach, and these must win over the base layer in global.css.
  */
 @import '@fontsource/ibm-plex-mono/500.css';
 @import '@fontsource/ibm-plex-mono/600.css';
@@ -18,7 +18,7 @@
   --labs-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', menlo, consolas, monospace;
 }
 
-/* A line of small capitals between rules: the head and foot of a cover or a page */
+/* A line of small capitals between rules: the head and foot of the cover */
 .labs-strip {
   display: flex;
   flex-wrap: wrap;
@@ -61,41 +61,6 @@
   line-height: 1.45;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-}
-
-/* A ruled box that fills with ink on hover. --cta-ink and --cta-ground are its two colours. */
-.labs-cta {
-  --cta-ink: var(--labs-black);
-  --cta-ground: var(--labs-orange);
-  display: inline-block;
-  padding: 0.5rem 0.9rem;
-  border: 2px solid var(--cta-ink);
-  color: var(--cta-ink);
-  font-family: var(--labs-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  line-height: 1.45;
-  letter-spacing: 0.08em;
-  transition:
-    background-color 120ms ease-out,
-    color 120ms ease-out;
-}
-.labs-cta.caps {
-  text-transform: uppercase;
-}
-.labs-cta:hover {
-  color: var(--cta-ground);
-  background: var(--cta-ink);
-}
-.labs-cta:focus-visible,
-.labs-focus:focus-visible {
-  outline: 3px solid currentColor;
-  outline-offset: 3px;
-}
-@media (prefers-reduced-motion: reduce) {
-  .labs-cta {
-    transition: none;
-  }
 }
 
 /* Figure captions */

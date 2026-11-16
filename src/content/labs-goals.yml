@@ -1,9 +1,0 @@
-# Spacefarm Labs, section 2.0 "Current goals", in display order. `status` is free text (Active, Planned, ...).
-- id: typing
-  goal: Typing
-  asks: What is the fastest way to type on a regular keyboard?
-  status: Active
-- id: lip-reading
-  goal: Lip reading
-  asks: How good can lip reading software get on everyday desktop and mobile devices?
-  status: Active

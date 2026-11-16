@@ -1,12 +1,10 @@
 ---
 // Spacefarm Labs on the home page: the cover of a 1960s technical report, black ink on
-// International Orange, linking to the report itself at /labs/. It is a printed object, so it
-// keeps its colours in the dark theme and its corners square. Shared pieces are in styles/labs.css.
+// International Orange. It is a printed object, so it keeps its colours in the dark theme and its
+// corners square. The typewriter type and the figures' lettering are in styles/labs.css.
 import '../styles/labs.css';
 import FigKeyboard from './labs/FigKeyboard.astro';
 import FigVisemes from './labs/FigVisemes.astro';
-
-const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/labs/`;
 ---
 
 <section class="labs-cover mb-16 sm:mb-24" aria-labelledby="labs-title">
@@ -30,9 +28,6 @@ const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/labs/`;
         Two goals for now: find the fastest way to type on a regular keyboard, and make lip reading
         software better on everyday computers and phones.
       </p>
-      <a class="labs-cta caps" href={href}>
-        Read the report <span aria-hidden="true">&rarr;</span>
-      </a>
     </div>
     <div class="figs">
       <figure>
@@ -103,7 +98,7 @@ const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/labs/`;
   }
   .abstract {
     max-width: 21rem;
-    margin: 1.2rem 0 1.4rem;
+    margin: 1.2rem 0 0;
     line-height: 1.4;
     text-wrap: pretty;
   }

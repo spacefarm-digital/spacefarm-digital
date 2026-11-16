@@ -18,16 +18,15 @@ Node 22.22 or newer (`.nvmrc`).
 
 ## Where things are
 
-| Path                     | What                                                                                                                                                                                                   |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `src/pages/index.astro`  | The home page, assembled from the components below                                                                                                                                                     |
-| `src/pages/labs.astro`   | Spacefarm Labs, laid out as a 1960s technical report; its cover on the home page is `components/Labs.astro`, its figures are in `components/labs/`, and the shared pieces are in `src/styles/labs.css` |
-| `src/layouts/Base.astro` | `<head>`: meta, favicons, font preloads, Google Analytics                                                                                                                                              |
-| `src/components/`        | Hero, Projects, Services, Team, Contact, Illustration, and PaperShader (the three Paper Shaders presets)                                                                                               |
-| `src/content/*.yml`      | All copy for the card sections and the two Labs tables (`labs-goals.yml`, `labs-notes.yml`), in display order; schemas in `src/content.config.ts`                                                      |
-| `src/styles/global.css`  | Tailwind theme tokens (colours, type scale, breakpoints, shadows), the base styles, and the few component classes (`btn`, `lift`, `fade`, `illustration`)                                              |
-| `src/assets/`            | Fonts, logo, the farm illustration, OG image                                                                                                                                                           |
-| `public/`                | Favicons, manifest, robots                                                                                                                                                                             |
+| Path                     | What                                                                                                                                                      |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `src/pages/index.astro`  | The one page, assembled from the components below                                                                                                         |
+| `src/layouts/Base.astro` | `<head>`: meta, favicons, font preloads, Google Analytics                                                                                                 |
+| `src/components/`        | Hero, Projects, Services, Team, Contact, Illustration, and PaperShader (the three Paper Shaders presets)                                                  |
+| `src/content/*.yml`      | All copy for the card sections, in display order; schemas in `src/content.config.ts`                                                                      |
+| `src/styles/global.css`  | Tailwind theme tokens (colours, type scale, breakpoints, shadows), the base styles, and the few component classes (`btn`, `lift`, `fade`, `illustration`) |
+| `src/assets/`            | Fonts, logo, the farm illustration, OG image                                                                                                              |
+| `public/`                | Favicons, manifest, robots                                                                                                                                |
 
 ## Deploying
 
