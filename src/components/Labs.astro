@@ -221,28 +221,27 @@ import FigVisemes from './labs/FigVisemes.astro';
   .abstract p {
     margin: 0;
   }
-  /* The three fields, numbered in typewriter type to match the three figures below */
+  /* The three fields: an unordered list, each marked with a small square of ink */
   .fields {
     margin: 0.7rem 0 0;
     padding: 0;
     list-style: none;
-    counter-reset: field;
   }
   .fields li {
     display: flex;
     gap: 0.7rem;
     align-items: baseline;
-    counter-increment: field;
   }
   .fields li + li {
     margin-top: 0.15rem;
   }
   .fields li::before {
-    content: counter(field) '.';
-    min-width: 1.1rem;
-    font-family: var(--labs-mono);
-    font-size: 0.8em;
-    font-weight: 600;
+    flex: none;
+    width: 0.4em;
+    height: 0.4em;
+    background: currentColor;
+    content: '';
+    transform: translateY(-0.12em);
   }
 
   /* Wide: the abstract stands beside the title, so the row of figures adds less height */
