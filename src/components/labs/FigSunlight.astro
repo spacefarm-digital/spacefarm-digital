@@ -1,0 +1,101 @@
+---
+// Fig. 1: Sunlight, an infinite-canvas window manager for the Mac. Windows lie on a canvas with no
+// edges, and the screen is a camera looking at part of it: a viewfinder frames the screen, and a
+// window it only partly covers is cut by the frame. Ink is currentColor.
+interface Props {
+  /** Unique per page: the hatch pattern and the title are referenced by id */
+  id?: string;
+}
+const { id = 'sunlight' } = Astro.props;
+
+// The camera's view, which is the screen
+const view = { x: 104, y: 40, w: 112, h: 74 };
+// Windows on the canvas: x, y, width, height. The one fully in view is hatched.
+const windows = [
+  { x: 10, y: 16, w: 68, h: 44 },
+  { x: 22, y: 76, w: 54, h: 58 },
+  { x: 118, y: 4, w: 46, h: 26 },
+  { x: 118, y: 52, w: 58, h: 40, inView: true },
+  { x: 188, y: 82, w: 52, h: 46 },
+  { x: 244, y: 12, w: 66, h: 42 },
+  { x: 258, y: 72, w: 50, h: 60 },
+];
+const bar = 7; // title bar
+const corner = 12; // viewfinder bracket length
+const { x, y, w, h } = view;
+const brackets = [
+  `M${x} ${y + corner}V${y}H${x + corner}`,
+  `M${x + w - corner} ${y}H${x + w}V${y + corner}`,
+  `M${x + w} ${y + h - corner}V${y + h}H${x + w - corner}`,
+  `M${x + corner} ${y + h}H${x}V${y + h - corner}`,
+].join('');
+const mid = 70;
+const bottom = 140;
+---
+
+<svg class="labs-fig" viewBox={`0 0 320 ${bottom + 24}`} role="img" aria-labelledby={`${id}-t`}>
+  <title id={`${id}-t`}>
+    Seven windows spread out on a canvas that runs on past every edge. A camera viewfinder frames
+    part of it, the screen: one window sits inside it, hatched, and another is cut off by its edge.
+  </title>
+  <defs>
+    <pattern
+      id={`${id}-hatch`}
+      width="3.5"
+      height="3.5"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(45)"
+    >
+      <line x1="0" y1="0" x2="0" y2="3.5" stroke="currentColor" stroke-width="1"></line>
+    </pattern>
+  </defs>
+
+  <!-- Windows: a frame and a title bar -->
+  {windows.map((win) => (
+    <g stroke="currentColor" stroke-width={win.inView ? 1.25 : 0.75}>
+      <rect
+        x={win.x}
+        y={win.y}
+        width={win.w}
+        height={win.h}
+        rx="2.2"
+        fill={win.inView ? `url(#${id}-hatch)` : 'none'}
+      />
+      <path d={`M${win.x} ${win.y + bar}H${win.x + win.w}`} />
+    </g>
+  ))}
+
+  <!-- The camera: the screen's outline, dashed, and the viewfinder's corners -->
+  <rect
+    x={x}
+    y={y}
+    width={w}
+    height={h}
+    stroke="currentColor"
+    stroke-width="0.75"
+    stroke-dasharray="3 3"
+  ></rect>
+  <path d={brackets} stroke="currentColor" stroke-width="2" stroke-linecap="square"></path>
+  <path
+    d={`M${x + w / 2 - 5} ${y + h / 2}h10M${x + w / 2} ${y + h / 2 - 5}v10`}
+    stroke="currentColor"
+    stroke-width="0.75"
+  ></path>
+
+  <!-- The canvas goes on: arrows off the left and right edges -->
+  <g stroke="currentColor" stroke-width="0.75">
+    <path d={`M8 ${mid}H0M312 ${mid}H320`}></path>
+    <path
+      d={`M-2 ${mid}l7 -2.6v5.2zM322 ${mid}l-7 -2.6v5.2z`}
+      fill="currentColor"
+      stroke="none"
+    ></path>
+  </g>
+
+  <text x="0" y={bottom + 20}>
+    CANVAS: NO EDGES
+  </text>
+  <text x="320" y={bottom + 20} text-anchor="end">
+    VIEW = SCREEN
+  </text>
+</svg>

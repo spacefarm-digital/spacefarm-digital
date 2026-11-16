@@ -3,6 +3,7 @@
 // International Orange. It is a printed object, so it keeps its colours in the dark theme and its
 // corners square. The typewriter type and the figures' lettering are in styles/labs.css.
 import '../styles/labs.css';
+import FigSunlight from './labs/FigSunlight.astro';
 import FigKeyboard from './labs/FigKeyboard.astro';
 import FigVisemes from './labs/FigVisemes.astro';
 ---
@@ -13,11 +14,56 @@ import FigVisemes from './labs/FigVisemes.astro';
   </div>
 
   <div class="plate">
-    <div>
+    <div class="text">
       <h2 id="labs-title">
         Spacefarm
         <br />
-        Labs
+        <span class="word">
+          Labs
+          {/* A moon orbits the word: the far half of the orbit is drawn under the letters, the near half over them. */}
+          <svg class="orbit back" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
+            <g transform="rotate(-10) scale(1 0.3)">
+              <g clip-path="url(#orbit-back)">
+                <path
+                  d="M -138 0 A 138 138 0 0 1 138 0"
+                  class="ring"
+                  vector-effect="non-scaling-stroke"
+                />
+                <g class="spin">
+                  <g transform="translate(138 0)">
+                    <g class="unspin">
+                      <circle r="11" transform="scale(1 3.3333)" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <clipPath id="orbit-back">
+                <rect x="-160" y="-160" width="320" height="160" />
+              </clipPath>
+            </g>
+          </svg>
+          <svg class="orbit front" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
+            <g transform="rotate(-10) scale(1 0.3)">
+              <g clip-path="url(#orbit-front)">
+                <path
+                  d="M 138 0 A 138 138 0 0 1 -138 0"
+                  class="ring"
+                  vector-effect="non-scaling-stroke"
+                />
+                <g class="spin">
+                  <g transform="translate(138 0)">
+                    <g class="unspin">
+                      <circle r="11" transform="scale(1 3.3333)" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <clipPath id="orbit-front">
+                <rect x="-160" y="0" width="320" height="160" />
+              </clipPath>
+            </g>
+          </svg>
+        </span>
       </h2>
       <p class="labs-subject">Accessibility research</p>
       <p class="abstract">
@@ -27,15 +73,21 @@ import FigVisemes from './labs/FigVisemes.astro';
     </div>
     <div class="figs">
       <figure>
+        <FigSunlight id="cover-sunlight" />
+        <figcaption class="labs-caption">
+          <b>Fig. 1.</b> Sunlight. Every window on one endless canvas.
+        </figcaption>
+      </figure>
+      <figure>
         <FigKeyboard id="cover-keyboard" />
         <figcaption class="labs-caption">
-          <b>Fig. 1.</b> A regular keyboard. Key pitch 19 mm.
+          <b>Fig. 2.</b> Fast typing. A regular keyboard, key pitch 19 mm.
         </figcaption>
       </figure>
       <figure>
         <FigVisemes id="cover-visemes" />
         <figcaption class="labs-caption">
-          <b>Fig. 2.</b> Mouth shapes for six sounds.
+          <b>Fig. 3.</b> Lip reading. Mouth shapes for six sounds.
         </figcaption>
       </figure>
     </div>
@@ -70,14 +122,12 @@ import FigVisemes from './labs/FigVisemes.astro';
 
   .plate {
     display: grid;
-    gap: 1.8rem;
+    gap: 2rem;
     padding: 1.6rem 0 1.8rem;
   }
   @media (min-width: 48rem) {
     .plate {
-      grid-template-columns: minmax(0, 1fr) 13rem;
-      gap: 2rem;
-      align-items: end;
+      gap: 2.4rem;
       padding: 2rem 0;
     }
   }
@@ -90,6 +140,68 @@ import FigVisemes from './labs/FigVisemes.astro';
     line-height: 0.88;
     letter-spacing: -0.035em;
   }
+  /* The orbiting moon. The orbit is a circle squashed into a tilted ellipse; the moon rides it on
+     a rotating arm and is turned and stretched back so it stays a round disc. */
+  .word {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+  }
+  .orbit {
+    position: absolute;
+    top: 50%;
+    left: -14%;
+    width: 140%;
+    height: auto;
+    overflow: visible;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .orbit.back {
+    z-index: -1;
+  }
+  .orbit.front {
+    z-index: 1;
+  }
+  .ring {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.25;
+    stroke-dasharray: 4 3;
+  }
+  .orbit circle {
+    fill: currentColor;
+  }
+  .spin,
+  .unspin {
+    transform-origin: 0 0;
+  }
+  /* The moon's resting place, on the near side of the orbit, is where each lap starts */
+  .spin {
+    transform: rotate(115deg);
+    animation: labs-orbit 10s linear infinite;
+  }
+  .unspin {
+    transform: rotate(-115deg);
+    animation: labs-orbit-back 10s linear infinite;
+  }
+  @keyframes labs-orbit {
+    to {
+      transform: rotate(475deg);
+    }
+  }
+  @keyframes labs-orbit-back {
+    to {
+      transform: rotate(-475deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spin,
+    .unspin {
+      animation: none;
+    }
+  }
+
   .abstract {
     max-width: 21rem;
     margin: 1.2rem 0 0;
@@ -97,15 +209,49 @@ import FigVisemes from './labs/FigVisemes.astro';
     text-wrap: pretty;
   }
 
-  .figs {
-    display: grid;
-    gap: 1.4rem;
-    max-width: 16rem;
+  /* Wide: the abstract stands beside the title, so the row of figures adds less height */
+  @media (min-width: 48rem) {
+    .text {
+      display: grid;
+      grid-template-columns: auto minmax(0, 21rem);
+      justify-content: space-between;
+      align-items: end;
+      column-gap: 3rem;
+    }
+    .text h2,
+    .labs-subject {
+      grid-column: 1;
+      justify-self: start;
+    }
+    .abstract {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      margin: 0;
+    }
   }
+
   .date {
     margin-left: auto;
   }
+
+  /* The three figures: stacked on phones, a row once there is room for three */
+  .figs {
+    display: grid;
+    gap: 1.8rem;
+    max-width: 18rem;
+  }
+  @media (min-width: 48rem) {
+    .figs {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+      max-width: none;
+    }
+  }
+  /* Drawings of different heights share a baseline, so the captions line up */
   figure {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    align-items: end;
     margin: 0;
   }
   figcaption {
