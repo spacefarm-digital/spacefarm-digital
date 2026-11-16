@@ -5,6 +5,7 @@ import Apps from '../components/Apps.astro';
 import WorkTeaser from '../components/WorkTeaser.astro';
 import Services from '../components/Services.astro';
 import Team from '../components/Team.astro';
+import Labs from '../components/Labs.astro';
 import Contact from '../components/Contact.astro';
 import Illustration from '../components/Illustration.astro';
 import PaperShader from '../components/PaperShader.astro';
@@ -25,6 +26,7 @@ const showOldWork = false;
       {showOldWork && <WorkTeaser />}
       {showServices && <Services />}
       <Team />
+      <Labs />
       <Contact />
       <Illustration />
     </div>

@@ -70,4 +70,26 @@ const team = defineCollection({
   }),
 });
 
-export const collections = { projects, timeline, services, team };
+// Spacefarm Labs (pages/labs.astro): the research areas table and the log of technical notes.
+const labsAreas = defineCollection({
+  loader: orderedYaml('src/content/labs-areas.yml'),
+  schema: z.object({
+    ...ordered,
+    area: z.string(),
+    asks: z.string(),
+    status: z.string(),
+  }),
+});
+
+const labsNotes = defineCollection({
+  loader: orderedYaml('src/content/labs-notes.yml'),
+  schema: z.object({
+    ...ordered,
+    date: z.string(),
+    title: z.string(),
+    state: z.string(),
+    link: z.url().optional(),
+  }),
+});
+
+export const collections = { projects, timeline, services, team, labsAreas, labsNotes };

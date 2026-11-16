@@ -1,0 +1,97 @@
+---
+// Fig. 3: the order in which focus moves through a form, as a numbered path over a wireframe.
+const stops = [
+  { n: 1, x: 62, y: 74 },
+  { n: 2, x: 62, y: 122 },
+  { n: 3, x: 62, y: 170 },
+  { n: 4, x: 62, y: 226 },
+  { n: 5, x: 194, y: 226 },
+];
+---
+
+<svg class="labs-fig" viewBox="0 0 320 284" fill="none" role="img" aria-labelledby="focus-t">
+  <title id="focus-t">
+    A form with three fields and two buttons. A numbered dashed line shows keyboard focus moving
+    down the fields and then across the buttons, one to five.
+  </title>
+  <!-- The window -->
+  <rect
+    x="30"
+    y="14"
+    width="260"
+    height="256"
+    rx="6"
+    stroke="currentColor"
+    stroke-width="1.75"
+  ></rect>
+  <path d="M30 40H290" stroke="currentColor" stroke-width="0.75"></path>
+  <circle cx="44" cy="27" r="3" stroke="currentColor" stroke-width="0.75"></circle>
+  <circle cx="56" cy="27" r="3" stroke="currentColor" stroke-width="0.75"></circle>
+  <circle cx="68" cy="27" r="3" stroke="currentColor" stroke-width="0.75"></circle>
+
+  <!-- Fields; the second has focus -->
+  <rect
+    x="84"
+    y="60"
+    width="182"
+    height="28"
+    rx="3"
+    stroke="currentColor"
+    stroke-width="0.75"
+  ></rect>
+  <rect x="81" y="105" width="188" height="34" rx="5" stroke="currentColor" stroke-width="3"></rect>
+  <rect
+    x="84"
+    y="156"
+    width="182"
+    height="28"
+    rx="3"
+    stroke="currentColor"
+    stroke-width="0.75"
+  ></rect>
+  <path
+    d="M94 74H170M94 122H204M94 170H150"
+    stroke="currentColor"
+    stroke-width="0.75"
+    stroke-dasharray="2 3"
+  ></path>
+  <!-- Buttons -->
+  <rect
+    x="84"
+    y="212"
+    width="86"
+    height="28"
+    rx="3"
+    stroke="currentColor"
+    stroke-width="0.75"
+  ></rect>
+  <rect x="218" y="212" width="48" height="28" rx="3" fill="currentColor"></rect>
+
+  <!-- The path -->
+  <path
+    d="M62 85V111M62 133V159M62 181V215M62 237V254H194V244"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-dasharray="4 3"
+  ></path>
+  <path
+    d="M62 111l-3 -7h6zM62 159l-3 -7h6zM62 215l-3 -7h6zM194 237l-3 7h6z"
+    fill="currentColor"
+  ></path>
+  <path d="M205 226H218" stroke="currentColor" stroke-width="0.75"></path>
+  {stops.map((s) => (
+    <g>
+      <circle
+        cx={s.x}
+        cy={s.y}
+        r="11"
+        fill="var(--fig-bg)"
+        stroke="currentColor"
+        stroke-width="1.25"
+      />
+      <text x={s.x} y={s.y + 4.6} text-anchor="middle" class="mark">
+        {s.n}
+      </text>
+    </g>
+  ))}
+</svg>
