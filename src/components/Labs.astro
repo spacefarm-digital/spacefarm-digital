@@ -10,9 +10,6 @@ import FigVisemes from './labs/FigVisemes.astro';
 <section class="labs-cover mb-16 sm:mb-24" aria-labelledby="labs-title">
   <div class="labs-strip">
     <span>Spacefarm Labs</span>
-    <span>
-      Technical report <b>SFL TR-001</b>
-    </span>
   </div>
 
   <div class="plate">
@@ -24,9 +21,8 @@ import FigVisemes from './labs/FigVisemes.astro';
       </h2>
       <p class="labs-subject">Accessibility research</p>
       <p class="abstract">
-        Our initiative for advancing human-computer interaction and accessibility, in any language.
-        Two goals for now: find the fastest way to type on a regular keyboard, and make lip reading
-        software better on everyday computers and phones.
+        Accessibility and human-computer interaction, in any language. We're making three apps:
+        Sunlight, a fast typing app and a lip reading app.
       </p>
     </div>
     <div class="figs">
@@ -46,9 +42,7 @@ import FigVisemes from './labs/FigVisemes.astro';
   </div>
 
   <div class="labs-strip foot">
-    <span>Human-computer interaction</span>
-    <span class="labs-stamp">Distribution unlimited</span>
-    <span>November 2026</span>
+    <span class="date">November 2026</span>
   </div>
 </section>
 
@@ -107,6 +101,9 @@ import FigVisemes from './labs/FigVisemes.astro';
     display: grid;
     gap: 1.4rem;
     max-width: 16rem;
+  }
+  .date {
+    margin-left: auto;
   }
   figure {
     margin: 0;

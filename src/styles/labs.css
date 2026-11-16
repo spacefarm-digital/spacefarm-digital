@@ -42,11 +42,6 @@
   border-top: 2px solid currentColor;
   border-bottom: 0;
 }
-.labs-stamp {
-  padding: 0.15rem 0.5rem;
-  border: 1.5px solid currentColor;
-  font-weight: 600;
-}
 
 /* The subject line, knocked out of a black bar */
 .labs-subject {
