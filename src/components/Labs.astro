@@ -15,13 +15,13 @@ import FigVisemes from './labs/FigVisemes.astro';
 
   <div class="plate">
     <div class="text">
+      {/* A moon orbits the b: the far half of the orbit is drawn under the letters, the near half
+          over them. Kept on one line with the word, so no space opens up inside "Labs". */}
+      <!-- prettier-ignore -->
       <h2 id="labs-title">
         Spacefarm
         <br />
-        <span class="word">
-          Labs
-          {/* A moon orbits the word: the far half of the orbit is drawn under the letters, the near half over them. */}
-          <svg class="orbit back" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
+        La<span class="word">b<svg class="orbit back" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
             <g transform="rotate(-10) scale(1 0.3)">
               <g clip-path="url(#orbit-back)">
                 <path
@@ -32,7 +32,7 @@ import FigVisemes from './labs/FigVisemes.astro';
                 <g class="spin">
                   <g transform="translate(138 0)">
                     <g class="unspin">
-                      <circle r="11" transform="scale(1 3.3333)" />
+                      <circle r="15" transform="scale(1 3.3333)" />
                     </g>
                   </g>
                 </g>
@@ -41,8 +41,7 @@ import FigVisemes from './labs/FigVisemes.astro';
                 <rect x="-160" y="-160" width="320" height="160" />
               </clipPath>
             </g>
-          </svg>
-          <svg class="orbit front" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
+          </svg><svg class="orbit front" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
             <g transform="rotate(-10) scale(1 0.3)">
               <g clip-path="url(#orbit-front)">
                 <path
@@ -53,7 +52,7 @@ import FigVisemes from './labs/FigVisemes.astro';
                 <g class="spin">
                   <g transform="translate(138 0)">
                     <g class="unspin">
-                      <circle r="11" transform="scale(1 3.3333)" />
+                      <circle r="15" transform="scale(1 3.3333)" />
                     </g>
                   </g>
                 </g>
@@ -62,32 +61,38 @@ import FigVisemes from './labs/FigVisemes.astro';
                 <rect x="-160" y="0" width="320" height="160" />
               </clipPath>
             </g>
-          </svg>
-        </span>
+          </svg></span>s
       </h2>
       <p class="labs-subject">Accessibility research</p>
-      <p class="abstract">
-        Accessibility and human-computer interaction, in any language. We're making three apps:
-        Sunlight, a fast typing app and a lip reading app.
-      </p>
+      <div class="abstract">
+        <p>
+          Spacefarm Labs is our R&amp;D division and our wildest dream: to push the frontier in
+          human-computer interaction and accessibility. We're currently focused on three fields:
+        </p>
+        <ul class="fields" role="list">
+          <li>Window management</li>
+          <li>Fast typing and auto correction</li>
+          <li>Alternative input methods</li>
+        </ul>
+      </div>
     </div>
     <div class="figs">
       <figure>
         <FigSunlight id="cover-sunlight" />
         <figcaption class="labs-caption">
-          <b>Fig. 1.</b> Sunlight. Every window on one endless canvas.
+          <b>Fig. 1.</b> Window management. Every window on one endless canvas.
         </figcaption>
       </figure>
       <figure>
         <FigKeyboard id="cover-keyboard" />
         <figcaption class="labs-caption">
-          <b>Fig. 2.</b> Fast typing. A regular keyboard, key pitch 19 mm.
+          <b>Fig. 2.</b> Fast typing and auto correction. A regular keyboard.
         </figcaption>
       </figure>
       <figure>
         <FigVisemes id="cover-visemes" />
         <figcaption class="labs-caption">
-          <b>Fig. 3.</b> Lip reading. Mouth shapes for six sounds.
+          <b>Fig. 3.</b> Alternative input methods. Mouth shapes for six sounds.
         </figcaption>
       </figure>
     </div>
@@ -139,6 +144,8 @@ import FigVisemes from './labs/FigVisemes.astro';
     font-weight: 500;
     line-height: 0.88;
     letter-spacing: -0.035em;
+    /* The b is its own box (for the moon), which would otherwise let "Labs" break after it */
+    white-space: nowrap;
   }
   /* The orbiting moon. The orbit is a circle squashed into a tilted ellipse; the moon rides it on
      a rotating arm and is turned and stretched back so it stays a round disc. */
@@ -149,10 +156,12 @@ import FigVisemes from './labs/FigVisemes.astro';
   }
   .orbit {
     position: absolute;
-    top: 50%;
-    left: -14%;
-    width: 140%;
+    top: 62%;
+    left: -38%;
+    width: 176%;
+    max-width: none;
     height: auto;
+    max-height: none;
     overflow: visible;
     transform: translateY(-50%);
     pointer-events: none;
@@ -167,7 +176,7 @@ import FigVisemes from './labs/FigVisemes.astro';
     fill: none;
     stroke: currentColor;
     stroke-width: 1.25;
-    stroke-dasharray: 4 3;
+    stroke-opacity: 0.25;
   }
   .orbit circle {
     fill: currentColor;
@@ -207,6 +216,33 @@ import FigVisemes from './labs/FigVisemes.astro';
     margin: 1.2rem 0 0;
     line-height: 1.4;
     text-wrap: pretty;
+  }
+
+  .abstract p {
+    margin: 0;
+  }
+  /* The three fields, numbered in typewriter type to match the three figures below */
+  .fields {
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: field;
+  }
+  .fields li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+    counter-increment: field;
+  }
+  .fields li + li {
+    margin-top: 0.15rem;
+  }
+  .fields li::before {
+    content: counter(field) '.';
+    min-width: 1.1rem;
+    font-family: var(--labs-mono);
+    font-size: 0.8em;
+    font-weight: 600;
   }
 
   /* Wide: the abstract stands beside the title, so the row of figures adds less height */
