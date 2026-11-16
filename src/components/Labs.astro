@@ -3,7 +3,8 @@
 // International Orange, linking to the report itself at /labs/. It is a printed object, so it
 // keeps its colours in the dark theme and its corners square. Shared pieces are in styles/labs.css.
 import '../styles/labs.css';
-import FigReach from './labs/FigReach.astro';
+import FigKeyboard from './labs/FigKeyboard.astro';
+import FigVisemes from './labs/FigVisemes.astro';
 
 const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/labs/`;
 ---
@@ -25,19 +26,28 @@ const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/labs/`;
       </h2>
       <p class="labs-subject">Accessibility research</p>
       <p class="abstract">
-        Our initiative for advancing human-computer interaction and accessibility. We study how
-        people with different bodies, senses and minds use computers, and publish what we learn.
+        Our initiative for advancing human-computer interaction and accessibility, in any language.
+        Two goals for now: find the fastest way to type on a regular keyboard, and make lip reading
+        software better on everyday computers and phones.
       </p>
       <a class="labs-cta caps" href={href}>
         Read the report <span aria-hidden="true">&rarr;</span>
       </a>
     </div>
-    <figure>
-      <FigReach id="cover-reach" />
-      <figcaption class="labs-caption">
-        <b>Fig. 1.</b> One-handed thumb reach. A, natural. B, stretch. C, out of reach.
-      </figcaption>
-    </figure>
+    <div class="figs">
+      <figure>
+        <FigKeyboard id="cover-keyboard" />
+        <figcaption class="labs-caption">
+          <b>Fig. 1.</b> A regular keyboard. Key pitch 19 mm.
+        </figcaption>
+      </figure>
+      <figure>
+        <FigVisemes id="cover-visemes" />
+        <figcaption class="labs-caption">
+          <b>Fig. 2.</b> Mouth shapes for six sounds.
+        </figcaption>
+      </figure>
+    </div>
   </div>
 
   <div class="labs-strip foot">
@@ -98,8 +108,12 @@ const href = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/labs/`;
     text-wrap: pretty;
   }
 
+  .figs {
+    display: grid;
+    gap: 1.4rem;
+    max-width: 16rem;
+  }
   figure {
-    max-width: 13rem;
     margin: 0;
   }
   figcaption {

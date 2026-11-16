@@ -1,0 +1,76 @@
+---
+// Fig. 2: a chart of mouth shapes, the alphabet a lip reader works from. Six sounds, labelled in
+// the International Phonetic Alphabet so the chart belongs to no one language. Every mouth is the
+// same construction with different numbers: half-width, how far it opens, how full the lips are.
+// Ink is currentColor.
+interface Props {
+  /** Unique per page: the drawing's title is referenced by id */
+  id?: string;
+}
+const { id = 'visemes' } = Astro.props;
+const cols = 3;
+
+// Half-width, opening and lip fullness, in drawing units
+const sounds = [
+  { ipa: 'm', a: 36, open: 0, lip: 8.4, teeth: false },
+  { ipa: 'f', a: 34.8, open: 5.4, lip: 7.8, teeth: true },
+  { ipa: 'i', a: 43.2, open: 6.6, lip: 6.6, teeth: true },
+  { ipa: 'a', a: 36, open: 20.4, lip: 7.2, teeth: false },
+  { ipa: 'o', a: 24, open: 14.4, lip: 9.6, teeth: false },
+  { ipa: 'u', a: 15.6, open: 6, lip: 10.2, teeth: false },
+];
+
+const cell = { w: 320 / cols, h: 106 };
+const n = (v: number) => +v.toFixed(2);
+const mouths = sounds.map((s, i) => {
+  const cx = (i % cols) * cell.w + cell.w / 2;
+  const cy = Math.floor(i / cols) * cell.h + cell.h / 2 - 9;
+  const up = s.open + s.lip;
+  const down = s.open + s.lip * 1.15;
+  const { a } = s;
+  // Outer lips: the upper one dips in the middle, the lower one is a single curve
+  const outer =
+    `M${n(cx - a)} ${cy}` +
+    `C${n(cx - a * 0.55)} ${n(cy - up * 1.25)} ${n(cx - a * 0.16)} ${n(cy - up * 1.2)} ${n(cx)} ${n(cy - up * 0.84)}` +
+    `C${n(cx + a * 0.16)} ${n(cy - up * 1.2)} ${n(cx + a * 0.55)} ${n(cy - up * 1.25)} ${n(cx + a)} ${cy}` +
+    `C${n(cx + a * 0.5)} ${n(cy + down * 1.33)} ${n(cx - a * 0.5)} ${n(cy + down * 1.33)} ${n(cx - a)} ${cy}Z`;
+  // The opening between them; shut, it is a single line
+  const b = a * 0.8;
+  const inner = s.open
+    ? `M${n(cx - b)} ${cy}Q${n(cx)} ${n(cy - s.open * 2)} ${n(cx + b)} ${cy}Q${n(cx)} ${n(cy + s.open * 2)} ${n(cx - b)} ${cy}Z`
+    : `M${n(cx - a)} ${cy}Q${n(cx)} ${n(cy + 3)} ${n(cx + a)} ${cy}`;
+  // Upper teeth: a chord a little below the top of the opening
+  const ty = cy - s.open * 0.3;
+  const tx = b * 0.72;
+  const teeth = s.teeth ? `M${n(cx - tx)} ${n(ty)}H${n(cx + tx)}` : '';
+  return { ipa: s.ipa, cx: n(cx), cy, outer, inner, teeth };
+});
+const rowCount = Math.ceil(sounds.length / cols);
+const height = rowCount * cell.h;
+---
+
+<svg class="labs-fig" viewBox={`0 0 320 ${height}`} role="img" aria-labelledby={`${id}-t`}>
+  <title id={`${id}-t`}>
+    Six mouths, each making a different sound: lips closed for m, teeth on the lower lip for f, a
+    wide smile for i, wide open for a, rounded for o, and tightly pursed for u.
+  </title>
+  <!-- The grid -->
+  <g stroke="currentColor" stroke-width="0.75">
+    {Array.from({ length: cols - 1 }, (_, i) => (
+      <path d={`M${n((i + 1) * cell.w)} 0V${height}`} />
+    ))}
+    {Array.from({ length: rowCount - 1 }, (_, i) => (
+      <path d={`M0 ${(i + 1) * cell.h}H320`} />
+    ))}
+  </g>
+  {mouths.map((m) => (
+    <g>
+      <path d={m.outer} stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+      <path d={m.inner} stroke="currentColor" stroke-width="1" stroke-linejoin="round" />
+      {m.teeth && <path d={m.teeth} stroke="currentColor" stroke-width="0.75" />}
+      <text x={m.cx} y={m.cy + cell.h / 2 - 3} text-anchor="middle" class="mark">
+        /{m.ipa}/
+      </text>
+    </g>
+  ))}
+</svg>

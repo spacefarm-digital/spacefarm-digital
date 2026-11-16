@@ -3,34 +3,33 @@
 // like a 1960s technical report. An orange cover, then manila paper with section numbers hanging
 // in the margin, ruled tables and line-drawn plates. In the dark theme the paper goes black and the
 // ink orange; the cover stays as printed. Shared pieces are in styles/labs.css; the two tables are
-// content/labs-areas.yml and content/labs-notes.yml.
+// content/labs-goals.yml and content/labs-notes.yml.
 import { getCollection } from 'astro:content';
 import '../styles/labs.css';
 import Base from '../layouts/Base.astro';
 import Logo from '../assets/logo.svg';
-import FigReach from '../components/labs/FigReach.astro';
-import FigAcuity from '../components/labs/FigAcuity.astro';
-import FigFocus from '../components/labs/FigFocus.astro';
+import FigKeyboard from '../components/labs/FigKeyboard.astro';
+import FigVisemes from '../components/labs/FigVisemes.astro';
 
 const home = import.meta.env.BASE_URL;
 const byOrder = <T extends { data: { order: number } }>(a: T, b: T) => a.data.order - b.data.order;
-const areas = (await getCollection('labsAreas')).sort(byOrder);
+const goals = (await getCollection('labsGoals')).sort(byOrder);
 const notes = (await getCollection('labsNotes')).sort(byOrder);
 
 const report = 'SFL TR-001';
 const sections = [
   { n: '1.0', title: 'Purpose', id: 'purpose' },
-  { n: '2.0', title: 'Research areas', id: 'areas' },
+  { n: '2.0', title: 'Current goals', id: 'goals' },
   { n: '3.0', title: 'Technical notes', id: 'notes' },
   { n: '4.0', title: 'Correspondence', id: 'correspondence' },
 ];
-const [purpose, research, technical, correspondence] = sections;
+const [purpose, current, technical, correspondence] = sections;
 const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`;
 ---
 
 <Base
   title="Spacefarm Labs: Accessibility research"
-  description="Spacefarm Labs is our initiative for advancing human-computer interaction and accessibility."
+  description="Spacefarm Labs is our initiative for advancing human-computer interaction and accessibility: faster typing on a regular keyboard and better lip reading on everyday devices, in any language."
   themeColor="#ff4f00"
 >
   <div class="labs">
@@ -60,9 +59,9 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
           <div>
             <p class="labs-subject">Accessibility research</p>
             <p class="abstract">
-              Our initiative for advancing human-computer interaction and accessibility. We study
-              how people with different bodies, senses and minds use computers, and publish what we
-              learn.
+              Our initiative for advancing human-computer interaction and accessibility, in any
+              language. Two goals for now: find the fastest way to type on a regular keyboard, and
+              make lip reading software better on everyday computers and phones.
             </p>
           </div>
           <dl class="block">
@@ -94,8 +93,9 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
         </h2>
         <div class="body">
           <p class="lead">
-            Most software is designed for one kind of person on a good day. Labs is where we measure
-            what happens to everyone else, and work out what to build instead.
+            Two questions for now. What is the fastest way to type on the keyboard you already own?
+            And how good can lip reading get on the laptop and phone you already own? We want
+            answers that hold in any language, not only English.
           </p>
         </div>
       </section>
@@ -132,34 +132,27 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
             still be read in a shaking cabin.
           </p>
           <p>
-            We think the same care belongs in everyday software. Spacefarm Labs runs small,
-            practical studies, tries the findings in our own apps, and writes them up so anyone can
-            use them.
+            We think the same care belongs in everyday software, and in every language, not only the
+            ones software is tuned for first. Spacefarm Labs measures what works on ordinary
+            hardware, with nothing special to buy, and shares what it learns.
           </p>
         </div>
         <div class="plates">
           <figure>
             <div class="art">
-              <FigReach id="plate-reach" />
+              <FigKeyboard id="plate-keyboard" />
             </div>
             <figcaption class="labs-caption">
-              <b>Fig. 1.</b> One-handed thumb reach. A, natural. B, stretch. C, out of reach.
+              <b>Fig. 1.</b> A regular keyboard, whatever is printed on it. Home keys hatched. Key
+              pitch 19 mm.
             </figcaption>
           </figure>
           <figure>
             <div class="art">
-              <FigAcuity />
+              <FigVisemes id="plate-visemes" />
             </div>
             <figcaption class="labs-caption">
-              <b>Fig. 2.</b> Type size against acuity. Rows 1 to 6, largest to smallest.
-            </figcaption>
-          </figure>
-          <figure>
-            <div class="art">
-              <FigFocus />
-            </div>
-            <figcaption class="labs-caption">
-              <b>Fig. 3.</b> Focus order through a form, stops 1 to 5. Stop 2 has focus.
+              <b>Fig. 2.</b> Mouth shapes for six sounds, as a lip reader sees them.
             </figcaption>
           </figure>
         </div>
@@ -169,19 +162,20 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
         The tables carry explicit ARIA roles because on phones their rows are restacked with
         display: grid, and a table whose display changes loses its semantics in some browsers.
       -->
-      <section class="sec" id={research.id} aria-labelledby="areas-h">
-        <h2 id="areas-h">
-          <span class="num">{research.n}</span> <span>{research.title}</span>
+      <section class="sec" id={current.id} aria-labelledby="goals-h">
+        <h2 id="goals-h">
+          <span class="num">{current.n}</span> <span>{current.title}</span>
         </h2>
         <div class="body wide">
-          <table role="table" aria-labelledby="areas-h">
+          <p class="intro">Both are worked on across languages and scripts, not only English.</p>
+          <table role="table" aria-labelledby="goals-h">
             <thead role="rowgroup">
               <tr role="row">
                 <th role="columnheader" scope="col">
                   No.
                 </th>
                 <th role="columnheader" scope="col">
-                  Area
+                  Goal
                 </th>
                 <th role="columnheader" scope="col">
                   What we are asking
@@ -192,13 +186,13 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
               </tr>
             </thead>
             <tbody role="rowgroup">
-              {areas.map(({ data }) => (
+              {goals.map(({ data }) => (
                 <tr role="row">
                   <td role="cell" class="no mono">
                     2.{data.order + 1}
                   </td>
-                  <th role="rowheader" scope="row" class="main">
-                    {data.area}
+                  <th role="rowheader" scope="row" class="main nowrap">
+                    {data.goal}
                   </th>
                   <td role="cell" class="text">
                     {data.asks}
@@ -218,42 +212,48 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
           <span class="num">{technical.n}</span> <span>{technical.title}</span>
         </h2>
         <div class="body wide">
-          <table role="table" aria-labelledby="notes-h">
-            <thead role="rowgroup">
-              <tr role="row">
-                <th role="columnheader" scope="col">
-                  No.
-                </th>
-                <th role="columnheader" scope="col">
-                  Date
-                </th>
-                <th role="columnheader" scope="col">
-                  Title
-                </th>
-                <th role="columnheader" scope="col">
-                  State
-                </th>
-              </tr>
-            </thead>
-            <tbody role="rowgroup">
-              {notes.map(({ data }) => (
+          {notes.length ? (
+            <table role="table" aria-labelledby="notes-h">
+              <thead role="rowgroup">
                 <tr role="row">
-                  <td role="cell" class="no mono nowrap">
-                    {noteNo(data.order)}
-                  </td>
-                  <td role="cell" class="text mono nowrap">
-                    {data.date}
-                  </td>
-                  <th role="rowheader" scope="row" class="main">
-                    {data.link ? <a href={data.link}>{data.title}</a> : data.title}
+                  <th role="columnheader" scope="col">
+                    No.
                   </th>
-                  <td role="cell" class="state mono">
-                    {data.state}
-                  </td>
+                  <th role="columnheader" scope="col">
+                    Date
+                  </th>
+                  <th role="columnheader" scope="col">
+                    Title
+                  </th>
+                  <th role="columnheader" scope="col">
+                    State
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody role="rowgroup">
+                {notes.map(({ data }) => (
+                  <tr role="row">
+                    <td role="cell" class="no mono nowrap">
+                      {noteNo(data.order)}
+                    </td>
+                    <td role="cell" class="text mono nowrap">
+                      {data.date}
+                    </td>
+                    <th role="rowheader" scope="row" class="main">
+                      {data.link ? <a href={data.link}>{data.title}</a> : data.title}
+                    </th>
+                    <td role="cell" class="state mono">
+                      {data.state}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          ) : (
+            <p class="none mono">
+              No technical notes issued to date. The first will be listed here.
+            </p>
+          )}
         </div>
       </section>
 
@@ -264,8 +264,8 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
         </h2>
         <div class="body">
           <p>
-            Research is better with company. If you work on accessibility, live with a disability,
-            or would like to take part in a study, write to us.
+            Research is better with company. If you work on text input, lip reading or accessibility
+            across languages, or would like to help us test, write to us.
           </p>
           <a class="labs-cta" href="mailto:hello@spacefarm.digital">
             hello@spacefarm.digital
@@ -535,7 +535,7 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
   }
   @media (min-width: 48rem) {
     .plates {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
       gap: 1.2rem;
       margin-top: 1.4rem;
     }
@@ -554,7 +554,7 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
     border: 1.5px solid var(--rule);
   }
   .plates .art :global(svg) {
-    max-width: 13rem;
+    max-width: 20rem;
   }
   .plates figcaption {
     margin-top: 0.55rem;
@@ -562,6 +562,17 @@ const noteNo = (order: number) => `SFL TN-${String(order + 1).padStart(3, '0')}`
   }
   .plates figcaption b {
     color: var(--head);
+  }
+
+  .intro {
+    max-width: 30rem;
+  }
+  /* The notes log before its first entry */
+  .none {
+    margin: 0;
+    padding: 0.8rem 0;
+    border-top: 2px solid var(--rule);
+    border-bottom: 2px solid var(--rule);
   }
 
   /* Ruled tables */

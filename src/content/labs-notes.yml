@@ -1,14 +1,10 @@
 # Spacefarm Labs, section 3.0 "Technical notes", in display order. The note number (SFL TN-001, ...)
-# comes from the position in this list, so add new notes at the end. `link` is optional.
-- id: thumb-reach
-  date: Nov. 2026
-  title: Thumb reach on large phones
-  state: In preparation
-- id: menu-bar-type
-  date: To follow
-  title: Smallest legible type in menu bar apps
-  state: Planned
-- id: focus-order
-  date: To follow
-  title: Focus order in single-window Mac apps
-  state: Planned
+# comes from the position in this list, so add new notes at the end. While the list is empty the
+# page says that no notes have been issued yet.
+#
+# - id: a-short-slug
+#   date: Jan. 2027
+#   title: The title of the note
+#   state: Issued
+#   link: https://example.com/optional
+[]
