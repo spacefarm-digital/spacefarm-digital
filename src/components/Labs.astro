@@ -1,0 +1,378 @@
+---
+// Spacefarm Labs on the home page: the cover of a 1960s technical report, black ink on
+// International Orange. It is a printed object, so it keeps its colours in the dark theme and its
+// corners square. The typewriter type and the figures' lettering are in styles/labs.css.
+import '../styles/labs.css';
+import FigSunlight from './labs/FigSunlight.astro';
+import FigKeyboard from './labs/FigKeyboard.astro';
+import FigVisemes from './labs/FigVisemes.astro';
+---
+
+<section class="labs-cover mb-16 sm:mb-24" aria-labelledby="labs-title">
+  <div class="labs-strip">
+    <span>Spacefarm Labs</span>
+  </div>
+
+  <div class="plate">
+    <div class="text">
+      {/* A moon orbits the b: the far half of the orbit is drawn under the letters, the near half
+          over them. Kept on one line with the word, so no space opens up inside "Labs". */}
+      <!-- prettier-ignore -->
+      <h2 id="labs-title">
+        Spacefarm
+        <br />
+        La<span class="word">b<svg class="orbit back" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
+            <g transform="rotate(-10) scale(1 0.3)">
+              <g clip-path="url(#orbit-back)">
+                <path
+                  d="M -138 0 A 138 138 0 0 1 138 0"
+                  class="ring"
+                  vector-effect="non-scaling-stroke"
+                />
+                <g class="spin">
+                  <g transform="translate(138 0)">
+                    <g class="unspin">
+                      <circle r="15" transform="scale(1 3.3333)" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <clipPath id="orbit-back">
+                <rect x="-160" y="-160" width="320" height="160" />
+              </clipPath>
+            </g>
+          </svg><svg class="orbit front" viewBox="-150 -75 300 150" aria-hidden="true" focusable="false">
+            <g transform="rotate(-10) scale(1 0.3)">
+              <g clip-path="url(#orbit-front)">
+                <path
+                  d="M 138 0 A 138 138 0 0 1 -138 0"
+                  class="ring"
+                  vector-effect="non-scaling-stroke"
+                />
+                <g class="spin">
+                  <g transform="translate(138 0)">
+                    <g class="unspin">
+                      <circle r="15" transform="scale(1 3.3333)" />
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <clipPath id="orbit-front">
+                <rect x="-160" y="0" width="320" height="160" />
+              </clipPath>
+            </g>
+          </svg></span>s
+      </h2>
+      <p class="labs-subject">Accessibility research</p>
+      <div class="abstract">
+        <p>
+          Spacefarm Labs is our R&amp;D division and our wildest dream: to push the frontier in
+          human-computer interaction and accessibility. We're currently focused on three fields:
+        </p>
+        <ul class="fields" role="list">
+          <li>Window management</li>
+          <li>Fast typing and auto correction</li>
+          <li>Alternative input methods</li>
+        </ul>
+      </div>
+    </div>
+    <div class="figs">
+      <figure>
+        <FigSunlight id="cover-sunlight" />
+        <figcaption class="labs-caption">
+          <b>Fig. 1.</b> Window management. Every window on one endless canvas.
+        </figcaption>
+      </figure>
+      <figure>
+        <FigKeyboard id="cover-keyboard" />
+        <figcaption class="labs-caption">
+          <b>Fig. 2.</b> Fast typing and auto correction. A regular keyboard.
+        </figcaption>
+      </figure>
+      <figure>
+        <FigVisemes id="cover-visemes" />
+        <figcaption class="labs-caption">
+          <b>Fig. 3.</b> Alternative input methods. Mouth shapes for six sounds.
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <div class="labs-strip foot">
+    <span class="date">November 2026</span>
+  </div>
+
+  {/* The ink filter: a little noise nudges every edge so the type and drawings look printed
+      on paper rather than drawn on a screen, then the alpha is tightened again so it stays crisp. */}
+  <svg class="labs-filters" aria-hidden="true" focusable="false">
+    <filter
+      id="labs-ink"
+      x="-2%"
+      y="-2%"
+      width="104%"
+      height="104%"
+      color-interpolation-filters="sRGB"
+    >
+      <feTurbulence
+        type="fractalNoise"
+        baseFrequency="0.75"
+        numOctaves="2"
+        seed="7"
+        result="noise"
+      />
+      <feDisplacementMap
+        in="SourceGraphic"
+        in2="noise"
+        scale="1.43"
+        xChannelSelector="R"
+        yChannelSelector="G"
+        result="rough"
+      />
+      <feGaussianBlur in="rough" stdDeviation="0.3" result="soft" />
+      <feComponentTransfer in="soft">
+        <feFuncA type="linear" slope="1.6" intercept="-0.1" />
+      </feComponentTransfer>
+    </filter>
+  </svg>
+</section>
+
+<style>
+  .labs-cover {
+    /* The paper the figure's callout discs are punched out of */
+    --fig-bg: var(--labs-orange);
+    padding: 0 1.1rem;
+    color: var(--labs-black);
+    background: var(--labs-orange);
+    border-radius: 2px;
+    box-shadow:
+      0 1px 2px rgb(11 11 12 / 0.12),
+      0 18px 40px -18px rgb(255 79 0 / 0.55);
+  }
+  /* Paper: fine grain and a faint, slightly streaky mottle, both generated noise kept close to
+     white and multiplied over the orange, so the orange still reads as itself */
+  .labs-cover {
+    position: relative;
+    isolation: isolate;
+  }
+  .labs-cover::after {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    border-radius: inherit;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.45' intercept='0.6'/%3E%3CfeFuncG type='linear' slope='0.45' intercept='0.6'/%3E%3CfeFuncB type='linear' slope='0.45' intercept='0.6'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.05' numOctaves='4' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncR type='linear' slope='0.22' intercept='0.86'/%3E%3CfeFuncG type='linear' slope='0.22' intercept='0.86'/%3E%3CfeFuncB type='linear' slope='0.22' intercept='0.86'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    background-size:
+      220px 220px,
+      600px 600px;
+    mix-blend-mode: multiply;
+    opacity: 0.77;
+    content: '';
+    pointer-events: none;
+  }
+  /* The ink sits in the paper: see the filter at the end of the markup */
+  .labs-strip,
+  .text,
+  .figs {
+    filter: url(#labs-ink);
+  }
+  .labs-filters {
+    position: absolute;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+  }
+  /* Desktop: the cover breaks out of the page column, 20% wider and centred on it, but always
+     leaves a gutter at the window's edges */
+  @media (min-width: 62rem) {
+    .labs-cover {
+      --cover-w: max(100%, min(120%, 100vw - 3rem));
+      width: var(--cover-w);
+      margin-inline: calc((100% - var(--cover-w)) / 2);
+    }
+  }
+  .labs-cover ::selection {
+    color: var(--labs-orange);
+    background: var(--labs-black);
+  }
+  @media (min-width: 34rem) {
+    .labs-cover {
+      padding: 0 1.6rem;
+    }
+  }
+
+  .plate {
+    display: grid;
+    gap: 2rem;
+    padding: 1.6rem 0 1.8rem;
+  }
+  @media (min-width: 48rem) {
+    .plate {
+      gap: 2.4rem;
+      padding: 2rem 0;
+    }
+  }
+
+  h2 {
+    margin: 0 0 1.1rem -0.04em;
+    font-family: var(--font-head);
+    font-size: clamp(2.4rem, 15.5vw, 4.9rem);
+    font-weight: 500;
+    line-height: 0.88;
+    letter-spacing: -0.035em;
+    /* The b is its own box (for the moon), which would otherwise let "Labs" break after it */
+    white-space: nowrap;
+  }
+  /* The orbiting moon. The orbit is a circle squashed into a tilted ellipse; the moon rides it on
+     a rotating arm and is turned and stretched back so it stays a round disc. */
+  .word {
+    position: relative;
+    display: inline-block;
+    isolation: isolate;
+  }
+  .orbit {
+    position: absolute;
+    top: 62%;
+    left: -38%;
+    width: 176%;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+  .orbit.back {
+    z-index: -1;
+  }
+  .orbit.front {
+    z-index: 1;
+  }
+  .ring {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.25;
+    stroke-opacity: 0.25;
+  }
+  .orbit circle {
+    fill: currentColor;
+  }
+  .spin,
+  .unspin {
+    transform-origin: 0 0;
+  }
+  /* The moon's resting place, on the near side of the orbit, is where each lap starts */
+  .spin {
+    transform: rotate(115deg);
+    animation: labs-orbit 10s linear infinite;
+  }
+  .unspin {
+    transform: rotate(-115deg);
+    animation: labs-orbit-back 10s linear infinite;
+  }
+  @keyframes labs-orbit {
+    to {
+      transform: rotate(475deg);
+    }
+  }
+  @keyframes labs-orbit-back {
+    to {
+      transform: rotate(-475deg);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .spin,
+    .unspin {
+      animation: none;
+    }
+  }
+
+  .abstract {
+    max-width: 21rem;
+    margin: 1.2rem 0 0;
+    line-height: 1.4;
+    text-wrap: pretty;
+  }
+
+  .abstract p {
+    margin: 0;
+  }
+  /* The three fields: an unordered list, each marked with a small square of ink */
+  .fields {
+    margin: 0.7rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .fields li {
+    display: flex;
+    gap: 0.7rem;
+    align-items: baseline;
+  }
+  .fields li + li {
+    margin-top: 0.15rem;
+  }
+  .fields li::before {
+    flex: none;
+    width: 0.4em;
+    height: 0.4em;
+    background: currentColor;
+    content: '';
+    transform: translateY(-0.12em);
+  }
+
+  /* Wide: the abstract stands beside the title, so the row of figures adds less height */
+  @media (min-width: 48rem) {
+    .text {
+      display: grid;
+      grid-template-columns: auto minmax(0, 21rem);
+      justify-content: space-between;
+      align-items: end;
+      column-gap: 3rem;
+    }
+    .text h2,
+    .labs-subject {
+      grid-column: 1;
+      justify-self: start;
+    }
+    .abstract {
+      grid-column: 2;
+      grid-row: 1 / span 2;
+      margin: 0;
+    }
+  }
+
+  .date {
+    margin-left: auto;
+  }
+
+  /* The three figures: stacked on phones, a row once there is room for three */
+  .figs {
+    display: grid;
+    gap: 1.8rem;
+    max-width: 18rem;
+  }
+  @media (min-width: 48rem) {
+    .figs {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2rem;
+      max-width: none;
+    }
+  }
+  /* The drawings sit in boxes of one size, centred, so the three captions start at the same height */
+  figure {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    align-content: start;
+    margin: 0;
+  }
+  @media (min-width: 48rem) {
+    figure :global(.labs-fig) {
+      aspect-ratio: 320 / 212;
+    }
+  }
+  figcaption {
+    margin-top: 0.7rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid currentColor;
+  }
+</style>

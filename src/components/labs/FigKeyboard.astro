@@ -1,0 +1,103 @@
+---
+// Fig. 1: a regular keyboard, drawn like a plate from a human-factors manual. The keys carry no
+// letters, because the drawing stands for any layout in any language. The eight home keys are
+// hatched. Ink is currentColor.
+interface Props {
+  /** Unique per page: the hatch pattern is referenced by id */
+  id?: string;
+}
+const { id = 'keyboard' } = Astro.props;
+
+const u = 20; // one key pitch, in drawing units
+const gap = 2.4;
+const left = 10;
+const top = 38;
+// Key widths per row, in key pitches. Every row adds up to fifteen.
+const rows = [
+  [...Array(13).fill(1), 2],
+  [1.5, ...Array(12).fill(1), 1.5],
+  [1.75, ...Array(11).fill(1), 2.25],
+  [2.25, ...Array(10).fill(1), 2.75],
+  [1.25, 1.25, 1.25, 6.25, 1.25, 1.25, 1.25, 1.25],
+];
+// The home keys: the four under each hand in the middle row
+const home = new Set([1, 2, 3, 4, 7, 8, 9, 10]);
+const keys = rows.flatMap((widths, row) => {
+  let x = left;
+  return widths.map((w, i) => {
+    const key = {
+      x: x + gap / 2,
+      y: top + row * u + gap / 2,
+      w: w * u - gap,
+      home: row === 2 && home.has(i),
+    };
+    x += w * u;
+    return key;
+  });
+});
+const right = left + 15 * u;
+const bottom = top + rows.length * u;
+// The pitch dimension sits over the third key of the top row
+const p0 = left + 2 * u;
+const p1 = p0 + u;
+---
+
+<svg class="labs-fig" viewBox={`0 0 320 ${bottom + 24}`} role="img" aria-labelledby={`${id}-t`}>
+  <title id={`${id}-t`}>
+    A regular computer keyboard with five rows of blank keys. The eight home keys in the middle row,
+    four under each hand, are hatched.
+  </title>
+  <defs>
+    <pattern
+      id={`${id}-hatch`}
+      width="3.5"
+      height="3.5"
+      patternUnits="userSpaceOnUse"
+      patternTransform="rotate(45)"
+    >
+      <line x1="0" y1="0" x2="0" y2="3.5" stroke="currentColor" stroke-width="1"></line>
+    </pattern>
+  </defs>
+
+  <rect
+    x={left - 4}
+    y={top - 4}
+    width={15 * u + 8}
+    height={rows.length * u + 8}
+    rx="5"
+    stroke="currentColor"
+    stroke-width="1.5"
+  ></rect>
+  {keys.map((k) => (
+    <rect
+      x={k.x}
+      y={k.y}
+      width={k.w}
+      height={u - gap}
+      rx="2.2"
+      fill={k.home ? `url(#${id}-hatch)` : 'none'}
+      stroke="currentColor"
+      stroke-width={k.home ? 1.25 : 0.75}
+    />
+  ))}
+
+  <!-- Key pitch -->
+  <g stroke="currentColor" stroke-width="0.75">
+    <path d={`M${p0} ${top - 8}V${top - 26}M${p1} ${top - 8}V${top - 26}`}></path>
+    <path d={`M${p0 - 22} ${top - 20}H${p0}M${p1} ${top - 20}H${p1 + 22}`}></path>
+    <path
+      d={`M${p0} ${top - 20}l-7 -2.6v5.2zM${p1} ${top - 20}l7 -2.6v5.2z`}
+      fill="currentColor"
+      stroke="none"
+    ></path>
+  </g>
+  <text x={p1 + 28} y={top - 16}>
+    19
+  </text>
+  <text x={left - 4} y={bottom + 20}>
+    DIMENSIONS IN MM
+  </text>
+  <text x={right + 4} y={bottom + 20} text-anchor="end">
+    HOME KEYS HATCHED
+  </text>
+</svg>
